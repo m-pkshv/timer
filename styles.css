@@ -1,4 +1,21 @@
-/* Дополнительные стили для полей с кнопками */
+/* Убираем стрелочки у числовых полей ввода */
+input[type=number] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Для Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0; 
+}
+
+/* Для Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}/* Дополнительные стили для полей с кнопками */
 .input-group.with-buttons {
     flex: 1;
 }
