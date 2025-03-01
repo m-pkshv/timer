@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2196F3">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>ЦиклоТаймер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>ЦиклоТаймер</h1>
+        <div class="menu-container">
+            <button id="menuBtn" class="menu-button" title="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div id="menuDropdown" class="menu-dropdown">
+                <div class="menu-section">
+                    <h3>Тема оформления</h3>
+                    <div class="theme-toggle">
+                        <button id="lightThemeBtn" title="Светлая тема">☀️</button>
+                        <button id="darkThemeBtn" title="Тёмная тема">🌙</button>
+                        <button id="systemThemeBtn" title="Системная тема">⚙️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="overlay" class="overlay"></div>
+    
+    <div class="timer-list" id="timerList">
+        <!-- Таймеры будут добавляться здесь -->
+    </div>
+    
+    <button class="btn-add" id="addTimerBtn">+ Добавить таймер</button>
+    
+    <div class="cycles-container">
+        <div class="input-group with-buttons">
+            <label for="cyclesInput">Количество циклов:</label>
+            <div class="input-with-buttons cycles-input-container">
+                <button id="cyclesMinusBtn" class="btn-adjust btn-minus" title="Уменьшить на 1">-</button>
+                <input type="number" id="cyclesInput" min="1" value="1">
+                <button id="cyclesPlusBtn" class="btn-adjust btn-plus" title="Увеличить на 1">+</button>
+            </div>
+        </div>
+        <div class="total-time">
+            <span>Общее время: </span>
+            <span id="totalTimeDisplay">00:00</span>
+        </div>
+    </div>
+    
+    <div class="timer-display-container">
+        <!-- SVG для внешнего (текущий таймер) прогресс-бара -->
+        <svg class="progress-svg" id="currentTimerProgress" viewBox="0 0 100 100">
+            <circle class="progress-circle-bg" cx="50" cy="50" r="42"></circle>
+            <circle class="progress-circle progress-circle-current" cx="50" cy="50" r="42" 
+                    stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        
+        <!-- SVG для внутреннего (общее время) прогресс-бара -->
+        <svg class="progress-svg" id="totalTimeProgress" viewBox="0 0 100 100">
+            <circle class="progress-circle-bg" cx="50" cy="50" r="32"></circle>
+            <circle class="progress-circle progress-circle-total" cx="50" cy="50" r="32" 
+                    stroke-dasharray="201" stroke-dashoffset="0"></circle>
+        </svg>
+        
+        <!-- Цифровой таймер -->
+        <div class="display" id="display">00:00</div>
+    </div>
+    
+    <div class="progress-info" id="progressInfo">
+        Таймер не запущен
+    </div>
+    
+    <div class="controls">
+        <button class="btn-start" id="startBtn">Старт</button>
+        <button class="btn-pause" id="pauseBtn" disabled>Пауза</button>
+        <button class="btn-reset" id="resetBtn">Сброс</button>
+    </div>
+    
+    <!-- Подключение JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
