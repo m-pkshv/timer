@@ -219,7 +219,7 @@ h1 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Контейнеры */
+/* Новая структура таймера */
 .timer-container {
     margin-bottom: 20px;
     background-color: var(--container-bg);
@@ -227,6 +227,7 @@ h1 {
     padding: 20px;
     box-shadow: 0 2px 4px var(--timer-shadow);
     transition: background-color 0.3s;
+    position: relative;
 }
 
 .timer-container:hover {
@@ -237,8 +238,19 @@ h1 {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 10px;
     flex-wrap: wrap;
+}
+
+.timer-button-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* Прижимаем кнопки вправо */
+}
+
+/* Скрываем мобильный контейнер действий на десктопе */
+.timer-actions {
+    display: none;
 }
 
 .input-group {
@@ -352,6 +364,7 @@ button:active {
     background-color: #f44336;
     color: white;
     height: 38px;
+    padding: 0 15px;
 }
 
 .btn-sound {
@@ -473,6 +486,12 @@ button:active {
     background-color: var(--highlight-bg);
     padding: 8px 15px;
     border-radius: 4px;
+    word-break: break-word; /* Разрешаем перенос длинных слов */
+    max-width: 100%; /* Ограничиваем максимальную ширину */
+    box-sizing: border-box; /* Учитываем padding в ширине */
+    overflow: hidden; /* Скрываем переполнение */
+    text-overflow: ellipsis; /* Добавляем многоточие при переполнении */
+    white-space: normal; /* Разрешаем перенос строк */
 }
 
 /* Переключатель темы */
@@ -541,11 +560,14 @@ button:active {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+        padding: 15px; /* Уменьшаем отступы для мобильной версии */
     }
     
     .total-time {
         width: 100%;
-        text-align: center;
+        text-align: left; /* Выравниваем по левому краю */
+        font-size: 16px; /* Уменьшаем размер шрифта */
+        padding: 6px 10px; /* Уменьшаем отступы */
     }
     
     .progress-info {
@@ -587,11 +609,29 @@ button:active {
         font-size: 32px;
     }
     
-    /* Адаптируем элементы таймера */
+    /* Адаптируем структуру таймера для мобильных */
+    .timer-container {
+        padding: 15px 15px 50px 15px; /* Уменьшаем отступы, но сохраняем место для кнопок внизу */
+    }
+    
     .timer-row {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
+    }
+    
+    .timer-button-container {
+        display: none; /* Скрываем десктопные кнопки */
+    }
+    
+    .timer-actions {
+        display: flex; /* Показываем мобильный контейнер действий */
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        justify-content: space-between;
+        padding: 0 20px;
     }
     
     .input-group {
@@ -603,38 +643,22 @@ button:active {
         width: 100%;
     }
     
-    /* Размещаем кнопки в строку внизу */
-    .timer-container {
-        position: relative;
-        padding-bottom: 50px;
-    }
-    
-    .timer-actions {
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20px;
-        margin-left: 0;
-        margin-top: 0; /* Убираем отступ для мобильной версии */
-    }
-    
-    .btn-sound, .btn-delete {
-        margin: 0;
-    }
-    
     /* Адаптация для блока с циклами */
     .cycles-container {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+        padding: 12px; /* Ещё больше уменьшаем отступы для самых маленьких экранов */
     }
     
     .cycles-input-container {
         max-width: none;
         width: 100%;
+    }
+    
+    .total-time {
+        padding: 5px 8px;
+        font-size: 15px;
     }
 }
 
