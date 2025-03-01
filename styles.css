@@ -560,7 +560,7 @@ button:active {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
-        padding: 15px; /* Уменьшаем отступы для мобильной версии */
+        padding: 15px; /* Унифицированный отступ */
     }
     
     .total-time {
@@ -611,7 +611,8 @@ button:active {
     
     /* Адаптируем структуру таймера для мобильных */
     .timer-container {
-        padding: 15px 15px 50px 15px; /* Уменьшаем отступы, но сохраняем место для кнопок внизу */
+        padding: 15px; /* Единый отступ со всех сторон */
+        padding-bottom: 60px; /* Увеличиваем отступ снизу для кнопок */
     }
     
     .timer-row {
@@ -627,11 +628,10 @@ button:active {
     .timer-actions {
         display: flex; /* Показываем мобильный контейнер действий */
         position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
+        bottom: 15px; /* Выравниваем по нижнему отступу контейнера */
+        left: 15px; /* Выравниваем по левому отступу контейнера */
+        right: 15px; /* Выравниваем по правому отступу контейнера */
         justify-content: space-between;
-        padding: 0 20px;
     }
     
     .input-group {
@@ -648,7 +648,7 @@ button:active {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
-        padding: 12px; /* Ещё больше уменьшаем отступы для самых маленьких экранов */
+        padding: 15px; /* Единый отступ для всех контейнеров */
     }
     
     .cycles-input-container {
