@@ -686,3 +686,36 @@ button:active {
         min-width: 200px;
     }
 }
+
+/* Стили для контейнера с полями ввода времени */
+.time-inputs-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.time-input-group {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Стили для полей ввода чисел */
+input[type="number"] {
+    text-align: center;
+    font-family: 'Ubuntu Mono', monospace;
+    width: 60px;
+    padding: 6px 4px;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 576px) {
+    .time-inputs-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .time-input-group {
+        width: 100%;
+    }
+}
