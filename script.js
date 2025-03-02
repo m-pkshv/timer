@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const state = {
         timers: [],
         currentTimerIndex: 0,
-        currentRepetition: 0,
         currentCycle: 0,
         totalCycles: 1,
         remainingSeconds: 0,
@@ -264,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 state.isPaused = false;
             } else {
                 state.currentTimerIndex = 0;
-                state.currentRepetition = 1;
                 state.currentCycle = 1;
                 state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
                 state.initialTimerDuration = state.timers[state.currentTimerIndex].duration; // Сохраняем начальную длительность
@@ -303,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function() {
         reset() {
             clearInterval(state.timerInterval);
             state.currentTimerIndex = 0;
-            state.currentRepetition = 0;
             state.currentCycle = 0;
             state.remainingSeconds = 0;
             state.elapsedTimeSeconds = 0;
@@ -351,43 +348,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearInterval(state.timerInterval);
                 
                 setTimeout(function() {
-                    // Проверка, нужно ли перейти к следующему повторению или таймеру
-                    if (state.currentRepetition < state.timers[state.currentTimerIndex].repetitions) {
-                        // Следующее повторение текущего таймера
-                        state.currentRepetition++;
-                        state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
-                        state.initialTimerDuration = state.remainingSeconds; // Обновляем начальную длительность
-                        // Сбрасываем прогресс текущего таймера
-                        progressManager.updateCurrentTimer(1);
-                    } else {
-                        // Переход к следующему таймеру
-                        state.currentTimerIndex++;
-                        state.currentRepetition = 1;
+                    // Переход к следующему таймеру
+                    state.currentTimerIndex++;
+                    
+                    // Проверка, закончились ли все таймеры в текущем цикле
+                    if (state.currentTimerIndex >= state.timers.length) {
+                        state.currentTimerIndex = 0;
+                        state.currentCycle++;
                         
-                        // Проверка, закончились ли все таймеры в текущем цикле
-                        if (state.currentTimerIndex >= state.timers.length) {
-                            state.currentTimerIndex = 0;
-                            state.currentCycle++;
-                            
-                            // Проверка, закончились ли все циклы
-                            if (state.currentCycle > state.totalCycles) {
-                                elements.progressInfo.innerHTML = `<div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.totalTimeSeconds)}</div>
-                                <div>Все таймеры и циклы завершены!</div>`;
-                                elements.startBtn.disabled = false;
-                                elements.pauseBtn.disabled = true;
-                                return;
-                            }
+                        // Проверка, закончились ли все циклы
+                        if (state.currentCycle > state.totalCycles) {
+                            elements.progressInfo.innerHTML = `<div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.totalTimeSeconds)}</div>
+                            <div>Все таймеры и циклы завершены!</div>`;
+                            elements.startBtn.disabled = false;
+                            elements.pauseBtn.disabled = true;
+                            return;
                         }
-                        
-                        state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
-                        state.initialTimerDuration = state.remainingSeconds; // Обновляем начальную длительность
-                        
-                        // Сбрасываем прогресс текущего таймера
-                        progressManager.updateCurrentTimer(1);
-                        
-                        // Подсветка активного таймера
-                        timer.updateActiveTimer();
                     }
+                    
+                    state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
+                    state.initialTimerDuration = state.remainingSeconds; // Обновляем начальную длительность
+                    
+                    // Сбрасываем прогресс текущего таймера
+                    progressManager.updateCurrentTimer(1);
+                    
+                    // Подсветка активного таймера
+                    timer.updateActiveTimer();
                     
                     // Обновить отображение и перезапустить интервал
                     timer.updateDisplay();
@@ -408,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (state.timers.length > 0) {
                 elements.progressInfo.innerHTML = `
                     <div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.remainingTotalSeconds)}</div>
-                    <div>Таймер ${state.currentTimerIndex + 1} из ${state.timers.length}, повторение ${state.currentRepetition} из ${state.timers[state.currentTimerIndex].repetitions}, цикл ${state.currentCycle} из ${state.totalCycles}</div>
+                    <div>Таймер ${state.currentTimerIndex + 1} из ${state.timers.length}, цикл ${state.currentCycle} из ${state.totalCycles}</div>
                 `;
             }
         },
@@ -435,10 +421,10 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         calculateTotalSeconds() {
-            // Суммирование времени всех таймеров с учетом повторений
+            // Суммирование времени всех таймеров
             let totalSeconds = 0;
             for (const timer of state.timers) {
-                totalSeconds += (parseInt(timer.duration) || 0) * (parseInt(timer.repetitions) || 1);
+                totalSeconds += (parseInt(timer.duration) || 0);
             }
             
             // Умножение на количество циклов
@@ -459,7 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Функции для работы с таймерами
     const timerManager = {
-        add(duration = 30, repetitions = 1) {
+        add(duration = 30) {
             const timerIndex = state.timers.length;
             
             const timerContainer = document.createElement('div');
@@ -563,63 +549,6 @@ document.addEventListener('DOMContentLoaded', function() {
             durationGroup.appendChild(durationLabel);
             durationGroup.appendChild(durationInputWrapper);
             
-            // Количество повторений
-            const repetitionsGroup = document.createElement('div');
-            repetitionsGroup.className = 'input-group with-buttons';
-            
-            const repetitionsLabel = document.createElement('label');
-            repetitionsLabel.textContent = 'Повторения:';
-            
-            // Создаем контейнер для поля ввода и кнопок + и -
-            const repetitionsInputWrapper = document.createElement('div');
-            repetitionsInputWrapper.className = 'input-with-buttons';
-            
-            // Кнопка минус
-            const repMinusBtn = document.createElement('button');
-            repMinusBtn.className = 'btn-adjust btn-minus';
-            repMinusBtn.textContent = '-';
-            repMinusBtn.title = 'Уменьшить на 1 повторение';
-            repMinusBtn.addEventListener('click', function() {
-                // Получаем текущее значение и вычитаем 1
-                const currentValue = parseInt(repetitionsInput.value) || 0;
-                const newValue = Math.max(1, currentValue - 1); // Минимум 1 повторение
-                repetitionsInput.value = newValue;
-                // Генерируем событие input для обновления данных таймера
-                repetitionsInput.dispatchEvent(new Event('input'));
-            });
-            
-            const repetitionsInput = document.createElement('input');
-            repetitionsInput.type = 'number';
-            repetitionsInput.min = '1';
-            repetitionsInput.value = repetitions;
-            repetitionsInput.addEventListener('input', function() {
-                const newRepetitions = parseInt(this.value) || 1;
-                state.timers[timerIndex].repetitions = newRepetitions;
-                timer.updateTotalTime();
-            });
-            
-            // Кнопка плюс
-            const repPlusBtn = document.createElement('button');
-            repPlusBtn.className = 'btn-adjust btn-plus';
-            repPlusBtn.textContent = '+';
-            repPlusBtn.title = 'Увеличить на 1 повторение';
-            repPlusBtn.addEventListener('click', function() {
-                // Получаем текущее значение и прибавляем 1
-                const currentValue = parseInt(repetitionsInput.value) || 0;
-                const newValue = currentValue + 1;
-                repetitionsInput.value = newValue;
-                // Генерируем событие input для обновления данных таймера
-                repetitionsInput.dispatchEvent(new Event('input'));
-            });
-            
-            // Добавляем все элементы в контейнер
-            repetitionsInputWrapper.appendChild(repMinusBtn);
-            repetitionsInputWrapper.appendChild(repetitionsInput);
-            repetitionsInputWrapper.appendChild(repPlusBtn);
-            
-            repetitionsGroup.appendChild(repetitionsLabel);
-            repetitionsGroup.appendChild(repetitionsInputWrapper);
-            
             // Кнопки в отдельном контейнере для мобильной версии
             const timerActions = document.createElement('div');
             timerActions.className = 'timer-actions';
@@ -644,7 +573,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Добавление элементов в контейнеры
             timerRow.appendChild(durationGroup);
-            timerRow.appendChild(repetitionsGroup);
             
             // Добавляем кнопки действий в основную строку для горизонтального отображения
             timerActions.appendChild(soundBtn);
@@ -658,7 +586,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Добавление таймера в массив
             state.timers.push({
                 duration: duration,
-                repetitions: repetitions,
                 soundEnabled: false
             });
             
@@ -867,7 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Добавление первого таймера
-        timerManager.add(30, 1);
+        timerManager.add(30);
         
         // Обновление общего времени
         setTimeout(timer.updateTotalTime, 100);
