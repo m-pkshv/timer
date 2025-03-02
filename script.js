@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             state.isPaused = true;
             elements.startBtn.disabled = false;
             elements.pauseBtn.disabled = true;
-            elements.progressInfo.innerHTML = '<div>Таймер на паузе</div>';
+            elements.progressInfo.innerHTML = '<div>Таймер на паузе</div><div>&nbsp;</div>';
         },
         
         reset() {
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
             elements.startBtn.disabled = false;
             elements.pauseBtn.disabled = true;
             elements.display.textContent = '00:00';
-            elements.progressInfo.innerHTML = '<div>Таймер не запущен</div>';
+            elements.progressInfo.innerHTML = '<div>Таймер не запущен</div><div>&nbsp;</div>';
             
             // Сброс прогресс-баров
             progressManager.reset();

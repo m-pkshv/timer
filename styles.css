@@ -55,7 +55,7 @@ input[type=number] {
     color: var(--text-color);
     border: 1px solid var(--input-border);
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px; /* Увеличиваем размер символов + и - */
     font-weight: bold;
     padding: 0;
     box-sizing: border-box; /* Учитываем границы в размерах */
@@ -322,7 +322,7 @@ label {
 }
 
 input {
-    padding: 8px;
+    padding: 6px 4px;
     border: 1px solid var(--input-border);
     border-radius: 4px;
     width: 120px;
@@ -330,10 +330,13 @@ input {
     background-color: var(--container-bg);
     color: var(--text-color);
     box-sizing: border-box; /* Добавляем box-sizing для корректного расчета размеров */
+    font-size: 1.5em; /* Увеличиваем размер шрифта в 1.5 раза */
+    font-weight: 500; /* Делаем шрифт немного жирнее для лучшей читаемости */
 }
 
 .with-buttons input {
     width: 100px; /* Увеличиваем ширину полей ввода внутри групп с кнопками */
+    font-size: 20px; /* Корректируем размер шрифта для групп с кнопками */
 }
 
 .input-with-buttons input {
@@ -341,10 +344,13 @@ input {
     border-left: none;
     border-right: none;
     margin: 0; /* Убираем margin для плотного примыкания к кнопкам */
-    font-family: 'Ubuntu Mono', monospace, 'Ubuntu', sans-serif; /* Используем моноширинный шрифт для времени */
+    font-family: 'Ubuntu Mono', monospace; /* Используем моноширинный шрифт для лучшей читаемости чисел */
     text-align: center;
     letter-spacing: 0.5px; /* Немного уменьшаем расстояние между символами */
-    padding: 0 4px; /* Увеличиваем горизонтальные отступы */
+    padding: 0; /* Уменьшаем внутренние отступы для сохранения размера поля */
+    height: 100%; /* Полная высота контейнера */
+    line-height: 1; /* Уменьшаем межстрочный интервал для вертикального центрирования */
+    vertical-align: middle; /* Помогает с вертикальным выравниванием */
 }
 
 input:focus {
@@ -480,17 +486,29 @@ button:active {
 
 .progress-info {
     text-align: center;
-    margin-top: 20px; /* Добавляем отступ сверху */
+    margin-top: 20px;
     margin-bottom: 30px;
     font-size: 18px;
     color: var(--secondary-text);
     background-color: var(--highlight-bg);
-    padding: 10px;
+    padding: 15px 10px;
     border-radius: 8px;
     box-shadow: 0 1px 3px var(--timer-shadow);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    justify-content: center; /* Центрирование по вертикали */
+    align-items: center; /* Центрирование по горизонтали */
+    min-height: 80px; /* Фиксированная высота для 2 строк текста */
+    height: 80px; /* Фиксированная высота */
+    overflow: hidden; /* Предотвращает переполнение */
+    box-sizing: border-box; /* Учитываем padding в общей высоте */
+}
+
+/* Стили для блоков внутри progress-info */
+.progress-info div {
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
 }
 
 .timer-list {
@@ -706,7 +724,8 @@ input[type="number"] {
     text-align: center;
     font-family: 'Ubuntu Mono', monospace;
     width: 60px;
-    padding: 6px 4px;
+    padding: 0;
+    font-size: 22px; /* Точная настройка размера для полей с числами */
 }
 
 /* Медиа-запрос для мобильных устройств */
