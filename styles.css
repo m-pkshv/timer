@@ -301,7 +301,7 @@ h1 {
     background-color: var(--container-bg);
     border-radius: 8px;
     padding: 20px;
-    margin: 20px 0;
+    margin: 30px 0 20px; /* Увеличиваем верхний отступ */
     box-shadow: 0 2px 4px var(--timer-shadow);
 }
 
@@ -493,7 +493,7 @@ button:active {
 }
 
 .timer-list {
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Добавляем отступ снизу для списка таймеров */
 }
 
 .total-time {
