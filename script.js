@@ -1015,9 +1015,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (elements.stopwatchDisplay) elements.stopwatchDisplay.textContent = '00:00:00';
                 if (elements.lapsList) elements.lapsList.innerHTML = '';
                 
-                // Сбрасываем прогресс-бар
+                // Сбрасываем прогресс-бар секундомера на полную окружность (пустой)
                 if (progressElements.stopwatchCircle) {
-                    progressElements.stopwatchCircle.style.strokeDashoffset = 0;
+                    progressElements.stopwatchCircle.style.strokeDashoffset = progressElements.stopwatchCircumference;
+                }
+                
+                // Сбрасываем флаг инициализации вкладки в tabManager, если он существует
+                if (tabManager && typeof tabManager.resetInitFlags === 'function') {
+                    tabManager.resetInitFlags();
                 }
             },
             
@@ -1127,6 +1132,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация управления вкладками
     function initTabManager() {
         tabManager = {
+            // Флаг для отслеживания первого открытия вкладки секундомера
+            isStopwatchTabInitialized: false,
+            
             switchTab: function(tabName) {
                 if (!elements.timerTab || !elements.stopwatchTab || 
                     !elements.timerTabBtn || !elements.stopwatchTabBtn) return;
@@ -1146,7 +1154,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (tabName === 'stopwatch') {
                     elements.stopwatchTab.classList.add('active');
                     elements.stopwatchTabBtn.classList.add('active');
+                    
+                    // Сбрасываем прогресс-бар только при первом открытии и если секундомер не запущен и не на паузе
+                    if (!this.isStopwatchTabInitialized && 
+                        !state.isStopwatchRunning && 
+                        state.stopwatchElapsedTime === 0) {
+                        
+                        if (progressElements.stopwatchCircle) {
+                            progressElements.stopwatchCircle.style.strokeDashoffset = progressElements.stopwatchCircumference;
+                        }
+                    }
+                    
+                    // Отмечаем, что вкладка секундомера была инициализирована
+                    this.isStopwatchTabInitialized = true;
                 }
+            },
+            
+            // Метод для сброса флага инициализации при полном сбросе приложения
+            resetInitFlags: function() {
+                this.isStopwatchTabInitialized = false;
             }
         };
     }
@@ -1316,6 +1342,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 timer.updateTotalTime();
             }
         }, 100);
+        
+        // Инициализация прогресс-бара секундомера в начальное положение (пустой)
+        if (progressElements.stopwatchCircle) {
+            progressElements.stopwatchCircle.style.strokeDashoffset = progressElements.stopwatchCircumference;
+        }
     }
     
     // Запуск приложения
