@@ -1,293 +1,6 @@
-/* Убираем стрелочки у числовых полей ввода */
-input[type=number] {
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
+/* ===== ПЕРЕМЕННЫЕ И ОБЩИЕ НАСТРОЙКИ ===== */
 
-/* Улучшаем работу с меню */
-@media (max-width: 400px) {
-    .menu-dropdown {
-        right: -10px;
-        min-width: 200px;
-    }
-}
-
-/* Стили для вкладок */
-.app-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    background-color: var(--container-bg);
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 12px 20px;
-    border: none;
-    background-color: var(--container-bg);
-    color: var(--text-color);
-    font-weight: 500;
-    font-size: 16px;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-
-.tab-btn:hover {
-    background-color: var(--highlight-bg);
-}
-
-.tab-btn.active {
-    color: #2196F3;
-    border-bottom-color: #2196F3;
-    background-color: var(--highlight-bg);
-}
-
-.app-tab {
-    display: none;
-}
-
-.app-tab.active {
-    display: block;
-}
-
-/* Стили для секундомера */
-.stopwatch-display-container {
-    position: relative;
-    margin: 40px auto;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.stopwatch-display {
-    font-size: 40px;
-}
-
-.progress-circle-stopwatch {
-    stroke: #9C27B0;
-    stroke-width: 6;
-}
-
-.stopwatch-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.btn-lap {
-    background-color: #9C27B0;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
-}
-
-.laps-container {
-    margin-top: 30px;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.laps-header {
-    font-size: 18px;
-    margin: 0 0 15px 0;
-    text-align: center;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--input-border);
-    padding-bottom: 10px;
-}
-
-.lap-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--input-border);
-    font-size: 16px;
-    color: var(--text-color);
-}
-
-.lap-item:last-child {
-    border-bottom: none;
-}
-
-.lap-number {
-    font-weight: 500;
-}
-
-.lap-time {
-    font-family: 'Ubuntu Mono', monospace;
-}
-
-.lap-split {
-    color: var(--secondary-text);
-    font-size: 14px;
-}
-
-@media (max-width: 768px) {
-    .stopwatch-display-container {
-        width: 250px;
-        height: 250px;
-    }
-    
-    .stopwatch-display {
-        font-size: 32px;
-    }
-}
-
-@media (max-width: 576px) {
-    .stopwatch-controls {
-        flex-direction: column;
-    }
-    
-    .stopwatch-controls button {
-        width: 100%;
-    }
-    
-    .stopwatch-display-container {
-        width: 220px;
-        height: 220px;
-    }
-    
-    .stopwatch-display {
-        font-size: 28px;
-    }
-}
-
-/* Стили для контейнера с полями ввода времени */
-.time-inputs-container {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.time-input-group {
-    flex: 1;
-    min-width: 120px;
-}
-
-/* Стили для полей ввода чисел */
-input[type="number"] {
-    text-align: center;
-    font-family: 'Ubuntu Mono', monospace;
-    width: 60px;
-    padding: 0;
-    font-size: 22px; /* Точная настройка размера для полей с числами */
-}
-
-/* Медиа-запрос для мобильных устройств */
-@media (max-width: 576px) {
-    .time-inputs-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .time-input-group {
-        width: 100%;
-    }
-}
-
-/* Для Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    margin: 0; 
-}
-
-/* Для Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}/* Дополнительные стили для полей с кнопками */
-.input-group.with-buttons {
-    flex: 1;
-}
-
-/* Более компактный вид для поля времени */
-.input-group.with-buttons input[placeholder="00:00:00"] {
-    font-size: 0.9em; /* Немного уменьшаем размер шрифта для поля времени */
-}.input-with-buttons {
-    display: flex;
-    align-items: stretch; /* Изменяем на stretch, чтобы дочерние элементы растягивались по высоте */
-    width: 100%;
-    height: 38px; /* Устанавливаем фиксированную высоту для контейнера */
-    max-width: 160px; /* Увеличиваем максимальную ширину контейнера */
-}
-
-.input-with-buttons button {
-    flex: 0 0 30px; /* flex-grow, flex-shrink, flex-basis */
-}
-
-.input-with-buttons input {
-    text-align: center;
-    margin: 0;
-    flex: 1;
-    height: 100%; /* Растягиваем поле ввода на всю высоту контейнера */
-    box-sizing: border-box; /* Учитываем padding и border в общей ширине/высоте */
-    min-width: 100px; /* Увеличиваем минимальную ширину для поля ввода */
-}
-
-.btn-adjust {
-    width: 30px !important;
-    min-width: 30px !important;
-    height: 100%; /* Изменяем высоту, чтобы соответствовать полю ввода */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--highlight-bg);
-    color: var(--text-color);
-    border: 1px solid var(--input-border);
-    cursor: pointer;
-    font-size: 20px; /* Увеличиваем размер символов + и - */
-    font-weight: bold;
-    padding: 0;
-    box-sizing: border-box; /* Учитываем границы в размерах */
-    flex: 0 0 30px; /* flex-grow, flex-shrink, flex-basis */
-}
-
-.btn-minus {
-    border-radius: 4px 0 0 4px;
-}
-
-.btn-plus {
-    border-radius: 0 4px 4px 0;
-}
-
-.btn-adjust:hover {
-    background-color: #2196F3;
-    color: white;
-    border-color: #2196F3;
-}/* Оверлей для фона при открытом меню */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Уменьшена непрозрачность для эффекта матового стекла */
-    backdrop-filter: blur(5px); /* Эффект матового стекла */
-    -webkit-backdrop-filter: blur(5px); /* Для поддержки Safari */
-    z-index: 90;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
-}
-
-.overlay.visible {
-    display: block;
-    opacity: 1;
-}/* Базовые переменные цветовой схемы */
+/* Базовые переменные цветовой схемы */
 :root {
     --bg-color: #f5f5f5;
     --container-bg: #ffffff;
@@ -332,7 +45,209 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Стили для шапки и меню */
+/* ===== ФОРМЫ И ЭЛЕМЕНТЫ ВВОДА ===== */
+
+/* Убираем стрелочки у числовых полей ввода */
+input[type=number] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Для Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0; 
+}
+
+/* Для Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Элементы формы */
+label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+input {
+    padding: 6px 4px;
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    width: 120px;
+    transition: border-color 0.3s;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    box-sizing: border-box;
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+input:focus {
+    border-color: #2196F3;
+    outline: none;
+    box-shadow: 0 0 3px rgba(33, 150, 243, 0.3);
+}
+
+/* Стили для группы с кнопками */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group.with-buttons {
+    flex: 1;
+}
+
+.with-buttons input {
+    width: 100px;
+    font-size: 20px;
+}
+
+.input-with-buttons {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 38px;
+    max-width: 160px;
+}
+
+.input-with-buttons button {
+    flex: 0 0 30px;
+}
+
+.input-with-buttons input {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    margin: 0;
+    font-family: 'Ubuntu Mono', monospace;
+    text-align: center;
+    letter-spacing: 0.5px;
+    padding: 0;
+    height: 100%;
+    line-height: 1;
+    vertical-align: middle;
+    flex: 1;
+    min-width: 100px;
+}
+
+/* Более компактный вид для поля времени */
+.input-group.with-buttons input[placeholder="00:00:00"] {
+    font-size: 0.9em;
+}
+
+/* ===== КНОПКИ ===== */
+
+button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.btn-adjust {
+    width: 30px !important;
+    min-width: 30px !important;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--highlight-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0;
+    box-sizing: border-box;
+    flex: 0 0 30px;
+}
+
+.btn-minus {
+    border-radius: 4px 0 0 4px;
+}
+
+.btn-plus {
+    border-radius: 0 4px 4px 0;
+}
+
+.btn-adjust:hover {
+    background-color: #2196F3;
+    color: white;
+    border-color: #2196F3;
+}
+
+.btn-add {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    color: white;
+    height: 38px;
+    padding: 0 15px;
+}
+
+.btn-sound {
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    height: 38px;
+    width: 38px;
+    margin-right: 8px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-start {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+.btn-pause {
+    background-color: #FF9800;
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+.btn-reset {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+.btn-lap {
+    background-color: #9C27B0;
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+/* ===== ШАПКА И МЕНЮ ===== */
+
 header {
     position: relative;
     display: flex;
@@ -350,11 +265,12 @@ h1 {
     margin: 0;
 }
 
+/* Меню */
 .menu-container {
     position: absolute;
     right: 10px;
     top: 0;
-    z-index: 110; /* Увеличен z-index, чтобы быть выше оверлея */
+    z-index: 110;
 }
 
 .menu-button {
@@ -430,298 +346,25 @@ h1 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Новая структура таймера */
-.timer-container {
-    margin-bottom: 20px;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    transition: background-color 0.3s;
-    position: relative;
-}
-
-.timer-container:hover {
-    background-color: var(--highlight-bg);
-}
-
-.timer-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.timer-button-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto; /* Прижимаем кнопки вправо */
-}
-
-/* Скрываем мобильный контейнер действий на десктопе */
-.timer-actions {
-    display: none;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-}
-
-/* Добавляем стили для таймер-экшнс в обычном виде */
-.timer-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 0;
-    margin-top: 24px; /* Добавляем отступ сверху, чтобы компенсировать высоту label */
-}
-
-/* Делаем timer-actions в конец строки на desktop */
-@media (min-width: 768px) {
-    .timer-row {
-        flex-wrap: nowrap;
-    }
-    .timer-actions {
-        margin-left: auto;
-    }
-}
-
-.cycles-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 30px 0 20px; /* Увеличиваем верхний отступ */
-    box-shadow: 0 2px 4px var(--timer-shadow);
-}
-
-.cycles-input-container {
-    max-width: 160px; /* Увеличиваем максимальную ширину для поля с кнопками для циклов */
-}
-
-.cycles-container .btn-adjust {
-    width: 30px; /* Фиксированная ширина кнопок */
-}
-
-/* Элементы формы */
-label {
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: var(--secondary-text);
-    font-weight: 500;
-}
-
-input {
-    padding: 6px 4px;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    width: 120px;
-    transition: border-color 0.3s;
-    background-color: var(--container-bg);
-    color: var(--text-color);
-    box-sizing: border-box; /* Добавляем box-sizing для корректного расчета размеров */
-    font-size: 1.5em; /* Увеличиваем размер шрифта в 1.5 раза */
-    font-weight: 500; /* Делаем шрифт немного жирнее для лучшей читаемости */
-}
-
-.with-buttons input {
-    width: 100px; /* Увеличиваем ширину полей ввода внутри групп с кнопками */
-    font-size: 20px; /* Корректируем размер шрифта для групп с кнопками */
-}
-
-.input-with-buttons input {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    margin: 0; /* Убираем margin для плотного примыкания к кнопкам */
-    font-family: 'Ubuntu Mono', monospace; /* Используем моноширинный шрифт для лучшей читаемости чисел */
-    text-align: center;
-    letter-spacing: 0.5px; /* Немного уменьшаем расстояние между символами */
-    padding: 0; /* Уменьшаем внутренние отступы для сохранения размера поля */
-    height: 100%; /* Полная высота контейнера */
-    line-height: 1; /* Уменьшаем межстрочный интервал для вертикального центрирования */
-    vertical-align: middle; /* Помогает с вертикальным выравниванием */
-}
-
-input:focus {
-    border-color: #2196F3;
-    outline: none;
-    box-shadow: 0 0 3px rgba(33, 150, 243, 0.3);
-}
-
-/* Кнопки */
-button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    font-family: 'Ubuntu', sans-serif;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-.btn-add {
-    background-color: #2196F3;
-    color: white;
-}
-
-.btn-delete {
-    background-color: #f44336;
-    color: white;
-    height: 38px;
-    padding: 0 15px;
-}
-
-.btn-sound {
-    background-color: var(--container-bg);
-    color: var(--text-color);
-    border: 1px solid var(--input-border);
-    height: 38px;
-    width: 38px;
-    margin-right: 8px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-start {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
-}
-
-.btn-pause {
-    background-color: #FF9800;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
-}
-
-.btn-reset {
-    background-color: #f44336;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
-}
-
-/* Таймер, прогресс и настройки */
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.timer-display-container {
-    position: relative;
-    margin: 40px auto;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.display {
-    position: absolute;
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--text-color);
-    font-family: 'Ubuntu', monospace;
-    text-shadow: 0 2px 4px var(--timer-shadow);
-    z-index: 2;
-}
-
-.progress-svg {
-    position: absolute;
+/* Оверлей для фона при открытом меню */
+.overlay {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    transform: rotate(-90deg);
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 90;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-.progress-circle-bg {
-    fill: none;
-    stroke: var(--progress-bg);
-    stroke-width: 6;
-    stroke-linecap: round;
-}
-
-.progress-circle {
-    fill: none;
-    stroke-linecap: round; /* Возвращаем закругление */
-    transition: stroke-dashoffset 0.3s;
-}
-
-.progress-circle-total {
-    stroke: var(--progress-blue);
-    stroke-width: 6;
-}
-
-.progress-circle-current {
-    stroke: var(--progress-green);
-    stroke-width: 6;
-}
-
-.progress-info {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    font-size: 18px;
-    color: var(--secondary-text);
-    background-color: var(--highlight-bg);
-    padding: 15px 10px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px var(--timer-shadow);
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Центрирование по вертикали */
-    align-items: center; /* Центрирование по горизонтали */
-    min-height: 80px; /* Фиксированная высота для 2 строк текста */
-    height: 80px; /* Фиксированная высота */
-    overflow: hidden; /* Предотвращает переполнение */
-    box-sizing: border-box; /* Учитываем padding в общей высоте */
-}
-
-/* Стили для блоков внутри progress-info */
-.progress-info div {
-    width: 100%;
-    text-align: center;
-    line-height: 1.4;
-}
-
-.timer-list {
-    margin-bottom: 20px; /* Добавляем отступ снизу для списка таймеров */
-}
-
-.total-time {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text-color);
-    background-color: var(--highlight-bg);
-    padding: 8px 15px;
-    border-radius: 4px;
-    word-break: break-word; /* Разрешаем перенос длинных слов */
-    max-width: 100%; /* Ограничиваем максимальную ширину */
-    box-sizing: border-box; /* Учитываем padding в ширине */
-    overflow: hidden; /* Скрываем переполнение */
-    text-overflow: ellipsis; /* Добавляем многоточие при переполнении */
-    white-space: normal; /* Разрешаем перенос строк */
+.overlay.visible {
+    display: block;
+    opacity: 1;
 }
 
 /* Переключатель темы */
@@ -758,15 +401,320 @@ button:active {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Добавленные стили для адаптивности */
+/* ===== ВКЛАДКИ ===== */
 
-/* Контейнер для кнопок таймера */
-.timer-actions {
+.app-tabs {
     display: flex;
-    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    background-color: var(--container-bg);
 }
 
-/* Базовые медиа-запросы для адаптивности */
+.tab-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+.tab-btn.active {
+    color: #2196F3;
+    border-bottom-color: #2196F3;
+    background-color: var(--highlight-bg);
+}
+
+.app-tab {
+    display: none;
+}
+
+.app-tab.active {
+    display: block;
+}
+
+/* ===== ТАЙМЕР ===== */
+
+.timer-list {
+    margin-bottom: 20px;
+}
+
+.timer-container {
+    margin-bottom: 20px;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.timer-container:hover {
+    background-color: var(--highlight-bg);
+}
+
+.timer-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.timer-button-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.timer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 0;
+    margin-top: 24px;
+}
+
+.time-inputs-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.time-input-group {
+    flex: 1;
+    min-width: 120px;
+}
+
+.cycles-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px 0 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+}
+
+.cycles-input-container {
+    max-width: 160px;
+}
+
+.cycles-container .btn-adjust {
+    width: 30px;
+}
+
+.total-time {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color);
+    background-color: var(--highlight-bg);
+    padding: 8px 15px;
+    border-radius: 4px;
+    word-break: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.timer-display-container {
+    position: relative;
+    margin: 40px auto;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display {
+    position: absolute;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-color);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 0 2px 4px var(--timer-shadow);
+    z-index: 2;
+}
+
+.progress-info {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: var(--secondary-text);
+    background-color: var(--highlight-bg);
+    padding: 15px 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px var(--timer-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
+    height: 80px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.progress-info div {
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* ===== СЕКУНДОМЕР ===== */
+
+.stopwatch-display-container {
+    position: relative;
+    margin: 40px auto;
+    width: 340px;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopwatch-display {
+    font-size: 40px;
+    font-family: 'Ubuntu', sans-serif !important;
+    margin-top: 4px;
+}
+
+.centiseconds {
+    font-size: 0.65em;
+    vertical-align: super;
+    opacity: 0.8;
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+.stopwatch-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.progress-circle-stopwatch {
+    stroke: #9C27B0;
+    stroke-width: 6;
+}
+
+.laps-container {
+    margin-top: 30px;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.laps-header {
+    font-size: 18px;
+    margin: 0 0 15px 0;
+    text-align: center;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--input-border);
+    padding-bottom: 10px;
+}
+
+.lap-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--input-border);
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.lap-item:last-child {
+    border-bottom: none;
+}
+
+.lap-number {
+    font-weight: 500;
+}
+
+.lap-time {
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+.lap-split {
+    color: var(--secondary-text);
+    font-size: 14px;
+}
+
+/* ===== ПРОГРЕСС-КРУГИ ===== */
+
+.progress-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+    fill: none;
+    stroke: var(--progress-bg);
+    stroke-width: 6;
+    stroke-linecap: round;
+}
+
+.progress-circle {
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s;
+}
+
+.progress-circle-total {
+    stroke: var(--progress-blue);
+    stroke-width: 6;
+}
+
+.progress-circle-current {
+    stroke: var(--progress-green);
+    stroke-width: 6;
+}
+
+/* ===== АДАПТИВНЫЕ СТИЛИ ===== */
+
+@media (min-width: 768px) {
+    .timer-row {
+        flex-wrap: nowrap;
+    }
+    
+    .timer-actions {
+        margin-left: auto;
+    }
+}
+
 @media (max-width: 768px) {
     body {
         padding: 15px 10px;
@@ -786,18 +734,31 @@ button:active {
         font-size: 36px;
     }
     
+    .stopwatch-display-container {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .stopwatch-display {
+        font-size: 32px;
+    }
+    
+    .centiseconds {
+        font-size: 0.6em;
+    }
+    
     .cycles-container {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
-        padding: 15px; /* Унифицированный отступ */
+        padding: 15px;
     }
     
     .total-time {
         width: 100%;
-        text-align: left; /* Выравниваем по левому краю */
-        font-size: 16px; /* Уменьшаем размер шрифта */
-        padding: 6px 10px; /* Уменьшаем отступы */
+        text-align: left;
+        font-size: 16px;
+        padding: 6px 10px;
     }
     
     .progress-info {
@@ -816,7 +777,32 @@ button:active {
         height: 36px;
     }
     
-    /* Меняем ориентацию кнопок управления на вертикальную */
+    .time-inputs-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .time-input-group {
+        width: 100%;
+    }
+    
+    .cycles-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .cycles-input-container {
+        max-width: none;
+        width: 100%;
+    }
+    
+    .total-time {
+        padding: 5px 8px;
+        font-size: 15px;
+    }
+    
     .controls {
         flex-direction: column;
         gap: 8px;
@@ -828,7 +814,6 @@ button:active {
         padding: 12px 0;
     }
     
-    /* Уменьшаем размер таймера */
     .timer-display-container {
         width: 220px;
         height: 220px;
@@ -839,10 +824,32 @@ button:active {
         font-size: 32px;
     }
     
-    /* Адаптируем структуру таймера для мобильных */
+    .stopwatch-display-container {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .stopwatch-display {
+        font-size: 28px;
+    }
+    
+    .centiseconds {
+        font-size: 0.55em;
+        vertical-align: top;
+        margin-left: 1px;
+    }
+    
+    .stopwatch-controls {
+        flex-direction: column;
+    }
+    
+    .stopwatch-controls button {
+        width: 100%;
+    }
+    
     .timer-container {
-        padding: 15px; /* Единый отступ со всех сторон */
-        padding-bottom: 60px; /* Увеличиваем отступ снизу для кнопок */
+        padding: 15px;
+        padding-bottom: 60px;
     }
     
     .timer-row {
@@ -852,15 +859,15 @@ button:active {
     }
     
     .timer-button-container {
-        display: none; /* Скрываем десктопные кнопки */
+        display: none;
     }
     
     .timer-actions {
-        display: flex; /* Показываем мобильный контейнер действий */
+        display: flex;
         position: absolute;
-        bottom: 15px; /* Выравниваем по нижнему отступу контейнера */
-        left: 15px; /* Выравниваем по левому отступу контейнера */
-        right: 15px; /* Выравниваем по правому отступу контейнера */
+        bottom: 15px;
+        left: 15px;
+        right: 15px;
         justify-content: space-between;
     }
     
@@ -869,25 +876,14 @@ button:active {
     }
     
     .input-with-buttons {
-        max-width: none; /* Сбрасываем максимальную ширину на мобильных */
-        width: 100%;
-    }
-    
-    /* Адаптация для блока с циклами */
-    .cycles-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        padding: 15px; /* Единый отступ для всех контейнеров */
-    }
-    
-    .cycles-input-container {
         max-width: none;
         width: 100%;
     }
-    
-    .total-time {
-        padding: 5px 8px;
-        font-size: 15px;
+}
+
+@media (max-width: 400px) {
+    .menu-dropdown {
+        right: -10px;
+        min-width: 200px;
     }
 }

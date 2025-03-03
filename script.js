@@ -1045,11 +1045,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 const minutes = Math.floor((totalMs / (1000 * 60)) % 60);
                 const hours = Math.floor(totalMs / (1000 * 60 * 60));
                 
-                // Форматируем строку времени
-                const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                // Форматируем основную часть времени
+                const mainTimeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Создаем HTML с долями секунды
+                const html = `${mainTimeString}<span class="centiseconds">.${ms.toString().padStart(2, '0')}</span>`;
                 
                 // Обновляем отображение
-                elements.stopwatchDisplay.textContent = timeString;
+                elements.stopwatchDisplay.innerHTML = html;
                 
                 // Обновляем прогресс-бар (для секунд)
                 progressManager.updateStopwatchProgress(seconds);
@@ -1121,7 +1124,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const centiseconds = Math.floor((ms % 1000) / 10);
                 
                 if (hours > 0) {
-                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`;
                 } else {
                     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${centiseconds.toString().padStart(2, '0')}`;
                 }
