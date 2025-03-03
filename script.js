@@ -341,44 +341,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Воспроизведение звукового сигнала
                 soundManager.playBeep();
                 
-                // Показать 00:00 на дисплее
-                elements.display.textContent = '00:00';
-                
                 // Приостановить таймер перед переходом к следующему
                 clearInterval(state.timerInterval);
                 
-                setTimeout(function() {
-                    // Переход к следующему таймеру
-                    state.currentTimerIndex++;
+                // Переход к следующему таймеру без задержки
+                state.currentTimerIndex++;
+                
+                // Проверка, закончились ли все таймеры в текущем цикле
+                if (state.currentTimerIndex >= state.timers.length) {
+                    state.currentTimerIndex = 0;
+                    state.currentCycle++;
                     
-                    // Проверка, закончились ли все таймеры в текущем цикле
-                    if (state.currentTimerIndex >= state.timers.length) {
-                        state.currentTimerIndex = 0;
-                        state.currentCycle++;
-                        
-                        // Проверка, закончились ли все циклы
-                        if (state.currentCycle > state.totalCycles) {
-                            elements.progressInfo.innerHTML = `<div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.totalTimeSeconds)}</div>
-                            <div>Все таймеры и циклы завершены!</div>`;
-                            elements.startBtn.disabled = false;
-                            elements.pauseBtn.disabled = true;
-                            return;
-                        }
+                    // Проверка, закончились ли все циклы
+                    if (state.currentCycle > state.totalCycles) {
+                        elements.progressInfo.innerHTML = `<div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.totalTimeSeconds)}</div>
+                        <div>Все таймеры и циклы завершены!</div>`;
+                        elements.startBtn.disabled = false;
+                        elements.pauseBtn.disabled = true;
+                        elements.display.textContent = '00:00'; // Показываем 00:00 только при полном завершении
+                        return;
                     }
-                    
-                    state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
-                    state.initialTimerDuration = state.remainingSeconds; // Обновляем начальную длительность
-                    
-                    // Сбрасываем прогресс текущего таймера
-                    progressManager.updateCurrentTimer(1);
-                    
-                    // Подсветка активного таймера
-                    timer.updateActiveTimer();
-                    
-                    // Обновить отображение и перезапустить интервал
-                    timer.updateDisplay();
-                    state.timerInterval = setInterval(timer.update, 1000);
-                }, 1000);
+                }
+                
+                state.remainingSeconds = state.timers[state.currentTimerIndex].duration;
+                state.initialTimerDuration = state.remainingSeconds; // Обновляем начальную длительность
+                
+                // Сбрасываем прогресс текущего таймера
+                progressManager.updateCurrentTimer(1);
+                
+                // Подсветка активного таймера
+                timer.updateActiveTimer();
+                
+                // Обновить отображение и перезапустить интервал
+                timer.updateDisplay();
+                state.timerInterval = setInterval(timer.update, 1000);
             } else {
                 timer.updateDisplay();
             }
