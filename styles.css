@@ -411,6 +411,8 @@ h1 {
     overflow: hidden;
     box-shadow: 0 2px 4px var(--timer-shadow);
     background-color: var(--container-bg);
+    gap: 10px;
+    padding: 5px;
 }
 
 .tab-btn {
