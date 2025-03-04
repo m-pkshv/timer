@@ -605,7 +605,7 @@ h1 {
 
 .centiseconds {
     font-size: 0.65em;
-    vertical-align: super;
+    vertical-align: baseline;
     opacity: 0.8;
     margin-left: 2px;
     font-weight: normal;
@@ -835,7 +835,6 @@ h1 {
     
     .centiseconds {
         font-size: 0.55em;
-        vertical-align: top;
         margin-left: 1px;
     }
     
