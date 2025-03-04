@@ -1012,7 +1012,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (elements.startStopwatchBtn) elements.startStopwatchBtn.disabled = false;
                 if (elements.pauseStopwatchBtn) elements.pauseStopwatchBtn.disabled = true;
                 if (elements.lapStopwatchBtn) elements.lapStopwatchBtn.disabled = true;
-                if (elements.stopwatchDisplay) elements.stopwatchDisplay.textContent = '00:00:00';
+                if (elements.stopwatchDisplay) elements.stopwatchDisplay.innerHTML = '00:00:00<span class="centiseconds">.00</span>';
                 if (elements.lapsList) elements.lapsList.innerHTML = '';
                 
                 // Сбрасываем прогресс-бар секундомера на полную окружность (пустой)
