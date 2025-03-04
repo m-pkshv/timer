@@ -47,27 +47,7 @@
     <!-- Прокручиваемое содержимое -->
     <div class="scrollable-content">
         <div id="timerTab" class="app-tab active">
-            <div class="timer-list" id="timerList">
-                <!-- Таймеры будут добавляться здесь -->
-            </div>
-            
-            <button class="btn-add" id="addTimerBtn">+ Добавить таймер</button>
-            
-            <div class="cycles-container">
-                <div class="input-group with-buttons">
-                    <label for="cyclesInput">Количество циклов:</label>
-                    <div class="input-with-buttons cycles-input-container">
-                        <button id="cyclesMinusBtn" class="btn-adjust btn-minus" title="Уменьшить на 1">-</button>
-                        <input type="number" id="cyclesInput" min="1" value="1">
-                        <button id="cyclesPlusBtn" class="btn-adjust btn-plus" title="Увеличить на 1">+</button>
-                    </div>
-                </div>
-                <div class="total-time">
-                    <span>Общее время:&nbsp;</span>
-                    <span id="totalTimeDisplay">00:00</span>
-                </div>
-            </div>
-            
+            <!-- Перемещаем таймер и управление наверх -->
             <div class="timer-display-container">
                 <!-- SVG для внешнего (текущий таймер) прогресс-бара -->
                 <svg class="progress-svg" id="currentTimerProgress" viewBox="0 0 100 100">
@@ -96,6 +76,32 @@
             <div class="progress-info" id="progressInfo">
                 <div>Таймер не запущен</div>
                 <div>&nbsp;</div>
+            </div>
+            
+            <!-- Перемещаем настройки вниз -->
+            <div class="timer-settings-section">
+                <h3 class="settings-header">Настройка таймеров</h3>
+                
+                <div class="timer-list" id="timerList">
+                    <!-- Таймеры будут добавляться здесь -->
+                </div>
+                
+                <button class="btn-add" id="addTimerBtn">+ Добавить таймер</button>
+                
+                <div class="cycles-container">
+                    <div class="input-group with-buttons">
+                        <label for="cyclesInput">Количество циклов:</label>
+                        <div class="input-with-buttons cycles-input-container">
+                            <button id="cyclesMinusBtn" class="btn-adjust btn-minus" title="Уменьшить на 1">-</button>
+                            <input type="number" id="cyclesInput" min="1" value="1">
+                            <button id="cyclesPlusBtn" class="btn-adjust btn-plus" title="Увеличить на 1">+</button>
+                        </div>
+                    </div>
+                    <div class="total-time">
+                        <span>Общее время:&nbsp;</span>
+                        <span id="totalTimeDisplay">00:00</span>
+                    </div>
+                </div>
             </div>
         </div>
         
