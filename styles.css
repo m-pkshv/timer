@@ -39,10 +39,46 @@ body {
     font-family: 'Ubuntu', sans-serif;
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
+}
+
+/* ===== ФИКСИРОВАННАЯ ВЕРХНЯЯ ЧАСТЬ ===== */
+
+/* Стили для фиксированной верхней части */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-color);
+    z-index: 100;
+    padding: 15px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Разделительная линия */
+.separator-line {
+    height: 1px;
+    background-color: var(--input-border);
+    margin: 10px 0 0 0;
+    width: 100%;
+    box-shadow: 0 1px 3px var(--timer-shadow);
+}
+
+/* Прокручиваемое содержимое */
+.scrollable-content {
+    padding-top: 150px; /* Настройте значение в зависимости от высоты fixed-header */
+    max-width: 800px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 /* ===== ФОРМЫ И ЭЛЕМЕНТЫ ВВОДА ===== */
@@ -253,7 +289,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -406,7 +442,7 @@ h1 {
 .app-tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Убрано для разделительной линии */
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px var(--timer-shadow);
@@ -710,66 +746,17 @@ h1 {
 @media (min-width: 768px) {
     .timer-row {
         flex-wrap: nowrap;
-    }
-    
-    .timer-actions {
-        margin-left: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        padding: 15px 10px;
-    }
-    
-    h1 {
-        font-size: 26px;
-    }
-    
-    .timer-display-container {
-        width: 250px;
-        height: 250px;
-        margin: 30px auto;
-    }
-    
-    .display {
-        font-size: 36px;
-    }
-    
-    .stopwatch-display-container {
-        width: 280px;
-        height: 280px;
-    }
-    
-    .stopwatch-display {
-        font-size: 32px;
-    }
-    
-    .centiseconds {
-        font-size: 0.6em;
-    }
-    
-    .cycles-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        padding: 15px;
-    }
-    
-    .total-time {
-        width: 100%;
-        text-align: left;
-        font-size: 16px;
-        padding: 6px 10px;
-    }
-    
-    .progress-info {
-        font-size: 16px;
-        padding: 8px;
-    }
 }
 
 @media (max-width: 576px) {
+    .fixed-header {
+        padding: 8px;
+    }
+    
+    .scrollable-content {
+        padding-top: 130px; /* Еще меньше для маленьких экранов */
+    }
+    
     h1 {
         font-size: 22px;
     }
@@ -887,4 +874,65 @@ h1 {
         right: -10px;
         min-width: 200px;
     }
+    
+    .timer-actions {
+        margin-left: auto;
+    }
 }
+
+@media (max-width: 768px) {
+    .fixed-header {
+        padding: 10px;
+    }
+    
+    .scrollable-content {
+        padding-top: 140px; /* Уменьшаем отступ для мобильных */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    h1 {
+        font-size: 26px;
+    }
+    
+    .timer-display-container {
+        width: 250px;
+        height: 250px;
+        margin: 30px auto;
+    }
+    
+    .display {
+        font-size: 36px;
+    }
+    
+    .stopwatch-display-container {
+        width: 280px;
+        height: 280px;
+    }
+    
+    .stopwatch-display {
+        font-size: 32px;
+    }
+    
+    .centiseconds {
+        font-size: 0.6em;
+    }
+    
+    .cycles-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .total-time {
+        width: 100%;
+        text-align: left;
+        font-size: 16px;
+        padding: 6px 10px;
+    }
+    
+    .progress-info {
+        font-size: 16px;
+        padding: 8px;
+    }
