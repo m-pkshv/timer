@@ -15,8 +15,12 @@
 <body>
     <!-- Фиксированная верхняя часть -->
     <div class="fixed-header">
-        <header>
-            <h1>ЦиклоТаймер</h1>
+        <div class="header-container">
+            <div class="app-tabs">
+                <button id="timerTabBtn" class="tab-btn active" data-tab="timer">Таймер</button>
+                <button id="stopwatchTabBtn" class="tab-btn" data-tab="stopwatch">Секундомер</button>
+            </div>
+            
             <div class="menu-container">
                 <button id="menuBtn" class="menu-button" title="Меню">
                     <span></span>
@@ -34,14 +38,9 @@
                     </div>
                 </div>
             </div>
-        </header>
-        <div id="overlay" class="overlay"></div>
-        
-        <div class="app-tabs">
-            <button id="timerTabBtn" class="tab-btn active" data-tab="timer">Таймер</button>
-            <button id="stopwatchTabBtn" class="tab-btn" data-tab="stopwatch">Секундомер</button>
         </div>
         
+        <div id="overlay" class="overlay"></div>
         <div class="separator-line"></div>
     </div>
     
