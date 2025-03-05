@@ -27,6 +27,10 @@
     --highlight-bg: #2a2a2a !important;
     --timer-shadow: rgba(0, 0, 0, 0.3) !important;
     --active-timer: #1a3d5f !important;
+    --progress-blue: #2196F3 !important;
+    --progress-green: #4CAF50 !important;
+    --progress-orange: #FF9800 !important;
+    --progress-red: #f44336 !important;
     --progress-bg: #333333 !important;
 }
 
@@ -231,6 +235,11 @@ button:active {
     background-color: #2196F3;
     color: white;
     border-color: #2196F3;
+}
+
+.btn-adjust:active {
+    transform: scale(0.9);
+    background-color: #1976D2;
 }
 
 /* Разные типы кнопок */
@@ -540,6 +549,13 @@ button:active {
     flex-wrap: wrap;
 }
 
+.timer-button-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
 .timer-actions {
     display: flex;
     align-items: center;
@@ -573,6 +589,10 @@ button:active {
 
 .cycles-input-container {
     max-width: 160px;
+}
+
+.cycles-container .btn-adjust {
+    width: 30px;
 }
 
 .total-time {
@@ -622,6 +642,14 @@ button:active {
     opacity: 0.8;
     margin-left: 2px;
     font-weight: normal;
+}
+
+.stopwatch-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .laps-container {
@@ -706,6 +734,15 @@ button:active {
     stroke: #9C27B0;
 }
 
+/* Стили прогресс-баров (точные размеры) */
+#currentTimerProgress .progress-circle-current {
+    stroke-dasharray: 264;
+}
+
+#totalTimeProgress .progress-circle-total {
+    stroke-dasharray: 201;
+}
+
 /* Темная тема - специфичные стили */
 .dark-theme .timer-container:hover {
     background-color: #232323;
@@ -714,6 +751,12 @@ button:active {
 .dark-theme .btn-adjust {
     background-color: rgba(255, 255, 255, 0.1);
     border-color: var(--input-border);
+}
+
+.dark-theme .btn-adjust:hover {
+    background-color: #2196F3;
+    color: white;
+    border-color: #2196F3;
 }
 
 .dark-theme .btn-sound {
@@ -825,6 +868,13 @@ button:active {
         width: 100%;
     }
     
+    .cycles-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    
     .cycles-input-container {
         max-width: none;
         width: 100%;
@@ -835,26 +885,30 @@ button:active {
         font-size: 15px;
     }
     
-    .controls,
-    .stopwatch-controls {
+    .controls {
         flex-direction: column;
         gap: 8px;
     }
     
-    .btn-start, .btn-pause, .btn-reset, .btn-lap {
+    .btn-start, .btn-pause, .btn-reset {
         width: 100%;
         margin: 0;
         padding: 12px 0;
     }
     
-    .timer-display-container,
-    .stopwatch-display-container {
+    .timer-display-container {
         width: 240px;
         height: 240px;
+        margin: 20px auto;
     }
     
     .display {
         font-size: 32px;
+    }
+    
+    .stopwatch-display-container {
+        width: 240px;
+        height: 240px;
     }
     
     .stopwatch-display {
@@ -866,6 +920,14 @@ button:active {
         margin-left: 1px;
     }
     
+    .stopwatch-controls {
+        flex-direction: column;
+    }
+    
+    .stopwatch-controls button {
+        width: 100%;
+    }
+    
     .timer-container {
         padding: 15px;
         padding-bottom: 60px;
@@ -875,6 +937,10 @@ button:active {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
+    }
+    
+    .timer-button-container {
+        display: none;
     }
     
     .timer-actions {
