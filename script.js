@@ -673,273 +673,223 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
     
+    
+    
+    function adjustTimeValue(targetInput, otherInput, delta, updateCallback) {
+        // Текущее значение поля, которое меняем
+        let val = parseInt(targetInput.value) || 0;
+        // Значение «соседнего» поля (минуты/секунды), чтобы проверять случай «оба 0»
+        const otherVal = parseInt(otherInput.value) || 0;
+        
+        // Прибавляем смещение
+        val += delta;
+        
+        // Ограничиваем в диапазоне 0..59
+        if (val < 0) val = 0;
+        if (val > 59) val = 59;
+        
+        // Если и minutes, и seconds оказались 0, ставим хотя бы 1 секунду (или минуту)
+        if (val === 0 && otherVal === 0) {
+            val = 1;
+        }
+        
+        // Обновляем поле ввода
+        targetInput.value = val.toString().padStart(2, '0');
+        
+        // Вызываем колбэк для пересчёта секунд, общего времени и т.п.
+        if (typeof updateCallback === 'function') {
+            updateCallback();
+        }
+    }
+
+
+    
+    
     // Инициализация функций управления таймерами
     function initTimerManager() {
         timerManager = {
             add: function(duration = 30) {
-                const timerIndex = state.timers.length;
-                
-                const timerContainer = document.createElement('div');
-                timerContainer.className = 'timer-container';
-                timerContainer.dataset.index = timerIndex;
-                
-                const timerRow = document.createElement('div');
-                timerRow.className = 'timer-row';
-                
-                // Время таймера
-                const durationGroup = document.createElement('div');
-                durationGroup.className = 'time-inputs-container';
-                
-                // Контейнер для минут
-                const minutesGroup = document.createElement('div');
-                minutesGroup.className = 'input-group with-buttons time-input-group';
-                
-                const minutesLabel = document.createElement('label');
-                minutesLabel.textContent = 'Минуты:';
-                
-                const minutesInputWrapper = document.createElement('div');
-                minutesInputWrapper.className = 'input-with-buttons';
-                
-                // Кнопка минус для минут
-                const minutesMinusBtn = document.createElement('button');
-                minutesMinusBtn.className = 'btn-adjust btn-minus';
-                minutesMinusBtn.textContent = '-';
-                minutesMinusBtn.title = 'Уменьшить на 1 минуту';
-                minutesMinusBtn.addEventListener('click', function() {
-                    let minutes = parseInt(minutesInput.value) || 0;
-                    const seconds = parseInt(secondsInput.value) || 0;
-                    
-                    minutes = Math.max(0, minutes - 1); // Уменьшаем на 1, минимум 0
-                    
-                    // Если и минуты и секунды равны 0, устанавливаем секунды на 1
-                    if (minutes === 0 && seconds === 0) {
-                        secondsInput.value = '01';
-                        updateTimerDuration(minutes, 1);
-                    } else {
-                        minutesInput.value = minutes.toString().padStart(2, '0');
-                        updateTimerDuration(minutes, seconds);
-                    }
-                });
-                
-                // Поле ввода для минут
-                const minutesInput = document.createElement('input');
-                minutesInput.type = 'number';
-                minutesInput.min = '0';
-                minutesInput.max = '59';
-                minutesInput.placeholder = '00';
-                
-                // Устанавливаем начальное значение для минут
-                const initialMinutes = Math.floor(duration / 60);
-                minutesInput.value = initialMinutes.toString().padStart(2, '0');
-                
-                minutesInput.addEventListener('input', function() {
-                    let value = parseInt(this.value) || 0;
-                    
-                    // Ограничиваем минуты до 59
-                    if (value > 59) {
-                        value = 59;
-                        this.value = '59';
-                    } else if (value < 0) {
-                        value = 0;
-                        this.value = '00';
-                    }
-                    
-                    this.value = value.toString().padStart(2, '0');
-                    
-                    // Получаем значение секунд из поля ввода
-                    const seconds = parseInt(secondsInput.value) || 0;
-                    
-                    // Если и минуты и секунды равны 0, устанавливаем секунды на 1
-                    if (value === 0 && seconds === 0) {
-                        secondsInput.value = '01';
-                        updateTimerDuration(value, 1);
-                    } else {
-                        updateTimerDuration(value, seconds);
-                    }
-                });
-                
-                minutesInput.addEventListener('blur', function() {
-                    // Форматируем значение при потере фокуса
-                    let value = parseInt(this.value) || 0;
-                    this.value = value.toString().padStart(2, '0');
-                });
-                
-                // Кнопка плюс для минут
-                const minutesPlusBtn = document.createElement('button');
-                minutesPlusBtn.className = 'btn-adjust btn-plus';
-                minutesPlusBtn.textContent = '+';
-                minutesPlusBtn.title = 'Увеличить на 1 минуту';
-                minutesPlusBtn.addEventListener('click', function() {
-                    let minutes = parseInt(minutesInput.value) || 0;
-                    const seconds = parseInt(secondsInput.value) || 0;
-                    
-                    minutes = Math.min(59, minutes + 1); // Увеличиваем на 1, максимум 59
-                    
-                    minutesInput.value = minutes.toString().padStart(2, '0');
-                    updateTimerDuration(minutes, seconds);
-                });
-                
-                // Добавляем элементы в контейнер для минут
-                minutesInputWrapper.appendChild(minutesMinusBtn);
-                minutesInputWrapper.appendChild(minutesInput);
-                minutesInputWrapper.appendChild(minutesPlusBtn);
-                
-                minutesGroup.appendChild(minutesLabel);
-                minutesGroup.appendChild(minutesInputWrapper);
-                
-                // Контейнер для секунд
-                const secondsGroup = document.createElement('div');
-                secondsGroup.className = 'input-group with-buttons time-input-group';
-                
-                const secondsLabel = document.createElement('label');
-                secondsLabel.textContent = 'Секунды:';
-                
-                const secondsInputWrapper = document.createElement('div');
-                secondsInputWrapper.className = 'input-with-buttons';
-                
-                // Кнопка минус для секунд
-                const secondsMinusBtn = document.createElement('button');
-                secondsMinusBtn.className = 'btn-adjust btn-minus';
-                secondsMinusBtn.textContent = '-';
-                secondsMinusBtn.title = 'Уменьшить на 1 секунду';
-                secondsMinusBtn.addEventListener('click', function() {
-                    let seconds = parseInt(secondsInput.value) || 0;
-                    const minutes = parseInt(minutesInput.value) || 0;
-                    
-                    seconds = Math.max(0, seconds - 1); // Уменьшаем на 1, минимум 0
-                    
-                    // Если и минуты и секунды равны 0, устанавливаем секунды на 1
-                    if (minutes === 0 && seconds === 0) {
-                        seconds = 1;
-                    }
-                    
-                    secondsInput.value = seconds.toString().padStart(2, '0');
-                    updateTimerDuration(minutes, seconds);
-                });
-                
-                // Поле ввода для секунд
-                const secondsInput = document.createElement('input');
-                secondsInput.type = 'number';
-                secondsInput.min = '0';
-                secondsInput.max = '59';
-                secondsInput.placeholder = '00';
-                
-                // Устанавливаем начальное значение для секунд
-                const initialSeconds = duration % 60;
-                secondsInput.value = initialSeconds.toString().padStart(2, '0');
-                
-                secondsInput.addEventListener('input', function() {
-                    let value = parseInt(this.value) || 0;
-                    
-                    // Ограничиваем секунды до 59
-                    if (value > 59) {
-                        value = 59;
-                        this.value = '59';
-                    } else if (value < 0) {
-                        value = 0;
-                        this.value = '00';
-                    }
-                    
-                    this.value = value.toString().padStart(2, '0');
-                    
-                    // Получаем значение минут из поля ввода
-                    const minutes = parseInt(minutesInput.value) || 0;
-                    
-                    // Если и минуты и секунды равны 0, устанавливаем секунды на 1
-                    if (minutes === 0 && value === 0) {
-                        this.value = '01';
-                        updateTimerDuration(minutes, 1);
-                    } else {
-                        updateTimerDuration(minutes, value);
-                    }
-                });
-                
-                secondsInput.addEventListener('blur', function() {
-                    // Форматируем значение при потере фокуса
-                    let value = parseInt(this.value) || 0;
-                    this.value = value.toString().padStart(2, '0');
-                });
-                
-                // Кнопка плюс для секунд
-                const secondsPlusBtn = document.createElement('button');
-                secondsPlusBtn.className = 'btn-adjust btn-plus';
-                secondsPlusBtn.textContent = '+';
-                secondsPlusBtn.title = 'Увеличить на 1 секунду';
-                secondsPlusBtn.addEventListener('click', function() {
-                    let seconds = parseInt(secondsInput.value) || 0;
-                    const minutes = parseInt(minutesInput.value) || 0;
-                    
-                    seconds = Math.min(59, seconds + 1); // Увеличиваем на 1, максимум 59
-                    
-                    secondsInput.value = seconds.toString().padStart(2, '0');
-                    updateTimerDuration(minutes, seconds);
-                });
-                
-                // Добавляем элементы в контейнер для секунд
-                secondsInputWrapper.appendChild(secondsMinusBtn);
-                secondsInputWrapper.appendChild(secondsInput);
-                secondsInputWrapper.appendChild(secondsPlusBtn);
-                
-                secondsGroup.appendChild(secondsLabel);
-                secondsGroup.appendChild(secondsInputWrapper);
-                
-                // Функция для обновления длительности таймера в секундах
-                function updateTimerDuration(minutes, seconds) {
-                    const totalSeconds = minutes * 60 + seconds;
-                    state.timers[timerIndex].duration = totalSeconds;
-                    timer.updateTotalTime();
-                }
-                
-                // Добавляем группы в контейнер
-                durationGroup.appendChild(minutesGroup);
-                durationGroup.appendChild(secondsGroup);
-                
-                // Кнопки в отдельном контейнере для мобильной версии
-                const timerActions = document.createElement('div');
-                timerActions.className = 'timer-actions';
-                
-                // Кнопка звукового сигнала
-                const soundBtn = document.createElement('button');
-                soundBtn.className = 'btn-sound';
-                soundBtn.textContent = '🔕'; // Bell with slash emoji (U+1F515)
-                soundBtn.title = 'Звуковой сигнал выключен';
-                soundBtn.addEventListener('click', function() {
-                    state.timers[timerIndex].soundEnabled = !state.timers[timerIndex].soundEnabled;
-                    soundManager.updateButtonState(soundBtn, state.timers[timerIndex].soundEnabled);
-                });
-                
-                // Кнопка удаления
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn-delete';
-                deleteBtn.textContent = 'Удалить';
-                deleteBtn.addEventListener('click', function() {
-                    timerManager.remove(timerIndex);
-                });
-                
-                // Добавление элементов в контейнеры
-                timerRow.appendChild(durationGroup);
-                
-                // Добавляем кнопки действий в основную строку для горизонтального отображения
-                timerActions.appendChild(soundBtn);
-                timerActions.appendChild(deleteBtn);
-                timerRow.appendChild(timerActions);
-                
-                timerContainer.appendChild(timerRow);
-                
-                elements.timerList.appendChild(timerContainer);
-                
-                // Добавление таймера в массив
-                state.timers.push({
-                    duration: duration,
-                    soundEnabled: false
-                });
-                
-                // Обновление нумерации
-                timerManager.updateIndexes();
-                
-                // Обновление общего времени
-                timer.updateTotalTime();
-            },
+        const timerIndex = state.timers.length;
+        
+        const timerContainer = document.createElement('div');
+        timerContainer.className = 'timer-container';
+        timerContainer.dataset.index = timerIndex;
+        
+        const timerRow = document.createElement('div');
+        timerRow.className = 'timer-row';
+        
+        // Вёрстка для минут и секунд
+        const durationGroup = document.createElement('div');
+        durationGroup.className = 'time-inputs-container';
+        
+        // === Создаём контейнер для минут ===
+        const minutesGroup = document.createElement('div');
+        minutesGroup.className = 'input-group with-buttons time-input-group';
+        
+        const minutesLabel = document.createElement('label');
+        minutesLabel.textContent = 'Минуты:';
+        
+        const minutesInputWrapper = document.createElement('div');
+        minutesInputWrapper.className = 'input-with-buttons';
+        
+        // Кнопка «–» для минут
+        const minutesMinusBtn = document.createElement('button');
+        minutesMinusBtn.className = 'btn-adjust btn-minus';
+        minutesMinusBtn.textContent = '-';
+        minutesMinusBtn.title = 'Уменьшить на 1 минуту';
+        
+        // Поле ввода минут
+        const minutesInput = document.createElement('input');
+        minutesInput.type = 'number';
+        minutesInput.min = '0';
+        minutesInput.max = '59';
+        minutesInput.placeholder = '00';
+        
+        // Кнопка «+» для минут
+        const minutesPlusBtn = document.createElement('button');
+        minutesPlusBtn.className = 'btn-adjust btn-plus';
+        minutesPlusBtn.textContent = '+';
+        minutesPlusBtn.title = 'Увеличить на 1 минуту';
+        
+        // Устанавливаем начальное значение (из duration)
+        const initialMinutes = Math.floor(duration / 60);
+        minutesInput.value = initialMinutes.toString().padStart(2, '0');
+        
+        // === Создаём контейнер для секунд ===
+        const secondsGroup = document.createElement('div');
+        secondsGroup.className = 'input-group with-buttons time-input-group';
+        
+        const secondsLabel = document.createElement('label');
+        secondsLabel.textContent = 'Секунды:';
+        
+        const secondsInputWrapper = document.createElement('div');
+        secondsInputWrapper.className = 'input-with-buttons';
+        
+        // Кнопка «–» для секунд
+        const secondsMinusBtn = document.createElement('button');
+        secondsMinusBtn.className = 'btn-adjust btn-minus';
+        secondsMinusBtn.textContent = '-';
+        secondsMinusBtn.title = 'Уменьшить на 1 секунду';
+        
+        // Поле ввода секунд
+        const secondsInput = document.createElement('input');
+        secondsInput.type = 'number';
+        secondsInput.min = '0';
+        secondsInput.max = '59';
+        secondsInput.placeholder = '00';
+        
+        // Кнопка «+» для секунд
+        const secondsPlusBtn = document.createElement('button');
+        secondsPlusBtn.className = 'btn-adjust btn-plus';
+        secondsPlusBtn.textContent = '+';
+        secondsPlusBtn.title = 'Увеличить на 1 секунду';
+        
+        // Устанавливаем начальное значение (из duration)
+        const initialSeconds = duration % 60;
+        secondsInput.value = initialSeconds.toString().padStart(2, '0');
+        
+        // Функция, обновляющая длительность таймера в state
+        const updateTimerDuration = () => {
+            const m = parseInt(minutesInput.value) || 0;
+            const s = parseInt(secondsInput.value) || 0;
+            const totalSec = m * 60 + s;
+            state.timers[timerIndex].duration = totalSec;
+            timer.updateTotalTime(); // пересчитываем «Общее время»
+        };
+        
+        // Обработчики кликов «–/+» для минут и секунд
+        minutesMinusBtn.addEventListener('click', () => {
+            adjustTimeValue(minutesInput, secondsInput, -1, updateTimerDuration);
+        });
+        minutesPlusBtn.addEventListener('click', () => {
+            adjustTimeValue(minutesInput, secondsInput, +1, updateTimerDuration);
+        });
+        secondsMinusBtn.addEventListener('click', () => {
+            adjustTimeValue(secondsInput, minutesInput, -1, updateTimerDuration);
+        });
+        secondsPlusBtn.addEventListener('click', () => {
+            adjustTimeValue(secondsInput, minutesInput, +1, updateTimerDuration);
+        });
+        
+        // События input и blur (если хотите сохранить проверку диапазонов)
+        minutesInput.addEventListener('input', updateTimerDuration);
+        minutesInput.addEventListener('blur', function() {
+            let val = parseInt(this.value) || 0;
+            if (val > 59) val = 59;
+            if (val < 0)  val = 0;
+            this.value = val.toString().padStart(2, '0');
+            updateTimerDuration();
+        });
+        
+        secondsInput.addEventListener('input', updateTimerDuration);
+        secondsInput.addEventListener('blur', function() {
+            let val = parseInt(this.value) || 0;
+            if (val > 59) val = 59;
+            if (val < 0)  val = 0;
+            this.value = val.toString().padStart(2, '0');
+            updateTimerDuration();
+        });
+        
+        // Добавляем кнопки и поля ввода в обёртки
+        minutesInputWrapper.appendChild(minutesMinusBtn);
+        minutesInputWrapper.appendChild(minutesInput);
+        minutesInputWrapper.appendChild(minutesPlusBtn);
+        
+        minutesGroup.appendChild(minutesLabel);
+        minutesGroup.appendChild(minutesInputWrapper);
+        
+        secondsInputWrapper.appendChild(secondsMinusBtn);
+        secondsInputWrapper.appendChild(secondsInput);
+        secondsInputWrapper.appendChild(secondsPlusBtn);
+        
+        secondsGroup.appendChild(secondsLabel);
+        secondsGroup.appendChild(secondsInputWrapper);
+        
+        // Добавляем всё в общий durationGroup
+        durationGroup.appendChild(minutesGroup);
+        durationGroup.appendChild(secondsGroup);
+        
+        // Кнопки звука и удаления
+        const timerActions = document.createElement('div');
+        timerActions.className = 'timer-actions';
+        
+        const soundBtn = document.createElement('button');
+        soundBtn.className = 'btn-sound';
+        soundBtn.textContent = '🔕'; 
+        soundBtn.title = 'Звуковой сигнал выключен';
+        
+        soundBtn.addEventListener('click', function() {
+            state.timers[timerIndex].soundEnabled = !state.timers[timerIndex].soundEnabled;
+            soundManager.updateButtonState(soundBtn, state.timers[timerIndex].soundEnabled);
+        });
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn-delete';
+        deleteBtn.textContent = 'Удалить';
+        deleteBtn.addEventListener('click', function() {
+            timerManager.remove(timerIndex);
+        });
+        
+        timerActions.appendChild(soundBtn);
+        timerActions.appendChild(deleteBtn);
+        
+        // Собираем верстку
+        timerRow.appendChild(durationGroup);
+        timerRow.appendChild(timerActions);
+        timerContainer.appendChild(timerRow);
+        
+        elements.timerList.appendChild(timerContainer);
+        
+        // Добавляем новый таймер в state
+        state.timers.push({
+            duration: duration,
+            soundEnabled: false
+        });
+        
+        // Обновляем индексы и общее время
+        timerManager.updateIndexes();
+        timer.updateTotalTime();
+    },
             
             remove: function(index) {
                 // Удаление из DOM
