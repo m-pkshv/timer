@@ -572,8 +572,8 @@ button:active {
 .timer-display-container {
     position: relative;
     margin: 30px auto 20px auto;
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 340px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -779,8 +779,8 @@ button:active {
     }
     
     .timer-display-container {
-        width: 250px;
-        height: 250px;
+        width: 280px;
+        height: 280px;
         margin: 20px auto;
     }
     
@@ -886,8 +886,8 @@ button:active {
     }
     
     .timer-display-container {
-        width: 220px;
-        height: 220px;
+        width: 240px;
+        height: 240px;
         margin: 20px auto;
     }
     
@@ -970,3 +970,167 @@ button:active {
         max-width: 200px;
     }
 }
+
+
+
+/* Улучшаем контраст блоков таймера */
+.timer-container {
+    margin-bottom: 20px;
+    background-color: var(--highlight-bg);  /* Используем highlight-bg вместо container-bg */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+/* При наведении используем промежуточный оттенок только для блоков таймера */
+.timer-container:hover {
+    /* Светлая тема: промежуточный оттенок между highlight-bg и container-bg */
+    background-color: #f9f9f9; /* Немного светлее чем highlight-bg, но темнее чем container-bg */
+}
+
+/* Стили для контейнера циклов - убираем эффект наведения */
+.cycles-container {
+    background-color: var(--highlight-bg); /* Тот же цвет что и у timer-container */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px 0 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    /* Эффект наведения не применяется */
+}
+
+/* Стили для темной темы - только для блоков таймера */
+.dark-theme .timer-container:hover {
+    background-color: #232323; /* Промежуточный между #1e1e1e и #2a2a2a */
+}
+
+/* Стили для фона инпутов, чтобы они выделялись на фоне блока */
+.timer-container input,
+.cycles-container input {
+    background-color: var(--container-bg);
+}
+
+/* Стили для кнопок плюс и минус в темной теме */
+.dark-theme .btn-adjust {
+    background-color: rgba(255, 255, 255, 0.1); /* Чуть светлее фона в темной теме */
+    border-color: var(--input-border);
+}
+
+.dark-theme .btn-adjust:hover {
+    background-color: #2196F3;
+    color: white;
+    border-color: #2196F3;
+}
+
+/* Улучшаем видимость кнопки удаления в темной теме */
+.dark-theme .btn-sound {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Стиль для контейнера настроек */
+.timer-settings-section {
+    background-color: var(--container-bg); /* Оставляем основной фон для общего контейнера */
+}
+
+/* Тот же цвет для информационного блока, что и для таймеров */
+.progress-info {
+    background-color: var(--highlight-bg);
+}
+
+
+/* Увеличиваем размер контейнера таймера до размера секундомера */
+.timer-display-container {
+    position: relative;
+    margin: 30px auto 20px auto;
+    width: 340px; /* Увеличиваем с 300px до 340px, как у секундомера */
+    height: 340px; /* Увеличиваем с 300px до 340px, как у секундомера */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Обновляем размеры кругов для совпадения с секундомером */
+#currentTimerProgress .progress-circle-bg,
+#currentTimerProgress .progress-circle-current {
+    cx: 50;
+    cy: 50;
+    r: 42; /* Используем точно такой же радиус как у секундомера */
+}
+
+#totalTimeProgress .progress-circle-bg,
+#totalTimeProgress .progress-circle-total {
+    cx: 50;
+    cy: 50;
+    r: 32; /* Сохраняем оригинальную пропорцию */
+}
+
+/* Обновляем stroke-dasharray для новых размеров кругов */
+#currentTimerProgress .progress-circle-current {
+    stroke-dasharray: 264; /* 2 * π * 42 ≈ 264 */
+}
+
+#totalTimeProgress .progress-circle-total {
+    stroke-dasharray: 201; /* 2 * π * 32 ≈ 201 */
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .timer-display-container {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 576px) {
+    .timer-display-container {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+
+
+
+/* Исправление проблемы с полосой прокрутки и центрированием */
+
+/* Принудительно показываем полосу прокрутки на всех страницах */
+html {
+    overflow-y: scroll;
+}
+
+/* Исправляем смещение контента из-за появления полосы прокрутки */
+body {
+    /* Добавляем свойство, которое предотвращает смещение контента */
+    padding-left: calc(100vw - 100%);
+}
+
+/* Устанавливаем минимальную высоту для страниц */
+.app-tab {
+    min-height: 700px; /* Регулируйте это значение в зависимости от высоты вашего содержимого */
+}
+
+/* Обеспечиваем одинаковую высоту контейнеров */
+.stopwatch-display-container,
+.laps-container,
+.timer-settings-section {
+    /* Устанавливаем минимальную высоту для больших блоков */
+    min-height: 200px;
+}
+
+/* Проверьте, чтобы контейнер прокрутки имел фиксированную ширину */
+.scrollable-content {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .app-tab {
+        min-height: 800px; /* Может потребоваться больше места на мобильных */
+    }
+}
+
+
+
+

@@ -47,35 +47,38 @@
     <!-- Прокручиваемое содержимое -->
     <div class="scrollable-content">
         <div id="timerTab" class="app-tab active">
-            <!-- Перемещаем таймер и управление наверх -->
-            <div class="timer-display-container">
-                <!-- SVG для внешнего (текущий таймер) прогресс-бара -->
-                <svg class="progress-svg" id="currentTimerProgress" viewBox="0 0 100 100">
-                    <circle class="progress-circle-bg" cx="50" cy="50" r="42"></circle>
-                    <circle class="progress-circle progress-circle-current" cx="50" cy="50" r="42" 
-                            stroke-dasharray="264" stroke-dashoffset="0"></circle>
-                </svg>
+            <!-- Основная секция отображения, единая высота -->
+            <div class="main-display-section">
+                <!-- Таймер -->
+                <div class="timer-display-container">
+                    <!-- SVG для внешнего (текущий таймер) прогресс-бара -->
+                    <svg class="progress-svg" id="currentTimerProgress" viewBox="0 0 100 100">
+                        <circle class="progress-circle-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="progress-circle progress-circle-current" cx="50" cy="50" r="42" 
+                                stroke-dasharray="264" stroke-dashoffset="0"></circle>
+                    </svg>
+                    
+                    <!-- SVG для внутреннего (общее время) прогресс-бара -->
+                    <svg class="progress-svg" id="totalTimeProgress" viewBox="0 0 100 100">
+                        <circle class="progress-circle-bg" cx="50" cy="50" r="32"></circle>
+                        <circle class="progress-circle progress-circle-total" cx="50" cy="50" r="32" 
+                                stroke-dasharray="201" stroke-dashoffset="0"></circle>
+                    </svg>
+                    
+                    <!-- Цифровой таймер -->
+                    <div class="display" id="display">00:00</div>
+                </div>
                 
-                <!-- SVG для внутреннего (общее время) прогресс-бара -->
-                <svg class="progress-svg" id="totalTimeProgress" viewBox="0 0 100 100">
-                    <circle class="progress-circle-bg" cx="50" cy="50" r="32"></circle>
-                    <circle class="progress-circle progress-circle-total" cx="50" cy="50" r="32" 
-                            stroke-dasharray="201" stroke-dashoffset="0"></circle>
-                </svg>
+                <div class="controls">
+                    <button class="btn-start" id="startBtn">Старт</button>
+                    <button class="btn-pause" id="pauseBtn" disabled>Пауза</button>
+                    <button class="btn-reset" id="resetBtn">Сброс</button>
+                </div>
                 
-                <!-- Цифровой таймер -->
-                <div class="display" id="display">00:00</div>
-            </div>
-            
-            <div class="controls">
-                <button class="btn-start" id="startBtn">Старт</button>
-                <button class="btn-pause" id="pauseBtn" disabled>Пауза</button>
-                <button class="btn-reset" id="resetBtn">Сброс</button>
-            </div>
-            
-            <div class="progress-info" id="progressInfo">
-                <div>Таймер не запущен</div>
-                <div>&nbsp;</div>
+                <div class="progress-info" id="progressInfo">
+                    <div>Таймер не запущен</div>
+                    <div>&nbsp;</div>
+                </div>
             </div>
             
             <!-- Перемещаем настройки вниз -->
@@ -107,27 +110,30 @@
         
         <!-- Секундомер -->
         <div id="stopwatchTab" class="app-tab">
-            <div class="stopwatch-display-container">
-                <svg class="progress-svg" id="stopwatchProgress" viewBox="0 0 100 100">
-                    <circle class="progress-circle-bg" cx="50" cy="50" r="42"></circle>
-                    <circle class="progress-circle progress-circle-stopwatch" cx="50" cy="50" r="42" 
-                            stroke-dasharray="264" stroke-dashoffset="0"></circle>
-                </svg>
+            <!-- Основная секция отображения, единая высота -->
+            <div class="main-display-section">
+                <div class="stopwatch-display-container">
+                    <svg class="progress-svg" id="stopwatchProgress" viewBox="0 0 100 100">
+                        <circle class="progress-circle-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="progress-circle progress-circle-stopwatch" cx="50" cy="50" r="42" 
+                                stroke-dasharray="264" stroke-dashoffset="0"></circle>
+                    </svg>
+                    
+                    <div class="display stopwatch-display" id="stopwatchDisplay">00:00:00<span class="centiseconds">.00</span></div>
+                </div>
                 
-                <div class="display stopwatch-display" id="stopwatchDisplay">00:00:00<span class="centiseconds">.00</span></div>
-            </div>
-            
-            <div class="stopwatch-controls">
-                <button class="btn-start" id="startStopwatchBtn">Старт</button>
-                <button class="btn-pause" id="pauseStopwatchBtn" disabled>Пауза</button>
-                <button class="btn-reset" id="resetStopwatchBtn">Сброс</button>
-                <button class="btn-lap" id="lapStopwatchBtn" disabled>Круг</button>
-            </div>
-            
-            <div class="laps-container" id="lapsContainer">
-                <h3 class="laps-header">Круги</h3>
-                <div class="laps-list" id="lapsList">
-                    <!-- Сюда будут добавляться круги -->
+                <div class="stopwatch-controls">
+                    <button class="btn-start" id="startStopwatchBtn">Старт</button>
+                    <button class="btn-pause" id="pauseStopwatchBtn" disabled>Пауза</button>
+                    <button class="btn-reset" id="resetStopwatchBtn">Сброс</button>
+                    <button class="btn-lap" id="lapStopwatchBtn" disabled>Круг</button>
+                </div>
+                
+                <div class="laps-container" id="lapsContainer">
+                    <h3 class="laps-header">Круги</h3>
+                    <div class="laps-list" id="lapsList">
+                        <!-- Сюда будут добавляться круги -->
+                    </div>
                 </div>
             </div>
         </div>
