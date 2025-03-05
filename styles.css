@@ -27,10 +27,6 @@
     --highlight-bg: #2a2a2a !important;
     --timer-shadow: rgba(0, 0, 0, 0.3) !important;
     --active-timer: #1a3d5f !important;
-    --progress-blue: #2196F3 !important;
-    --progress-green: #4CAF50 !important;
-    --progress-orange: #FF9800 !important;
-    --progress-red: #f44336 !important;
     --progress-bg: #333333 !important;
 }
 
@@ -43,11 +39,24 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
+    padding-left: calc(100vw - 100%); /* Исправление смещения контента */
+}
+
+/* ===== Полоса прокрутки и центрирование ===== */
+html {
+    overflow-y: scroll;
+}
+
+.app-tab {
+    min-height: 700px;
+    display: none;
+}
+
+.app-tab.active {
+    display: block;
 }
 
 /* ===== ФИКСИРОВАННАЯ ВЕРХНЯЯ ЧАСТЬ ===== */
-
-/* Стили для фиксированной верхней части */
 .fixed-header {
     position: fixed;
     top: 0;
@@ -62,7 +71,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Контейнер для шапки с выравниванием элементов */
 .header-container {
     display: flex;
     justify-content: center;
@@ -70,7 +78,6 @@ body {
     position: relative;
 }
 
-/* Разделительная линия */
 .separator-line {
     height: 1px;
     background-color: var(--input-border);
@@ -79,38 +86,29 @@ body {
     box-shadow: 0 1px 3px var(--timer-shadow);
 }
 
-/* Прокручиваемое содержимое */
 .scrollable-content {
-    padding-top: 100px; /* Уменьшаем отступ, так как удалили заголовок */
+    padding-top: 100px;
     max-width: 800px;
     margin: 0 auto;
     box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
+    width: 100%;
 }
 
 /* ===== ФОРМЫ И ЭЛЕМЕНТЫ ВВОДА ===== */
-
-/* Убираем стрелочки у числовых полей ввода */
 input[type=number] {
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
     appearance: textfield;
 }
 
-/* Для Chrome, Safari, Edge, Opera */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;
     margin: 0; 
 }
 
-/* Для Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-/* Элементы формы */
 label {
     font-size: 14px;
     margin-bottom: 6px;
@@ -137,7 +135,7 @@ input:focus {
     box-shadow: 0 0 3px rgba(33, 150, 243, 0.3);
 }
 
-/* Стили для группы с кнопками */
+/* Группы с кнопками */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -180,13 +178,11 @@ input:focus {
     min-width: 100px;
 }
 
-/* Более компактный вид для поля времени */
 .input-group.with-buttons input[placeholder="00:00:00"] {
     font-size: 0.9em;
 }
 
 /* ===== КНОПКИ ===== */
-
 button {
     padding: 8px 15px;
     border: none;
@@ -237,6 +233,7 @@ button:active {
     border-color: #2196F3;
 }
 
+/* Разные типы кнопок */
 .btn-add {
     background-color: #2196F3;
     color: white;
@@ -262,37 +259,29 @@ button:active {
     justify-content: center;
 }
 
-.btn-start {
-    background-color: #4CAF50;
-    color: white;
+.btn-start, .btn-pause, .btn-reset, .btn-lap {
     padding: 10px 30px;
     font-size: 16px;
+    color: white;
+}
+
+.btn-start {
+    background-color: #4CAF50;
 }
 
 .btn-pause {
     background-color: #FF9800;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
 }
 
 .btn-reset {
     background-color: #f44336;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
 }
 
 .btn-lap {
     background-color: #9C27B0;
-    color: white;
-    padding: 10px 30px;
-    font-size: 16px;
 }
 
 /* ===== МЕНЮ ===== */
-
-/* Меню */
 .menu-container {
     position: absolute;
     right: 0;
@@ -428,7 +417,6 @@ button:active {
 }
 
 /* ===== ВКЛАДКИ ===== */
-
 .app-tabs {
     display: flex;
     justify-content: center;
@@ -440,7 +428,7 @@ button:active {
     gap: 10px;
     padding: 5px;
     flex-grow: 1;
-    max-width: 400px; /* Или другое подходящее значение */
+    max-width: 400px;
 }
 
 .tab-btn {
@@ -466,110 +454,13 @@ button:active {
     background-color: var(--highlight-bg);
 }
 
-.app-tab {
-    display: none;
+/* ===== ОБЩИЕ КОМПОНЕНТЫ ДЛЯ ТАЙМЕРА И СЕКУНДОМЕРА ===== */
+.main-display-section {
+    margin-bottom: 30px;
 }
 
-.app-tab.active {
-    display: block;
-}
-
-/* ===== ТАЙМЕР ===== */
-
-.timer-list {
-    margin-bottom: 15px;
-}
-
-.timer-container {
-    margin-bottom: 20px;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    transition: background-color 0.3s;
-    position: relative;
-}
-
-.timer-container:hover {
-    background-color: var(--highlight-bg);
-}
-
-.timer-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.timer-button-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto;
-}
-
-.timer-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 0;
-    margin-top: 24px;
-}
-
-.time-inputs-container {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
-.time-input-group {
-    flex: 1;
-    min-width: 120px;
-}
-
-.cycles-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 30px 0 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-}
-
-.cycles-input-container {
-    max-width: 160px;
-}
-
-.cycles-container .btn-adjust {
-    width: 30px;
-}
-
-.total-time {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--text-color);
-    background-color: var(--highlight-bg);
-    padding: 8px 15px;
-    border-radius: 4px;
-    word-break: break-word;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.timer-display-container {
+.timer-display-container,
+.stopwatch-display-container {
     position: relative;
     margin: 30px auto 20px auto;
     width: 340px;
@@ -615,18 +506,110 @@ button:active {
     line-height: 1.4;
 }
 
-/* ===== СЕКУНДОМЕР ===== */
-
-.stopwatch-display-container {
-    position: relative;
-    margin: 40px auto;
-    width: 340px;
-    height: 340px;
+.controls, 
+.stopwatch-controls {
     display: flex;
     justify-content: center;
-    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
 }
 
+/* ===== ТАЙМЕР ===== */
+.timer-list {
+    margin-bottom: 15px;
+}
+
+.timer-container {
+    margin-bottom: 20px;
+    background-color: var(--highlight-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.timer-container:hover {
+    background-color: #f9f9f9;
+}
+
+.timer-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.timer-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 0;
+    margin-top: 24px;
+}
+
+.time-inputs-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.time-input-group {
+    flex: 1;
+    min-width: 120px;
+}
+
+.cycles-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--highlight-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 30px 0 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+}
+
+.cycles-input-container {
+    max-width: 160px;
+}
+
+.total-time {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color);
+    background-color: var(--highlight-bg);
+    padding: 8px 15px;
+    border-radius: 4px;
+    word-break: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+/* Стили для раздела настроек таймера */
+.timer-settings-section {
+    margin-top: 40px;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px var(--timer-shadow);
+    min-height: 200px;
+}
+
+.settings-header {
+    font-size: 18px;
+    margin: 0 0 20px 0;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--input-border);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+/* ===== СЕКУНДОМЕР ===== */
 .stopwatch-display {
     font-size: 40px;
     font-family: 'Ubuntu', sans-serif !important;
@@ -641,19 +624,6 @@ button:active {
     font-weight: normal;
 }
 
-.stopwatch-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
-
-.progress-circle-stopwatch {
-    stroke: #9C27B0;
-    stroke-width: 6;
-}
-
 .laps-container {
     margin-top: 30px;
     background-color: var(--container-bg);
@@ -662,6 +632,7 @@ button:active {
     box-shadow: 0 2px 4px var(--timer-shadow);
     max-height: 300px;
     overflow-y: auto;
+    min-height: 200px;
 }
 
 .laps-header {
@@ -700,7 +671,6 @@ button:active {
 }
 
 /* ===== ПРОГРЕСС-КРУГИ ===== */
-
 .progress-svg {
     position: absolute;
     top: 0;
@@ -721,38 +691,36 @@ button:active {
     fill: none;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.3s;
+    stroke-width: 6;
 }
 
 .progress-circle-total {
     stroke: var(--progress-blue);
-    stroke-width: 6;
 }
 
 .progress-circle-current {
     stroke: var(--progress-green);
-    stroke-width: 6;
 }
 
-/* ===== Стили для раздела настроек таймера ===== */
-.timer-settings-section {
-    margin-top: 40px;
-    background-color: var(--container-bg);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
+.progress-circle-stopwatch {
+    stroke: #9C27B0;
 }
 
-.settings-header {
-    font-size: 18px;
-    margin: 0 0 20px 0;
-    color: var(--text-color);
-    border-bottom: 1px solid var(--input-border);
-    padding-bottom: 10px;
-    text-align: center;
+/* Темная тема - специфичные стили */
+.dark-theme .timer-container:hover {
+    background-color: #232323;
+}
+
+.dark-theme .btn-adjust {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--input-border);
+}
+
+.dark-theme .btn-sound {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ===== АДАПТИВНЫЕ СТИЛИ ===== */
-
 @media (min-width: 768px) {
     .timer-row {
         flex-wrap: nowrap;
@@ -769,16 +737,17 @@ button:active {
     }
     
     .scrollable-content {
-        padding-top: 80px; /* Уменьшаем отступ для мобильных */
+        padding-top: 80px;
         padding-left: 10px;
         padding-right: 10px;
     }
     
     .app-tabs {
-        max-width: 300px; /* Уменьшаем максимальную ширину на мобильных */
+        max-width: 300px;
     }
     
-    .timer-display-container {
+    .timer-display-container,
+    .stopwatch-display-container {
         width: 280px;
         height: 280px;
         margin: 20px auto;
@@ -786,11 +755,6 @@ button:active {
     
     .display {
         font-size: 36px;
-    }
-    
-    .stopwatch-display-container {
-        width: 280px;
-        height: 280px;
     }
     
     .stopwatch-display {
@@ -823,6 +787,10 @@ button:active {
     .timer-settings-section {
         padding: 15px;
     }
+    
+    .app-tab {
+        min-height: 800px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -831,11 +799,11 @@ button:active {
     }
     
     .scrollable-content {
-        padding-top: 70px; /* Еще меньше для маленьких экранов */
+        padding-top: 70px;
     }
     
     .app-tabs {
-        max-width: 220px; /* Уменьшаем для маленьких экранов */
+        max-width: 220px;
     }
     
     .tab-btn {
@@ -857,13 +825,6 @@ button:active {
         width: 100%;
     }
     
-    .cycles-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        padding: 15px;
-    }
-    
     .cycles-input-container {
         max-width: none;
         width: 100%;
@@ -874,30 +835,26 @@ button:active {
         font-size: 15px;
     }
     
-    .controls {
+    .controls,
+    .stopwatch-controls {
         flex-direction: column;
         gap: 8px;
     }
     
-    .btn-start, .btn-pause, .btn-reset {
+    .btn-start, .btn-pause, .btn-reset, .btn-lap {
         width: 100%;
         margin: 0;
         padding: 12px 0;
     }
     
-    .timer-display-container {
+    .timer-display-container,
+    .stopwatch-display-container {
         width: 240px;
         height: 240px;
-        margin: 20px auto;
     }
     
     .display {
         font-size: 32px;
-    }
-    
-    .stopwatch-display-container {
-        width: 240px;
-        height: 240px;
     }
     
     .stopwatch-display {
@@ -909,14 +866,6 @@ button:active {
         margin-left: 1px;
     }
     
-    .stopwatch-controls {
-        flex-direction: column;
-    }
-    
-    .stopwatch-controls button {
-        width: 100%;
-    }
-    
     .timer-container {
         padding: 15px;
         padding-bottom: 60px;
@@ -926,10 +875,6 @@ button:active {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
-    }
-    
-    .timer-button-container {
-        display: none;
     }
     
     .timer-actions {
@@ -970,167 +915,3 @@ button:active {
         max-width: 200px;
     }
 }
-
-
-
-/* Улучшаем контраст блоков таймера */
-.timer-container {
-    margin-bottom: 20px;
-    background-color: var(--highlight-bg);  /* Используем highlight-bg вместо container-bg */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    transition: background-color 0.3s;
-    position: relative;
-}
-
-/* При наведении используем промежуточный оттенок только для блоков таймера */
-.timer-container:hover {
-    /* Светлая тема: промежуточный оттенок между highlight-bg и container-bg */
-    background-color: #f9f9f9; /* Немного светлее чем highlight-bg, но темнее чем container-bg */
-}
-
-/* Стили для контейнера циклов - убираем эффект наведения */
-.cycles-container {
-    background-color: var(--highlight-bg); /* Тот же цвет что и у timer-container */
-    border-radius: 8px;
-    padding: 20px;
-    margin: 30px 0 20px;
-    box-shadow: 0 2px 4px var(--timer-shadow);
-    /* Эффект наведения не применяется */
-}
-
-/* Стили для темной темы - только для блоков таймера */
-.dark-theme .timer-container:hover {
-    background-color: #232323; /* Промежуточный между #1e1e1e и #2a2a2a */
-}
-
-/* Стили для фона инпутов, чтобы они выделялись на фоне блока */
-.timer-container input,
-.cycles-container input {
-    background-color: var(--container-bg);
-}
-
-/* Стили для кнопок плюс и минус в темной теме */
-.dark-theme .btn-adjust {
-    background-color: rgba(255, 255, 255, 0.1); /* Чуть светлее фона в темной теме */
-    border-color: var(--input-border);
-}
-
-.dark-theme .btn-adjust:hover {
-    background-color: #2196F3;
-    color: white;
-    border-color: #2196F3;
-}
-
-/* Улучшаем видимость кнопки удаления в темной теме */
-.dark-theme .btn-sound {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Стиль для контейнера настроек */
-.timer-settings-section {
-    background-color: var(--container-bg); /* Оставляем основной фон для общего контейнера */
-}
-
-/* Тот же цвет для информационного блока, что и для таймеров */
-.progress-info {
-    background-color: var(--highlight-bg);
-}
-
-
-/* Увеличиваем размер контейнера таймера до размера секундомера */
-.timer-display-container {
-    position: relative;
-    margin: 30px auto 20px auto;
-    width: 340px; /* Увеличиваем с 300px до 340px, как у секундомера */
-    height: 340px; /* Увеличиваем с 300px до 340px, как у секундомера */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Обновляем размеры кругов для совпадения с секундомером */
-#currentTimerProgress .progress-circle-bg,
-#currentTimerProgress .progress-circle-current {
-    cx: 50;
-    cy: 50;
-    r: 42; /* Используем точно такой же радиус как у секундомера */
-}
-
-#totalTimeProgress .progress-circle-bg,
-#totalTimeProgress .progress-circle-total {
-    cx: 50;
-    cy: 50;
-    r: 32; /* Сохраняем оригинальную пропорцию */
-}
-
-/* Обновляем stroke-dasharray для новых размеров кругов */
-#currentTimerProgress .progress-circle-current {
-    stroke-dasharray: 264; /* 2 * π * 42 ≈ 264 */
-}
-
-#totalTimeProgress .progress-circle-total {
-    stroke-dasharray: 201; /* 2 * π * 32 ≈ 201 */
-}
-
-/* Адаптивные стили для мобильных устройств */
-@media (max-width: 768px) {
-    .timer-display-container {
-        width: 280px;
-        height: 280px;
-    }
-}
-
-@media (max-width: 576px) {
-    .timer-display-container {
-        width: 240px;
-        height: 240px;
-    }
-}
-
-
-
-
-/* Исправление проблемы с полосой прокрутки и центрированием */
-
-/* Принудительно показываем полосу прокрутки на всех страницах */
-html {
-    overflow-y: scroll;
-}
-
-/* Исправляем смещение контента из-за появления полосы прокрутки */
-body {
-    /* Добавляем свойство, которое предотвращает смещение контента */
-    padding-left: calc(100vw - 100%);
-}
-
-/* Устанавливаем минимальную высоту для страниц */
-.app-tab {
-    min-height: 700px; /* Регулируйте это значение в зависимости от высоты вашего содержимого */
-}
-
-/* Обеспечиваем одинаковую высоту контейнеров */
-.stopwatch-display-container,
-.laps-container,
-.timer-settings-section {
-    /* Устанавливаем минимальную высоту для больших блоков */
-    min-height: 200px;
-}
-
-/* Проверьте, чтобы контейнер прокрутки имел фиксированную ширину */
-.scrollable-content {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* Для мобильных устройств */
-@media (max-width: 768px) {
-    .app-tab {
-        min-height: 800px; /* Может потребоваться больше места на мобильных */
-    }
-}
-
-
-
-
