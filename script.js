@@ -97,7 +97,18 @@ function initApp() {
                         const langButton = document.createElement('button');
                         langButton.className = 'lang-btn';
                         langButton.dataset.lang = langCode;
-                        langButton.textContent = langName;
+                        
+                        // Создаем изображение флага
+                        const flagImg = document.createElement('img');
+                        flagImg.src = `icons/flags/${langCode}.png`;
+                        flagImg.alt = langName;
+                        flagImg.className = 'flag-icon';
+                        
+                        // Добавляем изображение в кнопку
+                        langButton.appendChild(flagImg);
+                        
+                        // Добавляем название языка в качестве подсказки
+                        langButton.title = langName;
                         
                         // Добавляем класс active для текущего языка
                         if (langCode === currentLang) {
@@ -112,6 +123,12 @@ function initApp() {
                         elements.languageSelector.appendChild(langButton);
                     }
                 }
+
+                flagImg.onerror = function() {
+                    // Если изображение не загружается, отображаем код языка
+                    this.parentNode.textContent = langCode.toUpperCase();
+                };
+                
             },
             
             changeLanguage: function(langCode) {
