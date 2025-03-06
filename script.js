@@ -1,6 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+import i18n from './i18n.js';
+
+// Определяем функцию initApp глобально, до её использования
+function initApp() {
     "use strict";
-    
+
     // Объявляем все переменные и объекты
     let elements = {};
     let state = {};
@@ -14,9 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let timerManager = {};
     let stopwatch = {};
     let tabManager = {};
+    let languageManager = {};
     
     // Инициализация элементов DOM
     function initDOMElements() {
+
         elements = {
             // Общие элементы
             lightThemeBtn: document.getElementById('lightThemeBtn'),
@@ -54,7 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
             resetStopwatchBtn: document.getElementById('resetStopwatchBtn'),
             lapStopwatchBtn: document.getElementById('lapStopwatchBtn'),
             lapsList: document.getElementById('lapsList'),
-            stopwatchProgress: document.getElementById('stopwatchProgress')
+            stopwatchProgress: document.getElementById('stopwatchProgress'),
+
+            // Элементы локализации
+            languageSelector: document.getElementById('languageSelector')
         };
         
         // Инициализируем элементы прогресс-бара (с проверками на существование)
@@ -70,6 +78,93 @@ document.addEventListener('DOMContentLoaded', function() {
                 parseFloat(elements.stopwatchProgress.querySelector('.progress-circle-stopwatch').getAttribute('stroke-dasharray')) : 0
         };
     }
+
+
+    // Инициализация управления языком
+    function initLanguageManager() {
+        languageManager = {
+            init: function() {
+                // Получаем все доступные языки
+                const languages = i18n.getAvailableLanguages();
+                const currentLang = i18n.getCurrentLanguage();
+                
+                // Очищаем контейнер выбора языка
+                if (elements.languageSelector) {
+                    elements.languageSelector.innerHTML = '';
+                    
+                    // Создаем кнопки для каждого языка
+                    for (const [langCode, langName] of Object.entries(languages)) {
+                        const langButton = document.createElement('button');
+                        langButton.className = 'lang-btn';
+                        langButton.dataset.lang = langCode;
+                        langButton.textContent = langName;
+                        
+                        // Добавляем класс active для текущего языка
+                        if (langCode === currentLang) {
+                            langButton.classList.add('active');
+                        }
+                        
+                        // Добавляем обработчик клика
+                        langButton.addEventListener('click', () => {
+                            this.changeLanguage(langCode);
+                        });
+                        
+                        elements.languageSelector.appendChild(langButton);
+                    }
+                }
+            },
+            
+            changeLanguage: function(langCode) {
+                // Переключаем язык
+                i18n.changeLanguage(langCode)
+                    .then(() => {
+                        // Обновляем HTML
+                        i18n.translatePage();
+                        
+                        // Обновляем активную кнопку языка
+                        const langButtons = document.querySelectorAll('.lang-btn');
+                        langButtons.forEach(btn => {
+                            btn.classList.toggle('active', btn.dataset.lang === langCode);
+                        });
+                        
+                        // Обновляем атрибут lang на html
+                        document.documentElement.lang = langCode;
+                        
+                        // Закрываем меню
+                        menuManager.close();
+                        
+                        // Обновляем динамические тексты в приложении
+                        this.updateDynamicTexts();
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при смене языка:', error);
+                    });
+            },
+            
+            updateDynamicTexts: function() {
+                // Обновляем тексты, которые не обновляются автоматически через data-i18n
+                
+                // Обновляем прогресс-инфо, если таймер запущен
+                if (state.timers.length > 0) {
+                    timer.updateDisplay();
+                }
+                
+                // Обновляем тексты кнопок звука
+                const soundButtons = document.querySelectorAll('.btn-sound');
+                soundButtons.forEach((button, index) => {
+                    const isSoundEnabled = state.timers[index] && state.timers[index].soundEnabled;
+                    button.title = i18n.translate(isSoundEnabled ? 'SOUND_ENABLED' : 'SOUND_DISABLED');
+                });
+                
+                // Обновляем тексты в списке кругов
+                if (state.laps && state.laps.length > 0) {
+                    stopwatch.updateLaps();
+                }
+            }
+        };
+    }
+
+
     
     // Инициализация состояния приложения
     function initState() {
@@ -230,11 +325,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!button) return;
                 
                 if (isEnabled) {
-                    button.textContent = '🔔'; // Bell emoji (U+1F514)
-                    button.title = 'Звуковой сигнал включен';
+                    button.textContent = '🔔'; // Bell emoji
+                    button.title = i18n.translate('SOUND_ENABLED');
                 } else {
-                    button.textContent = '🔕'; // Bell with slash emoji (U+1F515)
-                    button.title = 'Звуковой сигнал выключен';
+                    button.textContent = '🔕'; // Bell with slash emoji
+                    button.title = i18n.translate('SOUND_DISABLED');
                 }
             },
             
@@ -488,7 +583,7 @@ document.addEventListener('DOMContentLoaded', function() {
         timer = {
             start: function() {
                 if (state.timers.length === 0) {
-                    alert('Добавьте хотя бы один таймер!');
+                    alert(i18n.translate('NO_TIMERS_ERROR'));
                     return;
                 }
                 
@@ -542,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 elements.startBtn.disabled = false;
                 elements.pauseBtn.disabled = true;
                 elements.display.textContent = '00:00';
-                elements.progressInfo.innerHTML = '<div>Таймер не запущен</div><div>&nbsp;</div>';
+                elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_NOT_STARTED')}</div><div>&nbsp;</div>`;
                 
                 // Сброс прогресс-баров
                 progressManager.reset();
@@ -619,12 +714,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 const seconds = state.remainingSeconds % 60;
                 elements.display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                // Отображение информации о прогрессе
+                // Отображение информации о прогрессе с поддержкой локализации
                 if (state.timers.length > 0) {
-                    elements.progressInfo.innerHTML = `
-                        <div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.remainingTotalSeconds)}</div>
-                        <div>Таймер ${state.currentTimerIndex + 1} из ${state.timers.length}, цикл ${state.currentCycle} из ${state.totalCycles}</div>
-                    `;
+                    if (state.isTimerPaused) {
+                        elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_PAUSED')}</div><div>&nbsp;</div>`;
+                    } else if (state.currentCycle > state.totalCycles) {
+                        elements.progressInfo.innerHTML = `
+                            <div>${i18n.translate('TOTAL_TIME', {
+                                elapsed: timer.formatTime(state.elapsedTimeSeconds),
+                                total: timer.formatTime(state.totalTimeSeconds)
+                            })}</div>
+                            <div>${i18n.translate('ALL_COMPLETED')}</div>
+                        `;
+                    } else {
+                        elements.progressInfo.innerHTML = `
+                            <div>${i18n.translate('TOTAL_TIME', {
+                                elapsed: timer.formatTime(state.elapsedTimeSeconds),
+                                total: timer.formatTime(state.remainingTotalSeconds)
+                            })}</div>
+                            <div>${i18n.translate('TIMER_STATUS', {
+                                current: state.currentTimerIndex + 1,
+                                total: state.timers.length,
+                                currentCycle: state.currentCycle,
+                                totalCycles: state.totalCycles
+                            })}</div>
+                        `;
+                    }
                 }
             },
             
@@ -708,7 +823,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация функций управления таймерами
     function initTimerManager() {
         timerManager = {
-            add: function(duration = 30) {
+        add: function(duration = 30) {
         const timerIndex = state.timers.length;
         
         const timerContainer = document.createElement('div');
@@ -727,7 +842,8 @@ document.addEventListener('DOMContentLoaded', function() {
         minutesGroup.className = 'input-group with-buttons time-input-group';
         
         const minutesLabel = document.createElement('label');
-        minutesLabel.textContent = 'Минуты:';
+        minutesLabel.textContent = i18n.translate('MINUTES_LABEL');
+        minutesLabel.dataset.i18n = 'MINUTES_LABEL';
         
         const minutesInputWrapper = document.createElement('div');
         minutesInputWrapper.className = 'input-with-buttons';
@@ -736,7 +852,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const minutesMinusBtn = document.createElement('button');
         minutesMinusBtn.className = 'btn-adjust btn-minus';
         minutesMinusBtn.textContent = '-';
-        minutesMinusBtn.title = 'Уменьшить на 1 минуту';
+        minutesMinusBtn.title = i18n.translate('DECREASE_MINUTES');
+        minutesMinusBtn.dataset.i18nTitle = 'DECREASE_MINUTES';
         
         // Поле ввода минут
         const minutesInput = document.createElement('input');
@@ -749,7 +866,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const minutesPlusBtn = document.createElement('button');
         minutesPlusBtn.className = 'btn-adjust btn-plus';
         minutesPlusBtn.textContent = '+';
-        minutesPlusBtn.title = 'Увеличить на 1 минуту';
+        minutesPlusBtn.title = i18n.translate('INCREASE_MINUTES');
+        minutesPlusBtn.dataset.i18nTitle = 'INCREASE_MINUTES';
         
         // Устанавливаем начальное значение (из duration)
         const initialMinutes = Math.floor(duration / 60);
@@ -760,7 +878,8 @@ document.addEventListener('DOMContentLoaded', function() {
         secondsGroup.className = 'input-group with-buttons time-input-group';
         
         const secondsLabel = document.createElement('label');
-        secondsLabel.textContent = 'Секунды:';
+        secondsLabel.textContent = i18n.translate('SECONDS_LABEL');
+        secondsLabel.dataset.i18n = 'SECONDS_LABEL';
         
         const secondsInputWrapper = document.createElement('div');
         secondsInputWrapper.className = 'input-with-buttons';
@@ -769,7 +888,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const secondsMinusBtn = document.createElement('button');
         secondsMinusBtn.className = 'btn-adjust btn-minus';
         secondsMinusBtn.textContent = '-';
-        secondsMinusBtn.title = 'Уменьшить на 1 секунду';
+        secondsMinusBtn.title = i18n.translate('DECREASE_SECONDS');
+        secondsMinusBtn.dataset.i18nTitle = 'DECREASE_SECONDS';
         
         // Поле ввода секунд
         const secondsInput = document.createElement('input');
@@ -782,7 +902,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const secondsPlusBtn = document.createElement('button');
         secondsPlusBtn.className = 'btn-adjust btn-plus';
         secondsPlusBtn.textContent = '+';
-        secondsPlusBtn.title = 'Увеличить на 1 секунду';
+        secondsPlusBtn.title = i18n.translate('INCREASE_SECONDS');
+        secondsPlusBtn.dataset.i18nTitle = 'INCREASE_SECONDS';
         
         // Устанавливаем начальное значение (из duration)
         const initialSeconds = duration % 60;
@@ -865,7 +986,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'btn-delete';
-        deleteBtn.textContent = 'Удалить';
+        deleteBtn.textContent = i18n.translate('DELETE_BUTTON');
+        deleteBtn.dataset.i18n = 'DELETE_BUTTON';
         deleteBtn.addEventListener('click', function() {
             timerManager.remove(timerIndex);
         });
@@ -1043,7 +1165,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const lapNumber = document.createElement('span');
                     lapNumber.className = 'lap-number';
-                    lapNumber.textContent = `Круг ${lap.number}`;
+                    lapNumber.textContent = i18n.translate('LAP_TEXT', { number: lap.number });
+                    lapNumber.dataset.i18n = 'LAP_TEXT';
+                    lapNumber.dataset.lapNumber = lap.number;
                     
                     const lapTimeContainer = document.createElement('div');
                     lapTimeContainer.className = 'lap-time-container';
@@ -1261,6 +1385,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 menuManager.close();
             }
         });
+
+        // Добавляем обработчики событий для локализации
+        document.addEventListener('languageChanged', function() {
+            i18n.translatePage();
+            languageManager.updateDynamicTexts();
+        });
+
     }
     
     // Главная функция инициализации
@@ -1277,12 +1408,17 @@ document.addEventListener('DOMContentLoaded', function() {
         initTimerManager();
         initStopwatch();
         initTabManager();
+        initLanguageManager();
         
         // Привязка событий к элементам
         bindEvents();
         
         // Инициализация темы
         themeManager.init();
+
+        // Инициализация языка и перевод страницы
+        languageManager.init();
+        i18n.translatePage();
         
         // Добавление первого таймера
         if (elements.timerList) {
@@ -1304,4 +1440,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Запуск приложения
     init();
+}
+
+// Теперь вызываем initApp() после загрузки i18n
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        await i18n.init();
+        // После инициализации локализации продолжаем загрузку приложения
+        initApp();
+    } catch (error) {
+        console.error('Ошибка инициализации локализации:', error);
+        // Даже при ошибке локализации пытаемся запустить приложение
+        initApp();
+    }
 });
