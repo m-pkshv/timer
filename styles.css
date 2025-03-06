@@ -981,3 +981,41 @@ button:active {
         max-width: 200px;
     }
 }
+
+
+
+
+/* Стили для языкового меню */
+.language-section {
+    border-top: 1px solid var(--input-border);
+    margin-top: 15px;
+    padding-top: 10px;
+}
+
+.language-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.lang-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+.lang-btn.active {
+    background-color: #9C27B0;
+    color: white;
+    border-color: #9C27B0;
+}
