@@ -39,5 +39,9 @@
   "LANGUAGE_DE": "Deutsch",
   "LANGUAGE_FR": "Français",
   "LANGUAGE_ES": "Español",
-  "MENU_TITLE": "Menu"
+  "MENU_TITLE": "Menu",
+  "SOUND_SETTINGS": "Sound Settings",
+  "SOUND_MODE_LABEL": "Sound notification mode:",
+  "SINGLE_SOUND_ENABLED": "Single sound at the end",
+  "MULTIPLE_SOUND_ENABLED": "Three sounds (countdown)"
 }

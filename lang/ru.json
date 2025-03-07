@@ -39,5 +39,9 @@
   "LANGUAGE_DE": "Deutsch",
   "LANGUAGE_FR": "Français",
   "LANGUAGE_ES": "Español",
-  "MENU_TITLE": "Меню"
+  "MENU_TITLE": "Меню",
+  "SOUND_SETTINGS": "Настройки звука",
+  "SOUND_MODE_LABEL": "Режим звукового оповещения:",
+  "SINGLE_SOUND_ENABLED": "Один сигнал в конце",
+  "MULTIPLE_SOUND_ENABLED": "Три сигнала (отсчёт)"
 }

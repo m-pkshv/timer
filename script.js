@@ -203,6 +203,7 @@ function initApp() {
             initialTimerDuration: 0, // Начальная длительность текущего таймера
             timerInterval: null,
             isTimerPaused: false,
+            useMultipleSounds: false,
             
             // Состояние секундомера
             stopwatchStartTime: 0,
@@ -350,7 +351,7 @@ function initApp() {
                 }
             },
             
-            playBeep: function() {
+            playBeep: function(type = "end") {
                 // Проверяем, включен ли звук для текущего таймера
                 if (!state.timers[state.currentTimerIndex] || !state.timers[state.currentTimerIndex].soundEnabled) {
                     return;
@@ -366,22 +367,86 @@ function initApp() {
                     const oscillator = state.audioContext.createOscillator();
                     const gainNode = state.audioContext.createGain();
                     
-                    // Настройка звука
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
-                    
-                    // Громкость звука
-                    gainNode.gain.setValueAtTime(0.5, state.audioContext.currentTime);
+                    // Настройка звука в зависимости от типа
+                    switch(type) {
+                        case "warning": // Первый предупреждающий сигнал (за 2 секунды)
+                            oscillator.type = 'sine';
+                            oscillator.frequency.setValueAtTime(660, state.audioContext.currentTime);
+                            gainNode.gain.setValueAtTime(0.3, state.audioContext.currentTime); // Тише
+                            oscillator.start();
+                            oscillator.stop(state.audioContext.currentTime + 0.15); // Короче
+                            break;
+                            
+                        case "warning2": // Второй предупреждающий сигнал (за 1 секунду)
+                            oscillator.type = 'sine';
+                            oscillator.frequency.setValueAtTime(770, state.audioContext.currentTime);
+                            gainNode.gain.setValueAtTime(0.4, state.audioContext.currentTime); // Громче
+                            oscillator.start();
+                            oscillator.stop(state.audioContext.currentTime + 0.2); // Длиннее
+                            break;
+                            
+                        case "end": // Финальный сигнал
+                        default:
+                            oscillator.type = 'sine';
+                            oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
+                            gainNode.gain.setValueAtTime(0.5, state.audioContext.currentTime);
+                            oscillator.start();
+                            oscillator.stop(state.audioContext.currentTime + 0.3); // Самый длинный
+                            break;
+                    }
                     
                     // Подключение узлов
                     oscillator.connect(gainNode);
                     gainNode.connect(state.audioContext.destination);
                     
-                    // Запуск и остановка звука через 0.3 секунды
-                    oscillator.start();
-                    oscillator.stop(state.audioContext.currentTime + 0.3);
                 } catch (e) {
                     console.error('Ошибка воспроизведения звука:', e);
+                }
+            },
+
+            // Функция для сохранения настройки звука в localStorage
+            saveAudioSettings: function() {
+                try {
+                    localStorage.setItem('useMultipleSounds', JSON.stringify(state.useMultipleSounds));
+                } catch (e) {
+                    console.error('Ошибка сохранения настройки звука:', e);
+                }
+            },
+
+            // Функция для загрузки настройки звука из localStorage
+            loadAudioSettings: function() {
+                try {
+                    const savedSetting = localStorage.getItem('useMultipleSounds');
+                    if (savedSetting !== null) {
+                        state.useMultipleSounds = JSON.parse(savedSetting);
+                        // Обновляем отображение кнопки
+                        this.updateSoundModeButton();
+                    }
+                } catch (e) {
+                    console.error('Ошибка загрузки настройки звука:', e);
+                }
+            },
+
+            // Функция для переключения режима звука
+            toggleSoundMode: function() {
+                state.useMultipleSounds = !state.useMultipleSounds;
+                this.updateSoundModeButton();
+                this.saveAudioSettings();
+            },
+
+            // Функция для обновления состояния кнопки режима звука
+            updateSoundModeButton: function() {
+                const soundModeBtn = document.getElementById('soundModeBtn');
+                if (soundModeBtn) {
+                    if (state.useMultipleSounds) {
+                        soundModeBtn.textContent = '🔔 🔔 🔔';
+                        soundModeBtn.title = i18n.translate('MULTIPLE_SOUND_ENABLED');
+                        soundModeBtn.classList.add('active');
+                    } else {
+                        soundModeBtn.textContent = '🔔';
+                        soundModeBtn.title = i18n.translate('SINGLE_SOUND_ENABLED');
+                        soundModeBtn.classList.remove('active');
+                    }
                 }
             }
         };
@@ -682,9 +747,23 @@ function initApp() {
                     progressManager.updateTotalTime(totalPercentage);
                 }
                 
+                // Проверяем, нужно ли воспроизводить предупреждающие звуки
+                if (state.useMultipleSounds && 
+                    state.timers[state.currentTimerIndex] && 
+                    state.timers[state.currentTimerIndex].soundEnabled) {
+                    
+                    if (state.remainingSeconds === 2) {
+                        // Воспроизведение предупреждающего сигнала за 2 секунды
+                        soundManager.playBeep("warning");
+                    } else if (state.remainingSeconds === 1) {
+                        // Воспроизведение предупреждающего сигнала за 1 секунду
+                        soundManager.playBeep("warning2");
+                    }
+                }
+                
                 if (state.remainingSeconds <= 0) {
-                    // Воспроизведение звукового сигнала
-                    soundManager.playBeep();
+                    // Воспроизведение финального звукового сигнала
+                    soundManager.playBeep("end");
                     
                     // Приостановить таймер перед переходом к следующему
                     clearInterval(state.timerInterval);
@@ -1271,6 +1350,60 @@ function initApp() {
         };
     }
     
+
+    function addSoundModeToMenu() {
+        // Находим секцию меню, куда добавим наш переключатель
+        const menuSections = document.querySelectorAll('.menu-section');
+        if (menuSections.length === 0) return;
+        
+        // Создаем новую секцию для настроек звука
+        const soundSection = document.createElement('div');
+        soundSection.className = 'menu-section sound-section';
+        
+        // Заголовок секции
+        const soundHeader = document.createElement('h3');
+        soundHeader.textContent = i18n.translate('SOUND_SETTINGS');
+        soundHeader.dataset.i18n = 'SOUND_SETTINGS';
+        
+        // Контейнер для переключателя
+        const soundControls = document.createElement('div');
+        soundControls.className = 'sound-controls';
+        
+        // Кнопка переключения режима звука
+        const soundModeBtn = document.createElement('button');
+        soundModeBtn.id = 'soundModeBtn';
+        soundModeBtn.className = 'sound-mode-btn';
+        soundModeBtn.textContent = state.useMultipleSounds ? '🔔 🔔 🔔' : '🔔';
+        soundModeBtn.title = i18n.translate(state.useMultipleSounds ? 'MULTIPLE_SOUND_ENABLED' : 'SINGLE_SOUND_ENABLED');
+        
+        // Добавляем подпись
+        const soundLabel = document.createElement('div');
+        soundLabel.className = 'sound-label';
+        soundLabel.textContent = i18n.translate('SOUND_MODE_LABEL');
+        soundLabel.dataset.i18n = 'SOUND_MODE_LABEL';
+        
+        // Добавляем событие клика
+        soundModeBtn.addEventListener('click', function() {
+            soundManager.toggleSoundMode();
+        });
+        
+        // Собираем всё вместе
+        soundControls.appendChild(soundModeBtn);
+        soundSection.appendChild(soundHeader);
+        soundSection.appendChild(soundLabel);
+        soundSection.appendChild(soundControls);
+        
+        // Добавляем секцию в меню (перед языковой секцией, если она есть)
+        const languageSection = document.querySelector('.language-section');
+        if (languageSection) {
+            languageSection.parentNode.insertBefore(soundSection, languageSection);
+        } else {
+            // Если языковой секции нет, добавляем в конец
+            menuSections[menuSections.length - 1].parentNode.appendChild(soundSection);
+        }
+    }
+
+
     // Привязка обработчиков событий
     function bindEvents() {
         // Обработчики событий для вкладок
@@ -1444,6 +1577,12 @@ function initApp() {
         
         // Инициализация темы
         themeManager.init();
+
+        // Загрузка настроек звука
+        soundManager.loadAudioSettings();
+        
+        // Добавление переключателя режима звука в меню
+        addSoundModeToMenu();
 
         // Инициализация языка и перевод страницы
         languageManager.init();

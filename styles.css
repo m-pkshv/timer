@@ -1028,3 +1028,55 @@ button:active {
 .lang-btn.active {
     border: 2px solid #9C27B0; 
 }
+
+/* Секция настроек звука */
+.sound-section {
+    margin-top: 15px;
+    border-top: 1px solid var(--input-border);
+    padding-top: 10px;
+}
+
+/* Контейнер для кнопки управления звуком */
+.sound-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+/* Кнопка переключения режима звука */
+.sound-mode-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sound-mode-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+/* Активное состояние кнопки */
+.sound-mode-btn.active {
+    border-color: #9C27B0;
+    border-width: 2px;
+}
+
+/* Пояснительная подпись */
+.sound-label {
+    font-size: 14px;
+    color: var(--secondary-text);
+    text-align: center;
+    margin: 5px 0;
+}
+
+/* Стили для тёмной темы */
+.dark-theme .sound-mode-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .sound-mode-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
