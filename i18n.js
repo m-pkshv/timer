@@ -12,9 +12,12 @@ const i18n = (function() {
   const availableLanguages = {
     'ru': 'Русский',
     'en': 'English',
+    'es': 'Español',
     'de': 'Deutsch',
+    'zh': '中文',     // Китайский
+    'hy': 'Հայերեն',  // Армянский
+    'el': 'Ελληνικά',  // Греческий
     'fr': 'Français',
-    'es': 'Español'
   };
 
   /**
