@@ -57,9 +57,9 @@ const i18n = (function() {
    */
   function saveLanguagePreference(lang) {
     try {
-      localStorage.setItem('preferred-language', lang);
+        localStorage.setItem('preferred-language', lang);
     } catch (e) {
-      console.warn('Не удалось сохранить языковые настройки:', e);
+        console.warn('Не удалось сохранить языковые настройки:', e);
     }
   }
 
@@ -71,8 +71,9 @@ const i18n = (function() {
     // Сначала проверяем localStorage
     try {
       const savedLang = localStorage.getItem('preferred-language');
+      
       if (savedLang && availableLanguages[savedLang]) {
-        return savedLang;
+          return savedLang;
       }
     } catch (e) {
       console.warn('Не удалось получить языковые настройки:', e);
@@ -81,7 +82,7 @@ const i18n = (function() {
     // Затем пробуем определить язык браузера
     const browserLang = navigator.language.split('-')[0]; // 'ru-RU' -> 'ru'
     if (availableLanguages[browserLang]) {
-      return browserLang;
+        return browserLang;
     }
 
     // Если ничего не подошло, возвращаем язык по умолчанию

@@ -103,6 +103,11 @@ function initApp() {
                         flagImg.src = `icons/flags/${langCode}.png`;
                         flagImg.alt = langName;
                         flagImg.className = 'flag-icon';
+
+                        flagImg.onerror = function() {
+                            // Если изображение не загружается, отображаем код языка
+                            this.parentNode.textContent = langCode.toUpperCase();
+                        };
                         
                         // Добавляем изображение в кнопку
                         langButton.appendChild(flagImg);
@@ -123,11 +128,6 @@ function initApp() {
                         elements.languageSelector.appendChild(langButton);
                     }
                 }
-
-                flagImg.onerror = function() {
-                    // Если изображение не загружается, отображаем код языка
-                    this.parentNode.textContent = langCode.toUpperCase();
-                };
                 
             },
             
@@ -1409,6 +1409,18 @@ function initApp() {
             languageManager.updateDynamicTexts();
         });
 
+        document.addEventListener('languageLoaded', function(event) {
+            // Обновляем активную кнопку языка в соответствии с загруженным языком
+            const currentLang = event.detail.language;
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === currentLang);
+            });
+            
+            // Обновляем атрибут lang на html
+            document.documentElement.lang = currentLang;
+        });
+
     }
     
     // Главная функция инициализации
@@ -1467,7 +1479,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         initApp();
     } catch (error) {
         console.error('Ошибка инициализации локализации:', error);
-        // Даже при ошибке локализации пытаемся запустить приложение
+        
+        // Принудительная загрузка языка по умолчанию, если инициализация не удалась
+        try {
+            await i18n.loadLanguage('ru'); // Загружаем русский как запасной вариант
+        } catch (secondError) {
+            console.error('Не удалось загрузить язык по умолчанию:', secondError);
+        }
+        
+        // Запускаем приложение после попытки загрузки языка по умолчанию
         initApp();
     }
 });
