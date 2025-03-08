@@ -121,7 +121,9 @@ function initApp() {
                         }
                         
                         // Добавляем обработчик клика
-                        langButton.addEventListener('click', () => {
+                        langButton.addEventListener('click', (event) => {
+                            // Предотвращаем всплытие события, чтобы не сработал обработчик document.click
+                            event.stopPropagation();
                             this.changeLanguage(langCode);
                         });
                         
@@ -146,10 +148,7 @@ function initApp() {
                         
                         // Обновляем атрибут lang на html
                         document.documentElement.lang = langCode;
-                        
-                        // Закрываем меню
-                        menuManager.close();
-                        
+                                                
                         // Обновляем динамические тексты в приложении
                         this.updateDynamicTexts();
                     })
@@ -475,9 +474,16 @@ function initApp() {
                 if (volumeSlider) {
                     volumeSlider.value = state.soundVolume;
                     
-                    // Обновляем визуальную заливку слайдера
+                    // Устанавливаем CSS-переменную для управления градиентным фоном
                     const percentage = state.soundVolume * 100;
-                    volumeSlider.style.background = `linear-gradient(to right, #2196F3 0%, #2196F3 ${percentage}%, #ccc ${percentage}%, #ccc 100%)`;
+                    volumeSlider.style.setProperty('--volume-progress', `${percentage}%`);
+                    
+                    // Используем CSS переменные вместо хардкодинга цветов
+                    volumeSlider.style.background = `linear-gradient(to right, 
+                        var(--slider-active) 0%, 
+                        var(--slider-active) ${percentage}%, 
+                        var(--slider-inactive) ${percentage}%, 
+                        var(--slider-inactive) 100%)`;
                 }
                 
                 if (volumeValue) {
@@ -690,6 +696,11 @@ function initApp() {
                 
                 document.documentElement.setAttribute('data-theme', state.isDarkTheme ? 'dark' : 'light');
                 this.updateActiveButtons();
+                
+                // Обновляем слайдер громкости после смены темы
+                if (soundManager && typeof soundManager.updateVolumeSlider === 'function') {
+                    soundManager.updateVolumeSlider();
+                }
             },
             
             setLightTheme: function() {
@@ -699,6 +710,11 @@ function initApp() {
                 state.isDarkTheme = false;
                 document.documentElement.setAttribute('data-theme', 'light');
                 this.updateActiveButtons();
+                
+                // Обновляем слайдер громкости после смены темы
+                if (soundManager && typeof soundManager.updateVolumeSlider === 'function') {
+                    soundManager.updateVolumeSlider();
+                }
             },
             
             setDarkTheme: function() {
@@ -708,6 +724,11 @@ function initApp() {
                 state.isDarkTheme = true;
                 document.documentElement.setAttribute('data-theme', 'dark');
                 this.updateActiveButtons();
+                
+                // Обновляем слайдер громкости после смены темы
+                if (soundManager && typeof soundManager.updateVolumeSlider === 'function') {
+                    soundManager.updateVolumeSlider();
+                }
             },
             
             setSystemTheme: function(updateStorage = true) {
@@ -1488,6 +1509,22 @@ function initApp() {
         volumeSlider.max = '1';
         volumeSlider.step = '0.01';
         volumeSlider.value = state.soundVolume;
+
+        // Добавляем стиль для поддержки темной темы и градиентной заливки слайдера
+        const styleTag = document.createElement('style');
+        styleTag.textContent = `
+            .volume-slider {
+                --volume-progress: ${state.soundVolume * 100}%;
+            }
+            .volume-slider::-webkit-slider-runnable-track {
+                background: linear-gradient(to right, 
+                    var(--slider-active) 0%, 
+                    var(--slider-active) var(--volume-progress), 
+                    var(--slider-inactive) var(--volume-progress), 
+                    var(--slider-inactive) 100%);
+            }
+        `;
+        document.head.appendChild(styleTag);
         
         // Отображение текущего значения громкости
         const volumeValue = document.createElement('span');
@@ -1517,9 +1554,14 @@ function initApp() {
             soundManager.playTestSound();
         });
         
-        // Устанавливаем начальное состояние слайдера
+        // Устанавливаем начальное состояние слайдера через CSS переменные
         const percentage = state.soundVolume * 100;
-        volumeSlider.style.background = `linear-gradient(to right, #2196F3 0%, #2196F3 ${percentage}%, #ccc ${percentage}%, #ccc 100%)`;
+        volumeSlider.style.setProperty('--volume-progress', `${percentage}%`);
+        volumeSlider.style.background = `linear-gradient(to right, 
+            var(--slider-active) 0%, 
+            var(--slider-active) ${percentage}%, 
+            var(--slider-inactive) ${percentage}%, 
+            var(--slider-inactive) 100%)`;
         
         // Собираем контейнер для слайдера и значения
         volumeContainer.appendChild(volumeSlider);

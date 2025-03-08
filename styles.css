@@ -15,6 +15,8 @@
     --progress-orange: #FF9800;  /* Оранжевый для внешнего прогресс-бара (середина) */
     --progress-red: #f44336;     /* Красный для внешнего прогресс-бара (конец) */
     --progress-bg: #eeeeee;
+    --slider-inactive: #ccc;
+    --slider-active: #2196F3;
 }
 
 /* Темная тема */
@@ -32,6 +34,8 @@
     --progress-orange: #FF9800 !important;
     --progress-red: #f44336 !important;
     --progress-bg: #333333 !important;
+    --slider-inactive: #444;
+    --slider-active: #2196F3;
 }
 
 /* Общие стили */
@@ -1081,6 +1085,7 @@ button:active {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Стили для регулятора громкости без кружка */
 .volume-container {
     display: flex;
     align-items: center;
@@ -1091,42 +1096,73 @@ button:active {
 
 .volume-slider {
     flex: 1;
-    height: 6px;
+    height: 12px; /* Увеличенная высота для удобства нажатия */
     -webkit-appearance: none;
-    background: linear-gradient(to right, #2196F3 0%, #2196F3 50%, #ccc 50%, #ccc 100%);
-    border-radius: 3px;
+    appearance: none;
+    border-radius: 6px; /* Скругленные углы */
+    background: var(--slider-inactive);
+    transition: background 0.3s ease;
     outline: none;
+    cursor: pointer;
+    position: relative;
 }
 
+/* Убираем стандартный бегунок (thumb) во всех браузерах */
 .volume-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #2196F3;
+    appearance: none;
+    width: 1px; /* Минимальная ширина, фактически невидимая */
+    height: 12px; /* Равна высоте полосы */
+    background: transparent; /* Прозрачный бегунок */
     cursor: pointer;
     border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .volume-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #2196F3;
+    width: 1px;
+    height: 12px;
+    background: transparent;
     cursor: pointer;
     border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 
-.volume-value {
-    min-width: 36px;
-    font-size: 14px;
-    text-align: center;
-    color: var(--secondary-text);
-    font-weight: 500;
+.volume-slider::-ms-thumb {
+    width: 1px;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
 }
 
+/* Реализуем заполнение с помощью псевдоэлемента для Firefox */
+.volume-slider::-moz-range-progress {
+    background-color: var(--slider-active);
+    transition: background 0.3s ease;
+}
+
+/* Стили для дорожки слайдера в Chrome/Safari/Edge */
+.volume-slider::-webkit-slider-runnable-track {
+    height: 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+    
+}
+
+.volume-slider:active {
+    cursor: grabbing;
+}
+
+/* Темная тема */
+.dark-theme .volume-slider {
+    background: #444;
+}
+
+.dark-theme .volume-slider::-moz-range-progress {
+    background-color: #2196F3;
+}
+
+/* Кнопка для тестирования звука - исправление для тёмной темы */
 .test-sound-btn {
     background-color: var(--container-bg);
     border: 1px solid var(--input-border);
@@ -1139,19 +1175,17 @@ button:active {
     font-size: 16px;
     cursor: pointer;
     padding: 0;
+    transition: background-color 0.2s;
 }
 
 .test-sound-btn:hover {
     background-color: var(--highlight-bg);
 }
 
-/* Стили для темной темы */
-.dark-theme .volume-slider {
-    background: linear-gradient(to right, #2196F3 0%, #2196F3 50%, #444 50%, #444 100%);
-}
-
+/* Стили для тёмной темы */
 .dark-theme .test-sound-btn {
     background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--input-border);
 }
 
 .dark-theme .test-sound-btn:hover {
