@@ -1080,3 +1080,80 @@ button:active {
 .dark-theme .sound-mode-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
 }
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    background: linear-gradient(to right, #2196F3 0%, #2196F3 50%, #ccc 50%, #ccc 100%);
+    border-radius: 3px;
+    outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2196F3;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2196F3;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.volume-value {
+    min-width: 36px;
+    font-size: 14px;
+    text-align: center;
+    color: var(--secondary-text);
+    font-weight: 500;
+}
+
+.test-sound-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.test-sound-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+/* Стили для темной темы */
+.dark-theme .volume-slider {
+    background: linear-gradient(to right, #2196F3 0%, #2196F3 50%, #444 50%, #444 100%);
+}
+
+.dark-theme .test-sound-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .test-sound-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}

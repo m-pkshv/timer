@@ -204,6 +204,7 @@ function initApp() {
             timerInterval: null,
             isTimerPaused: false,
             useMultipleSounds: false,
+            soundVolume: 0.5,
             
             // Состояние секундомера
             stopwatchStartTime: 0,
@@ -366,12 +367,17 @@ function initApp() {
                     // Создание осциллятора для звукового сигнала
                     const oscillator = state.audioContext.createOscillator();
                     const gainNode = state.audioContext.createGain();
+
+                    // Базовая громкость в зависимости от типа сигнала
+                    let baseVolume;
                     
                     // Настройка звука в зависимости от типа
                     switch(type) {
                         case "warning": // Первый предупреждающий сигнал (за 2 секунды)
                             oscillator.type = 'sine';
                             oscillator.frequency.setValueAtTime(660, state.audioContext.currentTime);
+                            baseVolume = 0.3;
+                            gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
                             gainNode.gain.setValueAtTime(0.3, state.audioContext.currentTime); // Тише
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.15); // Короче
@@ -380,6 +386,8 @@ function initApp() {
                         case "warning2": // Второй предупреждающий сигнал (за 1 секунду)
                             oscillator.type = 'sine';
                             oscillator.frequency.setValueAtTime(770, state.audioContext.currentTime);
+                            baseVolume = 0.4;
+                            gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
                             gainNode.gain.setValueAtTime(0.4, state.audioContext.currentTime); // Громче
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.2); // Длиннее
@@ -389,6 +397,8 @@ function initApp() {
                         default:
                             oscillator.type = 'sine';
                             oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
+                            baseVolume = 0.5;
+                            gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
                             gainNode.gain.setValueAtTime(0.5, state.audioContext.currentTime);
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.3); // Самый длинный
@@ -404,12 +414,19 @@ function initApp() {
                 }
             },
 
+            setVolume: function(volume) {
+                // Ограничиваем значение от 0 до 1
+                state.soundVolume = Math.max(0, Math.min(1, volume));
+                this.saveAudioSettings();
+            },
+
             // Функция для сохранения настройки звука в localStorage
             saveAudioSettings: function() {
                 try {
                     localStorage.setItem('useMultipleSounds', JSON.stringify(state.useMultipleSounds));
+                    localStorage.setItem('soundVolume', state.soundVolume.toString());
                 } catch (e) {
-                    console.error('Ошибка сохранения настройки звука:', e);
+                    console.error('Ошибка сохранения настроек звука:', e);
                 }
             },
 
@@ -419,11 +436,18 @@ function initApp() {
                     const savedSetting = localStorage.getItem('useMultipleSounds');
                     if (savedSetting !== null) {
                         state.useMultipleSounds = JSON.parse(savedSetting);
-                        // Обновляем отображение кнопки
-                        this.updateSoundModeButton();
                     }
+                    
+                    const savedVolume = localStorage.getItem('soundVolume');
+                    if (savedVolume !== null) {
+                        state.soundVolume = parseFloat(savedVolume);
+                    }
+                    
+                    // Обновляем отображение элементов управления
+                    this.updateSoundModeButton();
+                    this.updateVolumeSlider();
                 } catch (e) {
-                    console.error('Ошибка загрузки настройки звука:', e);
+                    console.error('Ошибка загрузки настроек звука:', e);
                 }
             },
 
@@ -432,6 +456,33 @@ function initApp() {
                 state.useMultipleSounds = !state.useMultipleSounds;
                 this.updateSoundModeButton();
                 this.saveAudioSettings();
+            },
+
+            // Функция для обновления громкости со слайдера
+            updateVolumeFromSlider: function() {
+                const volumeSlider = document.getElementById('volumeSlider');
+                if (volumeSlider) {
+                    this.setVolume(parseFloat(volumeSlider.value));
+                    this.updateVolumeSlider();
+                }
+            },
+
+            // Функция для обновления отображения слайдера громкости
+            updateVolumeSlider: function() {
+                const volumeSlider = document.getElementById('volumeSlider');
+                const volumeValue = document.getElementById('volumeValue');
+                
+                if (volumeSlider) {
+                    volumeSlider.value = state.soundVolume;
+                    
+                    // Обновляем визуальную заливку слайдера
+                    const percentage = state.soundVolume * 100;
+                    volumeSlider.style.background = `linear-gradient(to right, #2196F3 0%, #2196F3 ${percentage}%, #ccc ${percentage}%, #ccc 100%)`;
+                }
+                
+                if (volumeValue) {
+                    volumeValue.textContent = Math.round(state.soundVolume * 100) + '%';
+                }
             },
 
             // Функция для обновления состояния кнопки режима звука
@@ -447,6 +498,37 @@ function initApp() {
                         soundModeBtn.title = i18n.translate('SINGLE_SOUND_ENABLED');
                         soundModeBtn.classList.remove('active');
                     }
+                }
+            },
+
+            playTestSound: function() {
+                // Обновляем громкость из слайдера перед проигрыванием
+                this.updateVolumeFromSlider();
+                
+                try {
+                    // Инициализация аудио-контекста при первом звуке
+                    if (!state.audioContext) {
+                        state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    
+                    // Создание осциллятора для звукового сигнала
+                    const oscillator = state.audioContext.createOscillator();
+                    const gainNode = state.audioContext.createGain();
+                    
+                    // Настройка тестового звука
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.5 * state.soundVolume, state.audioContext.currentTime);
+                    
+                    // Подключение узлов
+                    oscillator.connect(gainNode);
+                    gainNode.connect(state.audioContext.destination);
+                    
+                    // Запуск и остановка звука через 0.3 секунды
+                    oscillator.start();
+                    oscillator.stop(state.audioContext.currentTime + 0.3);
+                } catch (e) {
+                    console.error('Ошибка воспроизведения тестового звука:', e);
                 }
             }
         };
@@ -1365,7 +1447,13 @@ function initApp() {
         soundHeader.textContent = i18n.translate('SOUND_SETTINGS');
         soundHeader.dataset.i18n = 'SOUND_SETTINGS';
         
-        // Контейнер для переключателя
+        // Подпись для режима звука
+        const soundLabel = document.createElement('div');
+        soundLabel.className = 'sound-label';
+        soundLabel.textContent = i18n.translate('SOUND_MODE_LABEL');
+        soundLabel.dataset.i18n = 'SOUND_MODE_LABEL';
+        
+        // Контейнер для переключателя режима звука
         const soundControls = document.createElement('div');
         soundControls.className = 'sound-controls';
         
@@ -1376,22 +1464,75 @@ function initApp() {
         soundModeBtn.textContent = state.useMultipleSounds ? '🔔 🔔 🔔' : '🔔';
         soundModeBtn.title = i18n.translate(state.useMultipleSounds ? 'MULTIPLE_SOUND_ENABLED' : 'SINGLE_SOUND_ENABLED');
         
-        // Добавляем подпись
-        const soundLabel = document.createElement('div');
-        soundLabel.className = 'sound-label';
-        soundLabel.textContent = i18n.translate('SOUND_MODE_LABEL');
-        soundLabel.dataset.i18n = 'SOUND_MODE_LABEL';
-        
         // Добавляем событие клика
         soundModeBtn.addEventListener('click', function() {
             soundManager.toggleSoundMode();
         });
+        
+        // Добавляем подпись для регулятора громкости
+        const volumeLabel = document.createElement('div');
+        volumeLabel.className = 'sound-label';
+        volumeLabel.textContent = i18n.translate('VOLUME_LABEL');
+        volumeLabel.dataset.i18n = 'VOLUME_LABEL';
+        
+        // Создаем контейнер для слайдера громкости
+        const volumeContainer = document.createElement('div');
+        volumeContainer.className = 'volume-container';
+        
+        // Создаем слайдер громкости
+        const volumeSlider = document.createElement('input');
+        volumeSlider.type = 'range';
+        volumeSlider.id = 'volumeSlider';
+        volumeSlider.className = 'volume-slider';
+        volumeSlider.min = '0';
+        volumeSlider.max = '1';
+        volumeSlider.step = '0.01';
+        volumeSlider.value = state.soundVolume;
+        
+        // Отображение текущего значения громкости
+        const volumeValue = document.createElement('span');
+        volumeValue.id = 'volumeValue';
+        volumeValue.className = 'volume-value';
+        volumeValue.textContent = Math.round(state.soundVolume * 100) + '%';
+        
+        // Кнопка для тестирования звука
+        const testSoundBtn = document.createElement('button');
+        testSoundBtn.id = 'testSoundBtn';
+        testSoundBtn.className = 'test-sound-btn';
+        testSoundBtn.textContent = '▶️';
+        testSoundBtn.title = i18n.translate('TEST_SOUND');
+        testSoundBtn.dataset.i18nTitle = 'TEST_SOUND';
+        
+        // Добавляем обработчики событий
+        volumeSlider.addEventListener('input', function() {
+            soundManager.updateVolumeFromSlider();
+        });
+        
+        volumeSlider.addEventListener('change', function() {
+            soundManager.updateVolumeFromSlider();
+            soundManager.saveAudioSettings();
+        });
+        
+        testSoundBtn.addEventListener('click', function() {
+            soundManager.playTestSound();
+        });
+        
+        // Устанавливаем начальное состояние слайдера
+        const percentage = state.soundVolume * 100;
+        volumeSlider.style.background = `linear-gradient(to right, #2196F3 0%, #2196F3 ${percentage}%, #ccc ${percentage}%, #ccc 100%)`;
+        
+        // Собираем контейнер для слайдера и значения
+        volumeContainer.appendChild(volumeSlider);
+        volumeContainer.appendChild(volumeValue);
+        volumeContainer.appendChild(testSoundBtn);
         
         // Собираем всё вместе
         soundControls.appendChild(soundModeBtn);
         soundSection.appendChild(soundHeader);
         soundSection.appendChild(soundLabel);
         soundSection.appendChild(soundControls);
+        soundSection.appendChild(volumeLabel);
+        soundSection.appendChild(volumeContainer);
         
         // Добавляем секцию в меню (перед языковой секцией, если она есть)
         const languageSection = document.querySelector('.language-section');

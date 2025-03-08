@@ -43,5 +43,7 @@
   "SOUND_SETTINGS": "Sound Settings",
   "SOUND_MODE_LABEL": "Sound notification mode:",
   "SINGLE_SOUND_ENABLED": "Single sound at the end",
-  "MULTIPLE_SOUND_ENABLED": "Three sounds (countdown)"
+  "MULTIPLE_SOUND_ENABLED": "Three sounds (countdown)",
+  "VOLUME_LABEL": "Sound volume:",
+  "TEST_SOUND": "Test sound"
 }
