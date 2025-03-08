@@ -358,15 +358,16 @@ button:active {
 }
 
 .menu-section {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
+    padding-bottom: 2px;
 }
 
 .menu-section h3 {
     font-size: 16px;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
     color: var(--text-color);
     border-bottom: 1px solid var(--input-border);
-    padding-bottom: 5px;
+    padding-bottom: 8px;
 }
 
 @keyframes fadeIn {
@@ -991,8 +992,8 @@ button:active {
 /* Стили для языкового меню */
 .language-section {
     border-top: 1px solid var(--input-border);
-    margin-top: 15px;
-    padding-top: 10px;
+    margin-top: 4px;
+    padding-top: 4px;
 }
 
 .language-selector {
@@ -1047,20 +1048,19 @@ button:active {
     margin-top: 8px;
 }
 
-/* Кнопка переключения режима звука */
-/* Стили для кнопок режима звука */
+/* Кнопки режима звука */
 .sound-mode-buttons {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 8px;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0 16px 0;
 }
 
 .sound-mode-btn {
     background-color: var(--container-bg);
     border: 1px solid var(--input-border);
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 8px 4px;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1092,12 +1092,12 @@ button:active {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Стили для регулятора громкости без кружка */
+/* Слайдер громкости и его контейнер */
 .volume-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 10px;
+    margin: 8px 0;
     gap: 10px;
 }
 
@@ -1197,4 +1197,13 @@ button:active {
 
 .dark-theme .test-sound-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Улучшение текстовых подписей */
+.sound-label {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin: 10px 0 6px 0;
+    text-align: left;
+    font-weight: 500;
 }
