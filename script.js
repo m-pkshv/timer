@@ -450,10 +450,10 @@ function initApp() {
                 }
             },
 
-            // Функция для переключения режима звука
-            toggleSoundMode: function() {
-                state.useMultipleSounds = !state.useMultipleSounds;
-                this.updateSoundModeButton();
+            // Функция для установки режима звука
+            setSoundMode: function(useMultiple) {
+                state.useMultipleSounds = useMultiple;
+                this.updateSoundModeButtons();
                 this.saveAudioSettings();
             },
 
@@ -491,18 +491,18 @@ function initApp() {
                 }
             },
 
-            // Функция для обновления состояния кнопки режима звука
-            updateSoundModeButton: function() {
-                const soundModeBtn = document.getElementById('soundModeBtn');
-                if (soundModeBtn) {
+            // Функция обновления состояния кнопок звукового режима
+            updateSoundModeButtons: function() {
+                const singleSoundBtn = document.getElementById('singleSoundBtn');
+                const multipleSoundBtn = document.getElementById('multipleSoundBtn');
+                
+                if (singleSoundBtn && multipleSoundBtn) {
                     if (state.useMultipleSounds) {
-                        soundModeBtn.textContent = '🔔 🔔 🔔';
-                        soundModeBtn.title = i18n.translate('MULTIPLE_SOUND_ENABLED');
-                        soundModeBtn.classList.add('active');
+                        singleSoundBtn.classList.remove('active');
+                        multipleSoundBtn.classList.add('active');
                     } else {
-                        soundModeBtn.textContent = '🔔';
-                        soundModeBtn.title = i18n.translate('SINGLE_SOUND_ENABLED');
-                        soundModeBtn.classList.remove('active');
+                        singleSoundBtn.classList.add('active');
+                        multipleSoundBtn.classList.remove('active');
                     }
                 }
             },
@@ -1468,27 +1468,53 @@ function initApp() {
         soundHeader.textContent = i18n.translate('SOUND_SETTINGS');
         soundHeader.dataset.i18n = 'SOUND_SETTINGS';
         
-        // Подпись для режима звука
+        // Подпись для режима звука с новым текстом
         const soundLabel = document.createElement('div');
         soundLabel.className = 'sound-label';
         soundLabel.textContent = i18n.translate('SOUND_MODE_LABEL');
         soundLabel.dataset.i18n = 'SOUND_MODE_LABEL';
         
-        // Контейнер для переключателя режима звука
-        const soundControls = document.createElement('div');
-        soundControls.className = 'sound-controls';
+        // Контейнер для кнопок режима звука
+        const soundModeButtons = document.createElement('div');
+        soundModeButtons.className = 'sound-mode-buttons';
         
-        // Кнопка переключения режима звука
-        const soundModeBtn = document.createElement('button');
-        soundModeBtn.id = 'soundModeBtn';
-        soundModeBtn.className = 'sound-mode-btn';
-        soundModeBtn.textContent = state.useMultipleSounds ? '🔔 🔔 🔔' : '🔔';
-        soundModeBtn.title = i18n.translate(state.useMultipleSounds ? 'MULTIPLE_SOUND_ENABLED' : 'SINGLE_SOUND_ENABLED');
+        // Кнопка для одиночного сигнала
+        const singleSoundBtn = document.createElement('button');
+        singleSoundBtn.id = 'singleSoundBtn';
+        singleSoundBtn.className = 'sound-mode-btn';
+        singleSoundBtn.textContent = '🔔';
+        singleSoundBtn.title = i18n.translate('SINGLE_SOUND_ENABLED');
+        singleSoundBtn.dataset.i18nTitle = 'SINGLE_SOUND_ENABLED';
         
-        // Добавляем событие клика
-        soundModeBtn.addEventListener('click', function() {
-            soundManager.toggleSoundMode();
+        // Кнопка для множественных сигналов
+        const multipleSoundBtn = document.createElement('button');
+        multipleSoundBtn.id = 'multipleSoundBtn';
+        multipleSoundBtn.className = 'sound-mode-btn';
+        multipleSoundBtn.textContent = '🔔 🔔 🔔';
+        multipleSoundBtn.title = i18n.translate('MULTIPLE_SOUND_ENABLED');
+        multipleSoundBtn.dataset.i18nTitle = 'MULTIPLE_SOUND_ENABLED';
+        
+        // Добавляем обработчики событий для кнопок
+        singleSoundBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            soundManager.setSoundMode(false);
         });
+        
+        multipleSoundBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
+            soundManager.setSoundMode(true);
+        });
+        
+        // Устанавливаем начальное состояние кнопок
+        if (state.useMultipleSounds) {
+            multipleSoundBtn.classList.add('active');
+        } else {
+            singleSoundBtn.classList.add('active');
+        }
+        
+        // Добавляем кнопки в контейнер
+        soundModeButtons.appendChild(singleSoundBtn);
+        soundModeButtons.appendChild(multipleSoundBtn);
         
         // Добавляем подпись для регулятора громкости
         const volumeLabel = document.createElement('div');
@@ -1509,7 +1535,7 @@ function initApp() {
         volumeSlider.max = '1';
         volumeSlider.step = '0.01';
         volumeSlider.value = state.soundVolume;
-
+    
         // Добавляем стиль для поддержки темной темы и градиентной заливки слайдера
         const styleTag = document.createElement('style');
         styleTag.textContent = `
@@ -1569,10 +1595,9 @@ function initApp() {
         volumeContainer.appendChild(testSoundBtn);
         
         // Собираем всё вместе
-        soundControls.appendChild(soundModeBtn);
         soundSection.appendChild(soundHeader);
         soundSection.appendChild(soundLabel);
-        soundSection.appendChild(soundControls);
+        soundSection.appendChild(soundModeButtons); // Вместо soundControls с одной кнопкой
         soundSection.appendChild(volumeLabel);
         soundSection.appendChild(volumeContainer);
         

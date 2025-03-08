@@ -1048,41 +1048,48 @@ button:active {
 }
 
 /* Кнопка переключения режима звука */
+/* Стили для кнопок режима звука */
+.sound-mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
 .sound-mode-btn {
     background-color: var(--container-bg);
     border: 1px solid var(--input-border);
     border-radius: 4px;
-    padding: 8px 15px;
+    padding: 8px 12px;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.2s ease;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sound-mode-btn:hover {
     background-color: var(--highlight-bg);
 }
 
-/* Активное состояние кнопки */
 .sound-mode-btn.active {
     border-color: #9C27B0;
     border-width: 2px;
+    background-color: var(--highlight-bg);
 }
 
-/* Пояснительная подпись */
-.sound-label {
-    font-size: 14px;
-    color: var(--secondary-text);
-    text-align: center;
-    margin: 5px 0;
-}
-
-/* Стили для тёмной темы */
 .dark-theme .sound-mode-btn {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
 .dark-theme .sound-mode-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-theme .sound-mode-btn.active {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Стили для регулятора громкости без кружка */

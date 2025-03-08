@@ -41,9 +41,10 @@
   "LANGUAGE_ES": "Español",
   "MENU_TITLE": "Menu",
   "SOUND_SETTINGS": "Sound Settings",
-  "SOUND_MODE_LABEL": "Sound notification mode:",
-  "SINGLE_SOUND_ENABLED": "Single sound at the end",
-  "MULTIPLE_SOUND_ENABLED": "Three sounds (countdown)",
+  "SOUND_MODE_LABEL": "Количество звуковых сигналов:",
+  "SINGLE_SOUND_ENABLED": "Один сигнал в конце",
+  "MULTIPLE_SOUND_ENABLED": "Три сигнала (отсчёт)",
   "VOLUME_LABEL": "Sound volume:",
   "TEST_SOUND": "Test sound"
+  
 }
