@@ -907,55 +907,49 @@ function initApp() {
                 }
             },
             
-            // Обновляем функцию updateDisplay в объекте timer, добавляя визуализацию
+            // Обновленная версия метода updateDisplay, которая убирает избыточный текст
             updateDisplay: function() {
-                // Форматирование времени (оставляем существующий код)
-                const minutes = Math.floor(state.remainingSeconds / 60);
-                const seconds = state.remainingSeconds % 60;
-                elements.display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Отображение информации о прогрессе с поддержкой локализации
-                if (state.timers.length > 0) {
-                    if (state.isTimerPaused) {
-                        elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_PAUSED')}</div><div>&nbsp;</div>`;
-                    } else if (state.currentCycle > state.totalCycles) {
-                        elements.progressInfo.innerHTML = `
-                            <div>${i18n.translate('TOTAL_TIME', {
-                                elapsed: timer.formatTime(state.elapsedTimeSeconds),
-                                total: timer.formatTime(state.totalTimeSeconds)
-                            })}</div>
-                            <div>${i18n.translate('ALL_COMPLETED')}</div>
-                        `;
-                    } else {
-                        // Формируем визуализацию для таймеров и циклов
-                        const timerVisualization = this.createTimerVisualization(state.currentTimerIndex, state.timers.length);
-                        const cycleVisualization = this.createCycleVisualization(state.currentCycle, state.totalCycles);
-                        
-                        elements.progressInfo.innerHTML = `
-                            <div>${i18n.translate('TOTAL_TIME', {
-                                elapsed: timer.formatTime(state.elapsedTimeSeconds),
-                                total: timer.formatTime(state.remainingTotalSeconds)
-                            })}</div>
-                            <div class="visual-progress-container">
-                                <div class="visual-progress-row">
-                                    <span class="progress-label">${i18n.translate('TIMERS')}: </span>
-                                    <div class="progress-indicators">${timerVisualization}</div>
-                                </div>
-                                <div class="visual-progress-row">
-                                    <span class="progress-label">${i18n.translate('CYCLES')}: </span>
-                                    <div class="progress-indicators">${cycleVisualization}</div>
-                                </div>
-                            </div>
-                            <div>${i18n.translate('TIMER_STATUS', {
-                                current: state.currentTimerIndex + 1,
-                                total: state.timers.length,
-                                currentCycle: state.currentCycle,
-                                totalCycles: state.totalCycles
-                            })}</div>
-                        `;
-                    }
-                }
-            },
+
+                // Форматирование времени
+    const minutes = Math.floor(state.remainingSeconds / 60);
+    const seconds = state.remainingSeconds % 60;
+    elements.display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    // Отображение информации о прогрессе с поддержкой локализации
+    if (state.timers.length > 0) {
+        if (state.isTimerPaused) {
+            elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_PAUSED')}</div><div>&nbsp;</div>`;
+        } else if (state.currentCycle > state.totalCycles) {
+            elements.progressInfo.innerHTML = `<div>${i18n.translate('ALL_COMPLETED')}</div>`;
+        } else {
+            // Формируем визуализацию для таймеров и циклов
+            const timerVisualization = this.createTimerVisualization(
+                parseInt(state.currentTimerIndex, 10), 
+                parseInt(state.timers.length, 10)
+            );
+            
+            const cycleVisualization = this.createCycleVisualization(
+                parseInt(state.currentCycle, 10), 
+                parseInt(state.totalCycles, 10)
+            );
+            
+            // Полностью обновленная HTML-структура: показываем ТОЛЬКО визуальные индикаторы,
+            // без какой-либо текстовой информации о времени или статусе
+            elements.progressInfo.innerHTML = `
+                <div class="visual-progress-container">
+                    <div class="visual-progress-row">
+                        <span class="progress-label">${i18n.translate('TIMERS')}: </span>
+                        <div class="progress-indicators">${timerVisualization}</div>
+                    </div>
+                    <div class="visual-progress-row">
+                        <span class="progress-label">${i18n.translate('CYCLES')}: </span>
+                        <div class="progress-indicators">${cycleVisualization}</div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+},
             
             formatTime: function(totalSeconds) {
                 const timeObj = utils.secondsToTimeObject(totalSeconds);
