@@ -31,10 +31,16 @@
   "DECREASE_SECONDS": "减少1秒",
   "INCREASE_SECONDS": "增加1秒",
   "DELETE_BUTTON": "删除",
-  "SOUND_ENABLED": "声音已启用",
-  "SOUND_DISABLED": "声音已禁用",
   "NO_TIMERS_ERROR": "请先添加至少一个定时器",
   "LAP_TEXT": "圈 {number}",
   "TIMERS": "计时器",
-  "CYCLES": "循环"
+  "CYCLES": "循环",
+  "SOUND_SETTINGS": "声音设置",
+  "SOUND_MODE_LABEL": "声音模式",
+  "SINGLE_SOUND_ENABLED": "单一声音",
+  "MULTIPLE_SOUND_ENABLED": "多重声音",
+  "VOLUME_LABEL": "音量",
+  "TEST_SOUND": "测试声音",
+  "SOUND_ENABLED": "声音已启用",
+  "SOUND_DISABLED": "声音已禁用"
 }

@@ -443,7 +443,7 @@ function initApp() {
                     }
                     
                     // Обновляем отображение элементов управления
-                    this.updateSoundModeButton();
+                    this.updateSoundModeButtons();
                     this.updateVolumeSlider();
                 } catch (e) {
                     console.error('Ошибка загрузки настроек звука:', e);
@@ -1025,7 +1025,7 @@ function initApp() {
                     }
                 } else {
                     // Если индикаторов много, показываем несколько в начале, текущий и несколько в конце
-                    const visibleOnEachSide = 2; // Количество видимых индикаторов с каждой стороны от текущего
+                    const visibleOnEachSide = 3; // Количество видимых индикаторов с каждой стороны от текущего
                     
                     // Начальные индикаторы
                     for (let i = 0; i < Math.min(visibleOnEachSide, currentIndex); i++) {
