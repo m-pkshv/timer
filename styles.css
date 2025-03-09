@@ -819,15 +819,15 @@ button:active {
 }
 
 .progress-dot.active {
-    background-color: #2196F3;
-    color: white;
+    background-color: #2196F3 !important;
+    color: white !important;
     transform: scale(1.05);
     z-index: 1;
 }
 
 .progress-dot.completed {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4CAF50 !important;
+    color: white !important;
 }
 
 .progress-ellipsis {
@@ -889,6 +889,16 @@ button:active {
 
 .progress-info div:last-child {
     margin-bottom: 0;
+}
+
+.dark-theme .progress-dot.active {
+    background-color: #2196F3 !important;
+    color: white !important;
+}
+
+.dark-theme .progress-dot.completed {
+    background-color: #4CAF50 !important;
+    color: white !important;
 }
 
 
