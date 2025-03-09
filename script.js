@@ -1010,6 +1010,11 @@ function initApp() {
             
             // Общий метод для создания индикаторов прогресса
             createProgressIndicators: function(currentIndex, total) {
+
+                // Преобразуем значения в числа для гарантии правильного сравнения
+                currentIndex = parseInt(currentIndex, 10) || 0;
+                total = parseInt(total, 10) || 0;
+                
                 let indicators = '';
                 
                 // Защита от неправильных входных данных
@@ -1021,36 +1026,63 @@ function initApp() {
                 if (total <= maxVisibleIndicators) {
                     // Если общее количество индикаторов не превышает максимальное, показываем все
                     for (let i = 0; i < total; i++) {
-                        indicators += `<span class="progress-dot ${i === currentIndex ? 'active' : (i < currentIndex ? 'completed' : '')}">${i + 1}</span>`;
+                        // Явное сравнение с использованием строгого равенства
+                        const isActive = i === currentIndex;
+                        const isCompleted = i < currentIndex;
+                        
+                        const className = isActive ? 'active' : (isCompleted ? 'completed' : '');
+                        
+                        indicators += `<span class="progress-dot ${className}">${i + 1}</span>`;
                     }
                 } else {
-                    // Если индикаторов много, показываем несколько в начале, текущий и несколько в конце
+                    // Если индикаторов много, требуется особая логика
                     const visibleOnEachSide = 3; // Количество видимых индикаторов с каждой стороны от текущего
                     
-                    // Начальные индикаторы
-                    for (let i = 0; i < Math.min(visibleOnEachSide, currentIndex); i++) {
-                        indicators += `<span class="progress-dot completed">${i + 1}</span>`;
+                    // ИСПРАВЛЕННАЯ ЛОГИКА - устраняем дублирование первого цикла
+                    
+                    // Используем флаг, чтобы отслеживать, был ли уже показан первый элемент
+                    let firstElementShown = false;
+                    
+                    // 1. Проверяем, является ли первый элемент текущим или предшествующим ему
+                    if (currentIndex === 0) {
+                        // Если текущий элемент - первый, показываем его сразу как активный
+                        indicators += `<span class="progress-dot active">1</span>`;
+                        firstElementShown = true;
+                    } else {
+                        // Если первый элемент не текущий, показываем его как завершенный
+                        indicators += `<span class="progress-dot completed">1</span>`;
+                        firstElementShown = true;
+                        
+                        // 2. Если текущий элемент далеко от начала, добавляем многоточие и элементы перед ним
+                        if (currentIndex > 1) {
+                            // Если не сразу после первого элемента, добавляем многоточие
+                            if (currentIndex > 2) {
+                                indicators += '<span class="progress-ellipsis">...</span>';
+                            }
+                            
+                            // Показываем несколько элементов перед текущим, но не первый (он уже показан)
+                            const startPreCurrent = Math.max(1, currentIndex - visibleOnEachSide);
+                            for (let i = startPreCurrent; i < currentIndex; i++) {
+                                indicators += `<span class="progress-dot completed">${i + 1}</span>`;
+                            }
+                        }
+                        
+                        // 3. Показываем текущий элемент (если он не первый, который уже был показан)
+                        indicators += `<span class="progress-dot active">${currentIndex + 1}</span>`;
                     }
                     
-                    // Добавляем многоточие, если нужно
-                    if (currentIndex > visibleOnEachSide) {
+                    // 4. Показываем несколько элементов после текущего, но не последний
+                    const endPostCurrent = Math.min(total - 2, currentIndex + visibleOnEachSide);
+                    for (let i = currentIndex + 1; i <= endPostCurrent; i++) {
+                        indicators += `<span class="progress-dot">${i + 1}</span>`;
+                    }
+                    
+                    // 5. Если текущий элемент далеко от конца, добавляем многоточие
+                    if (currentIndex < total - 2 && total - 2 > currentIndex + visibleOnEachSide) {
                         indicators += '<span class="progress-ellipsis">...</span>';
                     }
                     
-                    // Текущий индикатор и индикаторы вокруг него
-                    const startAround = Math.max(visibleOnEachSide, currentIndex);
-                    const endAround = Math.min(currentIndex + visibleOnEachSide, total - 1);
-                    
-                    for (let i = startAround; i <= endAround; i++) {
-                        indicators += `<span class="progress-dot ${i === currentIndex ? 'active' : (i < currentIndex ? 'completed' : '')}">${i + 1}</span>`;
-                    }
-                    
-                    // Добавляем многоточие, если нужно
-                    if (currentIndex + visibleOnEachSide < total - 1) {
-                        indicators += '<span class="progress-ellipsis">...</span>';
-                    }
-                    
-                    // Последний индикатор
+                    // 6. Всегда показываем последний элемент, если текущий не последний
                     if (currentIndex !== total - 1) {
                         indicators += `<span class="progress-dot">${total}</span>`;
                     }
