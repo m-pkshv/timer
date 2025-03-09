@@ -39,5 +39,7 @@
   "LANGUAGE_DE": "Deutsch",
   "LANGUAGE_FR": "Français",
   "LANGUAGE_ES": "Español",
-  "MENU_TITLE": "Menü"
+  "MENU_TITLE": "Menü",
+  "TIMERS": "Timer",
+  "CYCLES": "Zyklen"
 }

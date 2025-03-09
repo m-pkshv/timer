@@ -34,5 +34,7 @@
   "SOUND_ENABLED": "Ձայնն միացված է",
   "SOUND_DISABLED": "Ձայնն անջատված է",
   "NO_TIMERS_ERROR": "Նախ ավելացրեք առնվազն մեկ ժամաչափ",
-  "LAP_TEXT": "Շրջան {number}"
+  "LAP_TEXT": "Շրջան {number}",
+  "TIMERS": "Ժամաչափեր",
+  "CYCLES": "Ցիկլեր"
 }

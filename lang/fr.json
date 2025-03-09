@@ -39,5 +39,7 @@
   "LANGUAGE_DE": "Deutsch",
   "LANGUAGE_FR": "Français",
   "LANGUAGE_ES": "Español",
-  "MENU_TITLE": "Menu"
+  "MENU_TITLE": "Menu",
+  "TIMERS": "Minuteurs",
+  "CYCLES": "Cycles"
 }

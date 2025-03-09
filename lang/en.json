@@ -45,6 +45,8 @@
   "SINGLE_SOUND_ENABLED": "Один сигнал в конце",
   "MULTIPLE_SOUND_ENABLED": "Три сигнала (отсчёт)",
   "VOLUME_LABEL": "Sound volume:",
-  "TEST_SOUND": "Test sound"
+  "TEST_SOUND": "Test sound",
+  "TIMERS": "Timers",
+  "CYCLES": "Cycles"
   
 }
