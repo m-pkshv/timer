@@ -907,8 +907,9 @@ function initApp() {
                 }
             },
             
+            // Обновляем функцию updateDisplay в объекте timer, добавляя визуализацию
             updateDisplay: function() {
-                // Форматирование времени
+                // Форматирование времени (оставляем существующий код)
                 const minutes = Math.floor(state.remainingSeconds / 60);
                 const seconds = state.remainingSeconds % 60;
                 elements.display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -926,11 +927,25 @@ function initApp() {
                             <div>${i18n.translate('ALL_COMPLETED')}</div>
                         `;
                     } else {
+                        // Формируем визуализацию для таймеров и циклов
+                        const timerVisualization = this.createTimerVisualization(state.currentTimerIndex, state.timers.length);
+                        const cycleVisualization = this.createCycleVisualization(state.currentCycle, state.totalCycles);
+                        
                         elements.progressInfo.innerHTML = `
                             <div>${i18n.translate('TOTAL_TIME', {
                                 elapsed: timer.formatTime(state.elapsedTimeSeconds),
                                 total: timer.formatTime(state.remainingTotalSeconds)
                             })}</div>
+                            <div class="visual-progress-container">
+                                <div class="visual-progress-row">
+                                    <span class="progress-label">${i18n.translate('TIMERS')}: </span>
+                                    <div class="progress-indicators">${timerVisualization}</div>
+                                </div>
+                                <div class="visual-progress-row">
+                                    <span class="progress-label">${i18n.translate('CYCLES')}: </span>
+                                    <div class="progress-indicators">${cycleVisualization}</div>
+                                </div>
+                            </div>
                             <div>${i18n.translate('TIMER_STATUS', {
                                 current: state.currentTimerIndex + 1,
                                 total: state.timers.length,
@@ -983,6 +998,65 @@ function initApp() {
                 
                 const totalSeconds = timer.calculateTotalSeconds();
                 elements.totalTimeDisplay.textContent = timer.formatTime(totalSeconds);
+            },
+
+            createTimerVisualization: function(currentIndex, totalTimers) {
+                return this.createProgressIndicators(currentIndex, totalTimers);
+            },
+            
+            createCycleVisualization: function(currentCycle, totalCycles) {
+                return this.createProgressIndicators(currentCycle - 1, totalCycles);
+            },
+            
+            // Общий метод для создания индикаторов прогресса
+            createProgressIndicators: function(currentIndex, total) {
+                let indicators = '';
+                
+                // Защита от неправильных входных данных
+                if (total <= 0) return '';
+                
+                // Ограничиваем количество отображаемых индикаторов, если их слишком много
+                const maxVisibleIndicators = 12;
+                
+                if (total <= maxVisibleIndicators) {
+                    // Если общее количество индикаторов не превышает максимальное, показываем все
+                    for (let i = 0; i < total; i++) {
+                        indicators += `<span class="progress-dot ${i === currentIndex ? 'active' : (i < currentIndex ? 'completed' : '')}">${i + 1}</span>`;
+                    }
+                } else {
+                    // Если индикаторов много, показываем несколько в начале, текущий и несколько в конце
+                    const visibleOnEachSide = 2; // Количество видимых индикаторов с каждой стороны от текущего
+                    
+                    // Начальные индикаторы
+                    for (let i = 0; i < Math.min(visibleOnEachSide, currentIndex); i++) {
+                        indicators += `<span class="progress-dot completed">${i + 1}</span>`;
+                    }
+                    
+                    // Добавляем многоточие, если нужно
+                    if (currentIndex > visibleOnEachSide) {
+                        indicators += '<span class="progress-ellipsis">...</span>';
+                    }
+                    
+                    // Текущий индикатор и индикаторы вокруг него
+                    const startAround = Math.max(visibleOnEachSide, currentIndex);
+                    const endAround = Math.min(currentIndex + visibleOnEachSide, total - 1);
+                    
+                    for (let i = startAround; i <= endAround; i++) {
+                        indicators += `<span class="progress-dot ${i === currentIndex ? 'active' : (i < currentIndex ? 'completed' : '')}">${i + 1}</span>`;
+                    }
+                    
+                    // Добавляем многоточие, если нужно
+                    if (currentIndex + visibleOnEachSide < total - 1) {
+                        indicators += '<span class="progress-ellipsis">...</span>';
+                    }
+                    
+                    // Последний индикатор
+                    if (currentIndex !== total - 1) {
+                        indicators += `<span class="progress-dot">${total}</span>`;
+                    }
+                }
+                
+                return indicators;
             }
         };
     }
