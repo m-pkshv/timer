@@ -881,8 +881,7 @@ function initApp() {
                         
                         // Проверка, закончились ли все циклы
                         if (state.currentCycle > state.totalCycles) {
-                            elements.progressInfo.innerHTML = `<div>Общее время: ${timer.formatTime(state.elapsedTimeSeconds)} / ${timer.formatTime(state.totalTimeSeconds)}</div>
-                            <div>Все таймеры и циклы завершены!</div>`;
+                            elements.progressInfo.innerHTML = `<div>${i18n.translate('ALL_COMPLETED')}</div>`;
                             elements.startBtn.disabled = false;
                             elements.pauseBtn.disabled = true;
                             elements.display.textContent = '00:00'; // Показываем 00:00 только при полном завершении
