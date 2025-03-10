@@ -935,8 +935,16 @@ button:active {
     gap: 10px;
 }
 
+.volume-value {
+    display: inline-block;
+    width: 40px;    /* Фиксированная ширина, достаточная для "100%" */
+    text-align: right;
+    font-family: 'Ubuntu Mono', monospace;  /* Моноширинный шрифт для стабильности */
+}
+
 .volume-slider {
     flex: 1;
+    min-width: 120px;  /* Минимальная ширина для слайдера */
     height: 12px;
     -webkit-appearance: none;
     appearance: none;
