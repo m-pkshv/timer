@@ -1016,8 +1016,9 @@ function initApp() {
                 // Защита от неправильных входных данных
                 if (total <= 0) return '';
                 
-                // Увеличиваем максимальное количество отображаемых индикаторов
-                const maxVisibleIndicators = 19; 
+                // Определяем максимальное количество отображаемых индикаторов в зависимости от ширины экрана
+                const isMobile = window.innerWidth <= 576; // Стандартный брейкпоинт для мобильных устройств
+                const maxVisibleIndicators = isMobile ? 10 : 19; // 10 для мобильных, 19 для десктопов
                 
                 if (total <= maxVisibleIndicators) {
                     // Если общее количество индикаторов не превышает максимальное, показываем все
@@ -1031,7 +1032,7 @@ function initApp() {
                     }
                 } else {
                     // Если индикаторов много, требуется особая логика
-                    const visibleOnEachSide = 3;
+                    const visibleOnEachSide = isMobile ? 3 : 5; // 3 для мобильных, 5 для десктопов
                     
                     // Всегда показываем первый элемент
                     if (currentIndex === 0) {

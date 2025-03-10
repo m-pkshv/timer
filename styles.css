@@ -771,8 +771,8 @@ button:active {
 
 /* Стили для самих иконок */
 .progress-icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
     vertical-align: middle;
     transition: transform 0.2s ease;
@@ -796,7 +796,7 @@ button:active {
     width: 30px;
     height: 30px;
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--text-color);
     background-color: #ddd;
@@ -1155,7 +1155,7 @@ button:active {
     .progress-dot {
         width: 26px;
         height: 26px;
-        font-size: 13px;
+        font-size: 14px;
     }
     
     .progress-icon {
@@ -1309,7 +1309,7 @@ button:active {
     .progress-dot {
         width: 24px;
         height: 24px;
-        font-size: 12px;
+        font-size: 13px;
     }
     
     .progress-icon {
