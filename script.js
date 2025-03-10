@@ -808,7 +808,7 @@ function initApp() {
                 state.isTimerPaused = true;
                 elements.startBtn.disabled = false;
                 elements.pauseBtn.disabled = true;
-                elements.progressInfo.innerHTML = '<div>Таймер на паузе</div><div>&nbsp;</div>';
+                elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_PAUSED')}</div>`;
             },
             
             reset: function() {
@@ -822,7 +822,7 @@ function initApp() {
                 elements.startBtn.disabled = false;
                 elements.pauseBtn.disabled = true;
                 elements.display.textContent = '00:00';
-                elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_NOT_STARTED')}</div><div>&nbsp;</div>`;
+                elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_NOT_STARTED')}</div>`;
                 
                 // Сброс прогресс-баров
                 progressManager.reset();
@@ -937,11 +937,15 @@ function initApp() {
             elements.progressInfo.innerHTML = `
                 <div class="visual-progress-container">
                     <div class="visual-progress-row">
-                        <span class="progress-label">${i18n.translate('TIMERS')}: </span>
+                        <span class="progress-label">
+                            <img src="icons/timer.png" alt="Timer" class="progress-icon" title="${i18n.translate('TIMERS')}">
+                        </span>
                         <div class="progress-indicators">${timerVisualization}</div>
                     </div>
                     <div class="visual-progress-row">
-                        <span class="progress-label">${i18n.translate('CYCLES')}: </span>
+                        <span class="progress-label">
+                            <img src="icons/repeat.png" alt="Cycles" class="progress-icon" title="${i18n.translate('CYCLES')}">
+                        </span>
                         <div class="progress-indicators">${cycleVisualization}</div>
                     </div>
                 </div>
@@ -1910,6 +1914,11 @@ function initApp() {
         // Инициализация прогресс-бара секундомера в начальное положение (пустой)
         if (progressElements.stopwatchCircle) {
             progressElements.stopwatchCircle.style.strokeDashoffset = progressElements.stopwatchCircumference;
+        }
+        
+        // Установка начального значения для progressInfo (убираем лишнюю пустую строку)
+        if (elements.progressInfo) {
+            elements.progressInfo.innerHTML = `<div>${i18n.translate('TIMER_NOT_STARTED')}</div>`;
         }
     }
     

@@ -507,7 +507,7 @@ button:active {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90px; /* Уменьшено, т.к. убрали весь текст */
+    min-height: 110px;
     height: auto;
     overflow: hidden;
     box-sizing: border-box;
@@ -741,53 +741,45 @@ button:active {
     stroke-dasharray: 201;
 }
 
-/* Темная тема - специфичные стили */
-.dark-theme .timer-container:hover {
-    background-color: #232323;
-}
-
-.dark-theme .btn-adjust {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--input-border);
-}
-
-.dark-theme .btn-adjust:hover {
-    background-color: #2196F3;
-    color: white;
-    border-color: #2196F3;
-}
-
-.dark-theme .btn-sound {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-
-/* Стили для контейнера визуализации прогресса */
+/* ===== ВИЗУАЛИЗАЦИЯ ПРОГРЕССА ===== */
+/* Контейнер визуализации прогресса */
 .visual-progress-container {
     display: flex;
     flex-direction: column;
-    gap: 14px; /* Увеличиваем отступ между строками индикаторов */
+    gap: 18px;
     width: 100%;
 }
 
-/* Более компактное отображение строк с индикаторами */
+/* Строка с индикаторами */
 .visual-progress-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
-    justify-content: flex-start;
-    gap: 6px;
     width: 100%;
     margin-bottom: 0;
+    column-gap: 12px;
 }
 
+/* Стили для контейнера меток с PNG иконками */
 .progress-label {
-    font-size: 15px;
-    min-width: 65px;
-    text-align: right;
-    color: var(--secondary-text);
-    font-weight: 500;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 }
 
+/* Стили для самих иконок */
+.progress-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+}
+
+
+/* Контейнер для индикаторов */
 .progress-indicators {
     display: flex;
     align-items: center;
@@ -796,20 +788,21 @@ button:active {
     flex-wrap: wrap;
 }
 
+/* Индикаторы-точки */
 .progress-dot {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 2px;
-    font-size: 11px;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--text-color);
     background-color: #ddd;
     transition: all 0.15s ease;
     position: relative;
-    margin: 0 1px;
+    margin: 0 2px;
 }
 
 .progress-dot.active {
@@ -832,51 +825,6 @@ button:active {
     line-height: 0.8;
 }
 
-/* Стили для темной темы */
-.dark-theme .progress-dot {
-    background-color: #444;
-}
-
-/* Адаптивные стили */
-@media (max-width: 768px) {
-    .progress-dot {
-        width: 18px;
-        height: 18px;
-        font-size: 10px;
-    }
-    
-    .progress-label {
-        min-width: 55px;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 576px) {
-    .progress-dot {
-        width: 16px;
-        height: 16px;
-        font-size: 9px;
-    }
-    
-    .progress-label {
-        min-width: 55px;
-        font-size: 14px;
-    }
-    
-    .progress-indicators {
-        gap: 1px;
-    }
-
-    .progress-info {
-        min-height: 80px;
-        padding: 10px 8px;
-    }
-    
-    .visual-progress-container {
-        gap: 10px;
-    }
-}
-
 /* Улучшаем вертикальное распределение пространства */
 .progress-info div {
     width: 100%;
@@ -889,6 +837,215 @@ button:active {
     margin-bottom: 0;
 }
 
+/* ===== ЯЗЫКОВОЕ МЕНЮ ===== */
+.language-section {
+    border-top: 1px solid var(--input-border);
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.language-selector {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.lang-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 6px;
+    min-width: 40px;
+    min-height: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flag-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.lang-btn:hover {
+    background-color: var(--highlight-bg);
+    transform: scale(1.05);
+}
+
+.lang-btn.active {
+    border: 2px solid #9C27B0; 
+}
+
+/* ===== НАСТРОЙКИ ЗВУКА ===== */
+.sound-section {
+    margin-top: 15px;
+    border-top: 1px solid var(--input-border);
+    padding-top: 10px;
+}
+
+.sound-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.sound-mode-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0 16px 0;
+}
+
+.sound-mode-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    padding: 8px 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sound-mode-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+.sound-mode-btn.active {
+    border-color: #9C27B0;
+    border-width: 2px;
+    background-color: var(--highlight-bg);
+}
+
+/* Слайдер громкости и его контейнер */
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+    gap: 10px;
+}
+
+.volume-slider {
+    flex: 1;
+    height: 12px;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 6px;
+    background: var(--slider-inactive);
+    transition: background 0.3s ease;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Убираем стандартный бегунок (thumb) во всех браузерах */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1px;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 1px;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    box-shadow: none;
+}
+
+.volume-slider::-ms-thumb {
+    width: 1px;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+}
+
+/* Реализуем заполнение с помощью псевдоэлемента для Firefox */
+.volume-slider::-moz-range-progress {
+    background-color: var(--slider-active);
+    transition: background 0.3s ease;
+}
+
+/* Стили для дорожки слайдера в Chrome/Safari/Edge */
+.volume-slider::-webkit-slider-runnable-track {
+    height: 12px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.volume-slider:active {
+    cursor: grabbing;
+}
+
+/* Кнопка для тестирования звука */
+.test-sound-btn {
+    background-color: var(--container-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s;
+}
+
+.test-sound-btn:hover {
+    background-color: var(--highlight-bg);
+}
+
+/* Улучшение текстовых подписей */
+.sound-label {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin: 10px 0 6px 0;
+    text-align: left;
+    font-weight: 500;
+}
+
+/* ===== ТЕМНАЯ ТЕМА - СПЕЦИФИЧНЫЕ СТИЛИ ===== */
+.dark-theme .timer-container:hover {
+    background-color: #232323;
+}
+
+.dark-theme .btn-adjust {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--input-border);
+}
+
+.dark-theme .btn-adjust:hover {
+    background-color: #2196F3;
+    color: white;
+    border-color: #2196F3;
+}
+
+.dark-theme .btn-sound {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .progress-dot {
+    background-color: #444;
+}
+
 .dark-theme .progress-dot.active {
     background-color: #2196F3 !important;
     color: white !important;
@@ -899,6 +1056,34 @@ button:active {
     color: white !important;
 }
 
+.dark-theme .volume-slider {
+    background: #444;
+}
+
+.dark-theme .volume-slider::-moz-range-progress {
+    background-color: #2196F3;
+}
+
+.dark-theme .sound-mode-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .sound-mode-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-theme .sound-mode-btn.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-theme .test-sound-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--input-border);
+}
+
+.dark-theme .test-sound-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
 
 /* ===== АДАПТИВНЫЕ СТИЛИ ===== */
 @media (min-width: 768px) {
@@ -965,6 +1150,25 @@ button:active {
     
     .app-tab {
         min-height: 800px;
+    }
+    
+    .progress-dot {
+        width: 26px;
+        height: 26px;
+        font-size: 13px;
+    }
+    
+    .progress-icon {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .progress-label {
+        width: 35px;
+    }
+
+    .visual-progress-row {
+        column-gap: 6px;
     }
 }
 
@@ -1101,6 +1305,38 @@ button:active {
         font-size: 16px;
         margin-bottom: 15px;
     }
+    
+    .progress-dot {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+    }
+    
+    .progress-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .progress-label {
+        width: 30px;
+    }
+    
+    .progress-indicators {
+        gap: 1px;
+    }
+    
+    .progress-info {
+        min-height: 100px;
+        padding: 10px 8px;
+    }
+    
+    .visual-progress-container {
+        gap: 14px;
+    }
+    
+    .visual-progress-row {
+        column-gap: 5px;
+    }
 }
 
 @media (max-width: 400px) {
@@ -1112,226 +1348,4 @@ button:active {
     .app-tabs {
         max-width: 200px;
     }
-}
-
-
-
-
-/* Стили для языкового меню */
-.language-section {
-    border-top: 1px solid var(--input-border);
-    margin-top: 4px;
-    padding-top: 4px;
-}
-
-.language-selector {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.lang-btn {
-    background-color: var(--container-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    padding: 6px;
-    min-width: 40px;
-    min-height: 40px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.flag-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: cover; /* Сохраняет пропорции флага */
-    border-radius: 2px; /* Слегка скругленные углы */
-}
-
-.lang-btn:hover {
-    background-color: var(--highlight-bg);
-    transform: scale(1.05);
-}
-
-.lang-btn.active {
-    border: 2px solid #9C27B0; 
-}
-
-/* Секция настроек звука */
-.sound-section {
-    margin-top: 15px;
-    border-top: 1px solid var(--input-border);
-    padding-top: 10px;
-}
-
-/* Контейнер для кнопки управления звуком */
-.sound-controls {
-    display: flex;
-    justify-content: center;
-    margin-top: 8px;
-}
-
-/* Кнопки режима звука */
-.sound-mode-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 8px 0 16px 0;
-}
-
-.sound-mode-btn {
-    background-color: var(--container-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    padding: 8px 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sound-mode-btn:hover {
-    background-color: var(--highlight-bg);
-}
-
-.sound-mode-btn.active {
-    border-color: #9C27B0;
-    border-width: 2px;
-    background-color: var(--highlight-bg);
-}
-
-.dark-theme .sound-mode-btn {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark-theme .sound-mode-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-.dark-theme .sound-mode-btn.active {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Слайдер громкости и его контейнер */
-.volume-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 8px 0;
-    gap: 10px;
-}
-
-.volume-slider {
-    flex: 1;
-    height: 12px; /* Увеличенная высота для удобства нажатия */
-    -webkit-appearance: none;
-    appearance: none;
-    border-radius: 6px; /* Скругленные углы */
-    background: var(--slider-inactive);
-    transition: background 0.3s ease;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-}
-
-/* Убираем стандартный бегунок (thumb) во всех браузерах */
-.volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 1px; /* Минимальная ширина, фактически невидимая */
-    height: 12px; /* Равна высоте полосы */
-    background: transparent; /* Прозрачный бегунок */
-    cursor: pointer;
-    border: none;
-}
-
-.volume-slider::-moz-range-thumb {
-    width: 1px;
-    height: 12px;
-    background: transparent;
-    cursor: pointer;
-    border: none;
-    box-shadow: none;
-}
-
-.volume-slider::-ms-thumb {
-    width: 1px;
-    height: 12px;
-    background: transparent;
-    cursor: pointer;
-    border: none;
-}
-
-/* Реализуем заполнение с помощью псевдоэлемента для Firefox */
-.volume-slider::-moz-range-progress {
-    background-color: var(--slider-active);
-    transition: background 0.3s ease;
-}
-
-/* Стили для дорожки слайдера в Chrome/Safari/Edge */
-.volume-slider::-webkit-slider-runnable-track {
-    height: 12px;
-    border-radius: 6px;
-    transition: background 0.3s ease;
-    
-}
-
-.volume-slider:active {
-    cursor: grabbing;
-}
-
-/* Темная тема */
-.dark-theme .volume-slider {
-    background: #444;
-}
-
-.dark-theme .volume-slider::-moz-range-progress {
-    background-color: #2196F3;
-}
-
-/* Кнопка для тестирования звука - исправление для тёмной темы */
-.test-sound-btn {
-    background-color: var(--container-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 0;
-    transition: background-color 0.2s;
-}
-
-.test-sound-btn:hover {
-    background-color: var(--highlight-bg);
-}
-
-/* Стили для тёмной темы */
-.dark-theme .test-sound-btn {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: var(--input-border);
-}
-
-.dark-theme .test-sound-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Улучшение текстовых подписей */
-.sound-label {
-    font-size: 14px;
-    color: var(--secondary-text);
-    margin: 10px 0 6px 0;
-    text-align: left;
-    font-weight: 500;
 }
