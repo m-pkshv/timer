@@ -746,7 +746,7 @@ button:active {
 .visual-progress-container {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 8px;
     width: 100%;
 }
 
@@ -1331,7 +1331,7 @@ button:active {
     }
     
     .visual-progress-container {
-        gap: 14px;
+        gap: 6px;
     }
     
     .visual-progress-row {
