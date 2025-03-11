@@ -366,8 +366,14 @@ button:active {
     font-size: 16px;
     margin: 0 0 12px 0;
     color: var(--text-color);
-    border-bottom: 1px solid var(--input-border);
+    border-bottom: 1px dashed var(--input-border);
     padding-bottom: 8px;
+}
+
+.menu-section:not(:first-child) {
+    margin-top: 13px;
+    padding-top: 10px;
+    border-top: 3px solid var(--input-border); /* Сплошная линия между секциями */
 }
 
 @keyframes fadeIn {
@@ -838,10 +844,11 @@ button:active {
 }
 
 /* ===== ЯЗЫКОВОЕ МЕНЮ ===== */
+.sound-section,
 .language-section {
     border-top: 1px solid var(--input-border);
-    margin-top: 4px;
-    padding-top: 4px;
+    margin-top: 12px;
+    padding-top: 12px;
 }
 
 .language-selector {
@@ -1076,6 +1083,16 @@ button:active {
 
 .dark-theme .test-sound-btn:hover {
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark-theme .menu-section h3 {
+    border-bottom-color: var(--input-border);
+}
+
+.dark-theme .menu-section:not(:first-child),
+.dark-theme .sound-section,
+.dark-theme .language-section {
+    border-top-color: var(--input-border);
 }
 
 /* ===== АДАПТИВНЫЕ СТИЛИ ===== */

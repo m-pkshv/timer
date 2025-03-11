@@ -601,27 +601,28 @@ function initApp() {
                 const offset = progressElements.currentCircumference * (1 - percentage);
                 progressElements.currentCircle.style.strokeDashoffset = offset;
                 
-                // Обновление цвета в зависимости от процента завершения
-                // Изменяем цвет от зеленого к оранжевому, а затем к красному
                 let color;
                 
-                if (percentage > 0.66) {
-                    // От 100% до 66% - зеленый
+                if (percentage > 0.4) {
+                    // От 100% до 40% - зеленый
                     color = getComputedStyle(document.documentElement).getPropertyValue('--progress-green');
-                } else if (percentage > 0.33) {
-                    // От 66% до 33% - постепенно от зеленого к оранжевому
+                } else if (percentage > 0.3) {
+                    // От 40% до 30% - постепенно от зеленого к оранжевому
                     const greenColor = getComputedStyle(document.documentElement).getPropertyValue('--progress-green').trim();
                     const orangeColor = getComputedStyle(document.documentElement).getPropertyValue('--progress-orange').trim();
-                    const normalizedPercentage = (percentage - 0.33) / 0.33; // от 0 до 1
+                    const normalizedPercentage = (percentage - 0.3) / 0.1; // от 0 до 1
                     color = utils.interpolateColor(orangeColor, greenColor, normalizedPercentage);
-                } else if (percentage > 0) {
-                    // От 33% до 0% - постепенно от оранжевого к красному
+                } else if (percentage > 0.2) {
+                    // От 30% до 20% - оранжевый
+                    color = getComputedStyle(document.documentElement).getPropertyValue('--progress-orange');
+                } else if (percentage > 0.1) {
+                    // От 20% до 10% - постепенно от оранжевого к красному
                     const orangeColor = getComputedStyle(document.documentElement).getPropertyValue('--progress-orange').trim();
                     const redColor = getComputedStyle(document.documentElement).getPropertyValue('--progress-red').trim();
-                    const normalizedPercentage = percentage / 0.33; // от 0 до 1
+                    const normalizedPercentage = (percentage - 0.1) / 0.1; // от 0 до 1
                     color = utils.interpolateColor(redColor, orangeColor, normalizedPercentage);
                 } else {
-                    // 0% - красный
+                    // От 10% до 0% - красный
                     color = getComputedStyle(document.documentElement).getPropertyValue('--progress-red');
                 }
                 
@@ -1625,10 +1626,11 @@ function initApp() {
         if (menuSections.length === 0) return;
         
         // Создаем новую секцию для настроек звука
+        // Убираем существующие border-top, т.к. они будут добавлены через CSS
         const soundSection = document.createElement('div');
         soundSection.className = 'menu-section sound-section';
         
-        // Заголовок секции
+        // Заголовок секции (с пунктирной линией через CSS)
         const soundHeader = document.createElement('h3');
         soundHeader.textContent = i18n.translate('SOUND_SETTINGS');
         soundHeader.dataset.i18n = 'SOUND_SETTINGS';
