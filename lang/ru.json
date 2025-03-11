@@ -41,7 +41,7 @@
   "LANGUAGE_ES": "Español",
   "MENU_TITLE": "Меню",
   "SOUND_SETTINGS": "Настройки звука",
-  "SOUND_MODE_LABEL": "Режим звукового оповещения:",
+  "SOUND_MODE_LABEL":  "Количество звуковых сигналов:",
   "SINGLE_SOUND_ENABLED": "Один сигнал в конце",
   "MULTIPLE_SOUND_ENABLED": "Три сигнала (отсчёт)",
   "VOLUME_LABEL": "Громкость звуковых сигналов:",

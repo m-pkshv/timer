@@ -41,12 +41,11 @@
   "LANGUAGE_ES": "Español",
   "MENU_TITLE": "Menu",
   "SOUND_SETTINGS": "Sound Settings",
-  "SOUND_MODE_LABEL": "Количество звуковых сигналов:",
-  "SINGLE_SOUND_ENABLED": "Один сигнал в конце",
-  "MULTIPLE_SOUND_ENABLED": "Три сигнала (отсчёт)",
+  "SOUND_MODE_LABEL": "Number of sound signals:",
+  "SINGLE_SOUND_ENABLED": "One signal at the end",
+  "MULTIPLE_SOUND_ENABLED": "Three signals (countdown)",
   "VOLUME_LABEL": "Sound volume:",
   "TEST_SOUND": "Test sound",
   "TIMERS": "Timers",
   "CYCLES": "Cycles"
-  
 }

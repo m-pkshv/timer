@@ -40,6 +40,12 @@
   "LANGUAGE_FR": "Français",
   "LANGUAGE_ES": "Español",
   "MENU_TITLE": "Menu",
+  "SOUND_SETTINGS": "Paramètres sonores",
+  "SOUND_MODE_LABEL": "Nombre de signaux sonores :",
+  "SINGLE_SOUND_ENABLED": "Un signal à la fin",
+  "MULTIPLE_SOUND_ENABLED": "Trois signaux (compte à rebours)",
+  "VOLUME_LABEL": "Volume du son :",
+  "TEST_SOUND": "Tester le son",
   "TIMERS": "Minuteurs",
   "CYCLES": "Cycles"
 }
