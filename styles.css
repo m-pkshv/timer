@@ -895,25 +895,9 @@ button:active {
     margin-top: 8px;
 }
 
-.sound-mode-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 8px 0 16px 0;
-}
-
 .sound-mode-btn {
-    background-color: var(--container-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    padding: 8px 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* Унаследует стили от theme-toggle button */
+    font-size: 18px;
 }
 
 .sound-mode-btn:hover {
@@ -1073,15 +1057,16 @@ button:active {
 }
 
 .dark-theme .sound-mode-btn {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--container-bg);
+    border-color: var(--input-border);
 }
 
 .dark-theme .sound-mode-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--highlight-bg);
 }
 
 .dark-theme .sound-mode-btn.active {
-    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid #9C27B0;
 }
 
 .dark-theme .test-sound-btn {

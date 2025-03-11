@@ -497,12 +497,15 @@ function initApp() {
                 const multipleSoundBtn = document.getElementById('multipleSoundBtn');
                 
                 if (singleSoundBtn && multipleSoundBtn) {
+                    // Сначала снимаем класс active со всех кнопок
+                    singleSoundBtn.classList.remove('active');
+                    multipleSoundBtn.classList.remove('active');
+                    
+                    // Затем добавляем active нужной кнопке
                     if (state.useMultipleSounds) {
-                        singleSoundBtn.classList.remove('active');
                         multipleSoundBtn.classList.add('active');
                     } else {
                         singleSoundBtn.classList.add('active');
-                        multipleSoundBtn.classList.remove('active');
                     }
                 }
             },
@@ -1636,9 +1639,9 @@ function initApp() {
         soundLabel.textContent = i18n.translate('SOUND_MODE_LABEL');
         soundLabel.dataset.i18n = 'SOUND_MODE_LABEL';
         
-        // Контейнер для кнопок режима звука
+        // Контейнер для кнопок режима звука (аналогично theme-toggle)
         const soundModeButtons = document.createElement('div');
-        soundModeButtons.className = 'sound-mode-buttons';
+        soundModeButtons.className = 'sound-mode-buttons theme-toggle';
         
         // Кнопка для одиночного сигнала
         const singleSoundBtn = document.createElement('button');
@@ -1652,7 +1655,7 @@ function initApp() {
         const multipleSoundBtn = document.createElement('button');
         multipleSoundBtn.id = 'multipleSoundBtn';
         multipleSoundBtn.className = 'sound-mode-btn';
-        multipleSoundBtn.textContent = '🔔 🔔 🔔';
+        multipleSoundBtn.textContent = '🔔🔔🔔';
         multipleSoundBtn.title = i18n.translate('MULTIPLE_SOUND_ENABLED');
         multipleSoundBtn.dataset.i18nTitle = 'MULTIPLE_SOUND_ENABLED';
         
@@ -1759,7 +1762,7 @@ function initApp() {
         // Собираем всё вместе
         soundSection.appendChild(soundHeader);
         soundSection.appendChild(soundLabel);
-        soundSection.appendChild(soundModeButtons); // Вместо soundControls с одной кнопкой
+        soundSection.appendChild(soundModeButtons);
         soundSection.appendChild(volumeLabel);
         soundSection.appendChild(volumeContainer);
         
