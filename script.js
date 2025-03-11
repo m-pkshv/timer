@@ -517,25 +517,73 @@ function initApp() {
                         state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     }
                     
-                    // Создание осциллятора для звукового сигнала
-                    const oscillator = state.audioContext.createOscillator();
-                    const gainNode = state.audioContext.createGain();
-                    
-                    // Настройка тестового звука
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.5 * state.soundVolume, state.audioContext.currentTime);
-                    
-                    // Подключение узлов
-                    oscillator.connect(gainNode);
-                    gainNode.connect(state.audioContext.destination);
-                    
-                    // Запуск и остановка звука через 0.3 секунды
-                    oscillator.start();
-                    oscillator.stop(state.audioContext.currentTime + 0.3);
+                    // Если выбран режим с множественными сигналами, проигрываем последовательность сигналов
+                    if (state.useMultipleSounds) {
+                        // Проигрываем последовательность из 3 сигналов, имитируя warning, warning2 и end
+                        this.playSequence();
+                    } else {
+                        // Иначе проигрываем только один сигнал (как обычно)
+                        this.playSingleTestSound();
+                    }
                 } catch (e) {
                     console.error('Ошибка воспроизведения тестового звука:', e);
                 }
+            },
+            
+            // Функция для проигрывания одиночного тестового сигнала
+            playSingleTestSound: function() {
+                // Создание осциллятора для звукового сигнала
+                const oscillator = state.audioContext.createOscillator();
+                const gainNode = state.audioContext.createGain();
+                
+                // Настройка тестового звука
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.5 * state.soundVolume, state.audioContext.currentTime);
+                
+                // Подключение узлов
+                oscillator.connect(gainNode);
+                gainNode.connect(state.audioContext.destination);
+                
+                // Запуск и остановка звука через 0.3 секунды
+                oscillator.start();
+                oscillator.stop(state.audioContext.currentTime + 0.3);
+            },
+            
+            // Функция для проигрывания последовательности сигналов в режиме множественных сигналов
+            playSequence: function() {
+                // Проигрываем первый сигнал (warning)
+                const oscillator1 = state.audioContext.createOscillator();
+                const gain1 = state.audioContext.createGain();
+                oscillator1.type = 'sine';
+                oscillator1.frequency.setValueAtTime(660, state.audioContext.currentTime);
+                gain1.gain.setValueAtTime(0.3 * state.soundVolume, state.audioContext.currentTime);
+                oscillator1.connect(gain1);
+                gain1.connect(state.audioContext.destination);
+                oscillator1.start();
+                oscillator1.stop(state.audioContext.currentTime + 0.15);
+                
+                // Проигрываем второй сигнал (warning2) через 400 мс
+                const oscillator2 = state.audioContext.createOscillator();
+                const gain2 = state.audioContext.createGain();
+                oscillator2.type = 'sine';
+                oscillator2.frequency.setValueAtTime(770, state.audioContext.currentTime + 0.4);
+                gain2.gain.setValueAtTime(0.4 * state.soundVolume, state.audioContext.currentTime + 0.4);
+                oscillator2.connect(gain2);
+                gain2.connect(state.audioContext.destination);
+                oscillator2.start(state.audioContext.currentTime + 0.4);
+                oscillator2.stop(state.audioContext.currentTime + 0.4 + 0.2);
+                
+                // Проигрываем третий сигнал (end) через 800 мс
+                const oscillator3 = state.audioContext.createOscillator();
+                const gain3 = state.audioContext.createGain();
+                oscillator3.type = 'sine';
+                oscillator3.frequency.setValueAtTime(880, state.audioContext.currentTime + 0.8);
+                gain3.gain.setValueAtTime(0.5 * state.soundVolume, state.audioContext.currentTime + 0.8);
+                oscillator3.connect(gain3);
+                gain3.connect(state.audioContext.destination);
+                oscillator3.start(state.audioContext.currentTime + 0.8);
+                oscillator3.stop(state.audioContext.currentTime + 0.8 + 0.3);
             }
         };
     }
