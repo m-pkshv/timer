@@ -8,6 +8,41 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title data-i18n="APP_NAME">ЦиклоТаймер</title>
+    <link rel="icon" href="icons/icon_light.png" id="light-favicon">
+    <link rel="alternate icon" href="icons/icon_dark.png" id="dark-favicon">
+    <script>
+        // Функция для переключения favicon в зависимости от текущей темы
+        function updateFavicon() {
+            const isDarkTheme = document.body.classList.contains('dark-theme');
+            const lightFavicon = document.getElementById('light-favicon');
+            const darkFavicon = document.getElementById('dark-favicon');
+            
+            if (isDarkTheme) {
+                lightFavicon.setAttribute('rel', 'alternate icon');
+                darkFavicon.setAttribute('rel', 'icon');
+            } else {
+                lightFavicon.setAttribute('rel', 'icon');
+                darkFavicon.setAttribute('rel', 'alternate icon');
+            }
+        }
+        
+        // Обновляем favicon при загрузке страницы
+        document.addEventListener('DOMContentLoaded', updateFavicon);
+        
+        // Наблюдаем за изменением класса body для обновления favicon при смене темы
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    updateFavicon();
+                }
+            });
+        });
+        
+        // Начинаем наблюдение после загрузки DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            observer.observe(document.body, { attributes: true });
+        });
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">

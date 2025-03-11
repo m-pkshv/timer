@@ -767,6 +767,11 @@ function initApp() {
                 if (soundManager && typeof soundManager.updateVolumeSlider === 'function') {
                     soundManager.updateVolumeSlider();
                 }
+
+                if (typeof updateFavicon === 'function') {
+                    updateFavicon();
+                }
+                
             },
             
             setDarkTheme: function() {
@@ -781,6 +786,10 @@ function initApp() {
                 if (soundManager && typeof soundManager.updateVolumeSlider === 'function') {
                     soundManager.updateVolumeSlider();
                 }
+
+                if (typeof updateFavicon === 'function') {
+                    updateFavicon();
+                }
             },
             
             setSystemTheme: function(updateStorage = true) {
@@ -788,6 +797,10 @@ function initApp() {
                     localStorage.setItem('theme-mode', 'system');
                 }
                 this.applySystemTheme();
+
+                if (typeof updateFavicon === 'function') {
+                    updateFavicon();
+                }
             },
             
             updateActiveButtons: function() {
@@ -1964,8 +1977,11 @@ function initApp() {
         i18n.translatePage();
         
         // Добавление первого таймера
+        // Добавление трех таймеров с заданными длительностями
         if (elements.timerList) {
-            timerManager.add(30);
+            timerManager.add(20); // Первый таймер на 20 секунд
+            timerManager.add(30); // Второй таймер на 30 секунд
+            timerManager.add(30); // Третий таймер на 30 секунд
         }
         
         // Обновление общего времени
