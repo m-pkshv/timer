@@ -376,8 +376,7 @@ function initApp() {
                             oscillator.type = 'sine';
                             oscillator.frequency.setValueAtTime(660, state.audioContext.currentTime);
                             baseVolume = 0.3;
-                            gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
-                            gainNode.gain.setValueAtTime(0.3, state.audioContext.currentTime); // Тише
+                            gainNode.gain.setValueAtTime(baseVolume * 0.8 * state.soundVolume, state.audioContext.currentTime);
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.15); // Короче
                             break;
@@ -386,8 +385,7 @@ function initApp() {
                             oscillator.type = 'sine';
                             oscillator.frequency.setValueAtTime(770, state.audioContext.currentTime);
                             baseVolume = 0.4;
-                            gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
-                            gainNode.gain.setValueAtTime(0.4, state.audioContext.currentTime); // Громче
+                            gainNode.gain.setValueAtTime(baseVolume * 0.9 * state.soundVolume, state.audioContext.currentTime);
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.2); // Длиннее
                             break;
@@ -398,7 +396,6 @@ function initApp() {
                             oscillator.frequency.setValueAtTime(880, state.audioContext.currentTime);
                             baseVolume = 0.5;
                             gainNode.gain.setValueAtTime(baseVolume * state.soundVolume, state.audioContext.currentTime);
-                            gainNode.gain.setValueAtTime(0.5, state.audioContext.currentTime);
                             oscillator.start();
                             oscillator.stop(state.audioContext.currentTime + 0.3); // Самый длинный
                             break;
